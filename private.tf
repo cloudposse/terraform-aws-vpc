@@ -6,7 +6,7 @@ resource "aws_subnet" "private" {
   cidr_block        = "${cidrsubnet(aws_vpc.default.cidr_block, length(var.availability_zones), length(var.availability_zones)  + count.index)}"
 
   tags {
-    Name      = "${null_resource.default.triggers.id}-private-${count.index+1}"
+    Name      = "${module.label.value}-private-${count.index+1}"
     Namespace = "${var.namespace}"
     Stage     = "${var.stage}"
     Network   = "private"
@@ -24,7 +24,7 @@ resource "aws_route_table" "private" {
   }
 
   tags {
-    Name      = "${null_resource.default.triggers.id}-private-${count.index+1}"
+    Name      = "${module.label.value}-private-${count.index+1}"
     Namespace = "${var.namespace}"
     Stage     = "${var.stage}"
     Network   = "private"

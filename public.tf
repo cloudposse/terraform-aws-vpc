@@ -6,7 +6,7 @@ resource "aws_subnet" "public" {
   cidr_block        = "${cidrsubnet(aws_vpc.default.cidr_block, length(var.availability_zones), count.index)}"
 
   tags {
-    Name      = "${null_resource.default.triggers.id}-public-${count.index+1}"
+    Name      = "${module.label.value}-public-${count.index+1}"
     Namespace = "${var.namespace}"
     Stage     = "${var.stage}"
     Network   = "public"
@@ -43,7 +43,7 @@ resource "aws_route_table" "public" {
   }
 
   tags {
-    Name      = "${null_resource.default.triggers.id}-public-${count.index+1}"
+    Name      = "${module.label.value}-public-${count.index+1}"
     Namespace = "${var.namespace}"
     Stage     = "${var.stage}"
     Network   = "public"
