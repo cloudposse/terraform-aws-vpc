@@ -1,4 +1,5 @@
 resource "aws_subnet" "private" {
+  provider  = "${var.provider}"
   count = "${length(var.availability_zones)}"
 
   vpc_id            = "${aws_vpc.default.id}"
@@ -14,6 +15,7 @@ resource "aws_subnet" "private" {
 }
 
 resource "aws_route_table" "private" {
+  provider  = "${var.provider}"
   count = "${length(var.availability_zones)}"
 
   vpc_id = "${aws_vpc.default.id}"
@@ -32,6 +34,7 @@ resource "aws_route_table" "private" {
 }
 
 resource "aws_route_table_association" "private" {
+  provider  = "${var.provider}"
   count = "${length(var.availability_zones)}"
 
   subnet_id      = "${element(aws_subnet.private.*.id, count.index)}"

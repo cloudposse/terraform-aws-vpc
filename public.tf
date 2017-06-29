@@ -1,4 +1,5 @@
 resource "aws_subnet" "public" {
+  provider  = "${var.provider}"
   count = "${length(var.availability_zones)}"
 
   vpc_id            = "${aws_vpc.default.id}"
@@ -14,6 +15,7 @@ resource "aws_subnet" "public" {
 }
 
 resource "aws_eip" "nat" {
+  provider  = "${var.provider}"
   count = "${length(var.availability_zones)}"
   vpc   = true
 
@@ -23,6 +25,7 @@ resource "aws_eip" "nat" {
 }
 
 resource "aws_nat_gateway" "public" {
+  provider  = "${var.provider}"
   count         = "${length(var.availability_zones)}"
   allocation_id = "${element(aws_eip.nat.*.id, count.index)}"
   subnet_id     = "${element(aws_subnet.public.*.id, count.index)}"
@@ -33,6 +36,7 @@ resource "aws_nat_gateway" "public" {
 }
 
 resource "aws_route_table" "public" {
+  provider  = "${var.provider}"
   count = "${length(var.availability_zones)}"
 
   vpc_id = "${aws_vpc.default.id}"
@@ -51,6 +55,7 @@ resource "aws_route_table" "public" {
 }
 
 resource "aws_route_table_association" "public" {
+  provider  = "${var.provider}"
   count = "${length(var.availability_zones)}"
 
   subnet_id      = "${element(aws_subnet.public.*.id, count.index)}"
