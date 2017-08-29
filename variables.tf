@@ -15,7 +15,7 @@ variable "availability_zones" {
   type        = "list"
 }
 
-variable "cidr" {
+variable "cidr_block" {
   description = "CIDR for the whole VPC"
   default     = "10.0.0.0/16"
 }
