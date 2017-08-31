@@ -6,9 +6,20 @@ module "label" {
   stage     = "${var.stage}"
 }
 
+module "subnets" {
+  source = "git::https://github.com/cloudposse/tf_subnets.git?ref=tags/0.1.6"
+
+  availability_zones = "${var.availability_zones}"
+  namespace          = "${var.namespace}"
+  name               = "${var.name}"
+  stage              = "${var.stage}"
+  region             = "${var.region}"
+  vpc_id             = "${aws_vpc.default.id}"
+  cidr_block         = "${aws_vpc.default.cidr_block}"
+}
 
 resource "aws_vpc" "default" {
-  cidr_block           = "${var.cidr}"
+  cidr_block           = "${var.cidr_block}"
   enable_dns_hostnames = true
 
   tags {

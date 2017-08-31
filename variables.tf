@@ -1,13 +1,13 @@
 variable "namespace" {
-  default = "global"
+  default = ""
 }
 
 variable "stage" {
-  default = "default"
+  default = ""
 }
 
 variable "name" {
-  default = "vpc"
+  default = ""
 }
 
 variable "availability_zones" {
@@ -15,7 +15,11 @@ variable "availability_zones" {
   type        = "list"
 }
 
-variable "cidr" {
+variable "cidr_block" {
   description = "CIDR for the whole VPC"
   default     = "10.0.0.0/16"
+}
+
+variable "region" {
+  default = ""
 }

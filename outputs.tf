@@ -2,10 +2,10 @@ output "vpc_id" {
   value = "${aws_vpc.default.id}"
 }
 
-output "public_subnets" {
-  value = ["${aws_subnet.public.*.id}"]
+output "public_subnet_ids" {
+  value = ["${module.subnets.public_subnet_ids}"]
 }
 
-output "private_subnets" {
-  value = ["${aws_subnet.private.*.id}"]
+output "private_subnet_ids" {
+  value = ["${module.subnets.private_subnet_ids}"]
 }
