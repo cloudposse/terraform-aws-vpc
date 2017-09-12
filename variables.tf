@@ -5,7 +5,7 @@ variable "stage" {}
 variable "name" {}
 
 variable "cidr_block" {
-  description = "CIDR for the whole VPC"
+  description = "CIDR for the entire VPC"
 }
 
 variable "delimiter" {
