@@ -2,10 +2,10 @@ output "vpc_id" {
   value = "${aws_vpc.default.id}"
 }
 
-output "public_subnet_ids" {
-  value = ["${module.subnets.public_subnet_ids}"]
+output "cidr_block" {
+  value = "${aws_vpc.default.cidr_block}"
 }
 
-output "private_subnet_ids" {
-  value = ["${module.subnets.private_subnet_ids}"]
+output "internet_gateway_id" {
+  value = "${aws_internet_gateway.default.id}"
 }
