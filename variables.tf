@@ -1,25 +1,25 @@
-variable "namespace" {
-  default = ""
-}
+variable "namespace" {}
 
-variable "stage" {
-  default = ""
-}
+variable "stage" {}
 
-variable "name" {
-  default = ""
-}
-
-variable "availability_zones" {
-  description = "Run the EC2 Instances in these Availability Zones"
-  type        = "list"
-}
+variable "name" {}
 
 variable "cidr_block" {
-  description = "CIDR for the whole VPC"
-  default     = "10.0.0.0/16"
+  description = "CIDR for the entire VPC"
 }
 
-variable "region" {
-  default = ""
+variable "delimiter" {
+  default = "-"
 }
+
+variable "attributes" {
+  type    = "list"
+  default = []
+}
+
+variable "tags" {
+  type    = "map"
+  default = {}
+}
+
+variable "region" {}
