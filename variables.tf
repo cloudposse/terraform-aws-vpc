@@ -23,3 +23,7 @@ variable "cidr_block" {
 variable "region" {
   default = ""
 }
+
+variable "igw_id" {
+  default = ""
+}

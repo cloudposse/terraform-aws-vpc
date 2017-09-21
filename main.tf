@@ -7,7 +7,7 @@ module "label" {
 }
 
 module "subnets" {
-  source = "git::https://github.com/cloudposse/tf_subnets.git?ref=tags/0.1.6"
+  source = "git::https://github.com/cloudposse/tf_subnets.git?ref=tags/0.2.2"
 
   availability_zones = "${var.availability_zones}"
   namespace          = "${var.namespace}"
@@ -16,6 +16,7 @@ module "subnets" {
   region             = "${var.region}"
   vpc_id             = "${aws_vpc.default.id}"
   cidr_block         = "${aws_vpc.default.cidr_block}"
+  igw_id             = "${var.igw_id}"
 }
 
 resource "aws_vpc" "default" {
