@@ -1,25 +1,30 @@
 variable "namespace" {
-  default = ""
+  type = "string"
 }
 
 variable "stage" {
-  default = ""
+  type = "string"
 }
 
 variable "name" {
-  default = ""
+  type = "string"
 }
 
 variable "availability_zones" {
-  description = "Run the EC2 Instances in these Availability Zones"
+  description = "List of Availability Zones"
   type        = "list"
 }
 
 variable "cidr_block" {
-  description = "CIDR for the whole VPC"
+  type        = "string"
+  description = "CIDR for the VPC"
   default     = "10.0.0.0/16"
 }
 
 variable "region" {
-  default = ""
+  type = "string"
+}
+
+variable "igw_id" {
+  type = "string"
 }
