@@ -11,13 +11,13 @@ variable "name" {
 }
 
 variable "availability_zones" {
-  type = "string"
+  type        = "string"
   description = "List of Availability Zones"
   type        = "list"
 }
 
 variable "cidr_block" {
-  type = "string"
+  type        = "string"
   description = "CIDR for the VPC"
   default     = "10.0.0.0/16"
 }
