@@ -11,7 +11,6 @@ variable "name" {
 }
 
 variable "availability_zones" {
-  type        = "string"
   description = "List of Availability Zones"
   type        = "list"
 }
