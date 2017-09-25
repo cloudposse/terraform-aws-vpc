@@ -15,7 +15,7 @@ module "subnets" {
   region             = "${var.region}"
   vpc_id             = "${aws_vpc.default.id}"
   cidr_block         = "${aws_vpc.default.cidr_block}"
-  igw_id             = "${var.igw_id}"
+  igw_id             = "${aws_internet_gateway.default.id}"
 }
 
 resource "aws_vpc" "default" {

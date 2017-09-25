@@ -24,7 +24,3 @@ variable "cidr_block" {
 variable "region" {
   type = "string"
 }
-
-variable "igw_id" {
-  type = "string"
-}
