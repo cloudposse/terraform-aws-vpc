@@ -1,9 +1,12 @@
 # Define composite variables for resources
 module "label" {
-  source    = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.2.1"
-  namespace = "${var.namespace}"
-  name      = "${var.name}"
-  stage     = "${var.stage}"
+  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.2.1"
+  namespace  = "${var.namespace}"
+  name       = "${var.name}"
+  stage      = "${var.stage}"
+  delimiter  = "${var.delimiter}"
+  attributes = "${var.attributes}"
+  tags       = "${var.tags}"
 }
 
 module "subnets" {
@@ -16,6 +19,9 @@ module "subnets" {
   vpc_id             = "${aws_vpc.default.id}"
   cidr_block         = "${aws_vpc.default.cidr_block}"
   igw_id             = "${aws_internet_gateway.default.id}"
+  delimiter          = "${var.delimiter}"
+  attributes         = ["${compact(concat(var.attributes, list("subnets")))}"]
+  tags               = "${var.tags}"
 }
 
 resource "aws_vpc" "default" {
