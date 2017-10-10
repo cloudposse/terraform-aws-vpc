@@ -10,7 +10,7 @@ module "label" {
 }
 
 module "subnets" {
-  source             = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=tags/0.2.3"
+  source             = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=tags/0.2.4"
   availability_zones = "${var.availability_zones}"
   namespace          = "${var.namespace}"
   name               = "${var.name}"
