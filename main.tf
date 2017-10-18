@@ -9,25 +9,15 @@ module "label" {
   tags       = "${var.tags}"
 }
 
-module "subnets" {
-  source             = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=tags/0.2.3"
-  availability_zones = "${var.availability_zones}"
-  namespace          = "${var.namespace}"
-  name               = "${var.name}"
-  stage              = "${var.stage}"
-  region             = "${var.region}"
-  vpc_id             = "${aws_vpc.default.id}"
-  cidr_block         = "${aws_vpc.default.cidr_block}"
-  igw_id             = "${aws_internet_gateway.default.id}"
-  delimiter          = "${var.delimiter}"
-  attributes         = ["${compact(concat(var.attributes, list("subnets")))}"]
-  tags               = "${var.tags}"
-}
-
 resource "aws_vpc" "default" {
-  cidr_block           = "${var.cidr_block}"
-  enable_dns_hostnames = true
-  tags                 = "${module.label.tags}"
+  cidr_block                       = "${var.cidr_block}"
+  instance_tenancy                 = "${var.instance_tenancy}"
+  enable_dns_hostnames             = "${var.enable_dns_hostnames}"
+  enable_dns_support               = "${var.enable_dns_support}"
+  enable_classiclink               = "${var.enable_classiclink}"
+  enable_classiclink_dns_support   = "${var.enable_classiclink_dns_support}"
+  assign_generated_ipv6_cidr_block = "${var.assign_generated_ipv6_cidr_block}"
+  tags                             = "${module.label.tags}"
 }
 
 resource "aws_internet_gateway" "default" {
