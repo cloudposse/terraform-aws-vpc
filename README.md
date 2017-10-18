@@ -7,6 +7,7 @@ Terraform module that defines a VPC with Internet Gateway
 
 ```terraform
 module "vpc" {
+  source    = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=master"
   name      = "${var.name}"
   namespace = "${var.namespace}"
   stage     = "${var.stage}"
