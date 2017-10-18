@@ -1,13 +1,16 @@
 variable "namespace" {
-  type = "string"
+  description = "Namespace (e.g. `cp` or `cloudposse`)"
+  type        = "string"
 }
 
 variable "stage" {
-  type = "string"
+  description = "Stage (e.g. `prod`, `dev`, `staging`)"
+  type        = "string"
 }
 
 variable "name" {
-  type = "string"
+  description = "Name  (e.g. `bastion` or `db`)"
+  type        = "string"
 }
 
 variable "delimiter" {

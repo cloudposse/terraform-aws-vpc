@@ -24,11 +24,11 @@ module "vpc" {
 | `enable_dns_hostnames`             |    `true`     | A boolean flag to enable/disable DNS hostnames in the VPC                        |    No    |
 | `enable_dns_support`               |    `true`     | A boolean flag to enable/disable DNS support in the VPC                          |    No    |
 | `instance_tenancy`                 |      ``       | A tenancy option for instances launched into the VPC                             |    No    |
-| `name`                             |      ``       |                                                                                  |   Yes    |
-| `namespace`                        |      ``       |                                                                                  |   Yes    |
-| `stage`                            |      ``       |                                                                                  |   Yes    |
-| `tags`                             |     `{}`      | Additional tags (e.g. `map('BusinessUnit`,`XYZ`)                                 |    No    |
-| `attributes`                       |      ``       | Additional attributes (e.g. `policy` or `role`)                                  |    No    |
+| `namespace`                        |      ``       | Namespace (e.g. `cp` or `cloudposse`)                                            |   Yes    |
+| `stage`                            |      ``       | Stage (e.g. `prod`, `dev`, `staging`)                                            |   Yes    |
+| `name`                             |      ``       | Name  (e.g. `bastion` or `db`)                                                   |   Yes    |
+| `attributes`                       |     `[]`      | Additional attributes (e.g. `policy` or `role`)                                  |    No    |
+| `tags`                             |     `{}`      | Additional tags  (e.g. `map("BusinessUnit","XYZ")`                               |    No    |
 | `delimiter`                        |      `-`      | Delimiter to be used between `name`, `namespace`, `stage`, etc.                  |    No    |
 
 
