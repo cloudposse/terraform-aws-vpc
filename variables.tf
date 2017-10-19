@@ -32,7 +32,7 @@ variable "tags" {
 }
 
 variable "create_vpc" {
-  default = "tre"
+  default = "true"
 }
 
 variable "cidr_block" {
