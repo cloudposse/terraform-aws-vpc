@@ -18,6 +18,7 @@ module "vpc" {
 
 | Name                               |    Default    | Description                                                                      | Required |
 |:-----------------------------------|:-------------:|:---------------------------------------------------------------------------------|:--------:|
+| `create_vpc`                       |    `true`     | Flag of creation VPC                                                             |    No    |
 | `assign_generated_ipv6_cidr_block` |    `false`    | Requests an Amazon-provided IPv6 CIDR block with a /56 prefix length for the VPC |    No    |
 | `cidr_block`                       | `10.0.0.0/16` | CIDR for the VPC                                                                 |    No    |
 | `enable_classiclink`               |    `false`    | A boolean flag to enable/disable ClassicLink for the VPC                         |    No    |
