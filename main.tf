@@ -10,7 +10,6 @@ module "label" {
 }
 
 resource "aws_vpc" "default" {
-  count                            = "${var.create_vpc ? 1 : 0}"
   cidr_block                       = "${var.cidr_block}"
   instance_tenancy                 = "${var.instance_tenancy}"
   enable_dns_hostnames             = "${var.enable_dns_hostnames}"
@@ -22,7 +21,6 @@ resource "aws_vpc" "default" {
 }
 
 resource "aws_internet_gateway" "default" {
-  count  = "${var.create_vpc ? 1 : 0}"
   vpc_id = "${aws_vpc.default.id}"
   tags   = "${module.label.tags}"
 }

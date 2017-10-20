@@ -31,10 +31,6 @@ variable "tags" {
   description = "Additional tags (e.g. `map('BusinessUnit`,`XYZ`)"
 }
 
-variable "create_vpc" {
-  default = "true"
-}
-
 variable "cidr_block" {
   type        = "string"
   description = "CIDR for the VPC"
