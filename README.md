@@ -1,9 +1,11 @@
 # terraform-aws-vpc
 
-Terraform module that defines a VPC with Internet Gateway
+Terraform module that defines a VPC with Internet Gateway.
 
 
 ## Usage
+
+* Quick start example:
 
 ```terraform
 module "vpc" {
@@ -11,6 +13,30 @@ module "vpc" {
   name      = "${var.name}"
   namespace = "${var.namespace}"
   stage     = "${var.stage}"
+}
+```
+
+* Completive example with [`terraform-aws-dynamic-subnets`](https://github.com/cloudposse/terraform-aws-dynamic-subnets.git):
+
+```terraform
+module "vpc" {
+  source    = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=master"
+  name      = "${var.name}"
+  namespace = "${var.namespace}"
+  stage     = "${var.stage}"
+}
+
+module "dynamic_subnets" {
+  source = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=master"
+
+  availability_zones = "${var.availability_zones}"
+  namespace          = "${var.namespace}"
+  name               = "${var.name}"
+  stage              = "${var.stage}"
+  region             = "${var.region}"
+  vpc_id             = "${module.vpc_id}"
+  igw_id             = "${module.igw_id}"
+  cidr_block         = "10.0.0.0/16"
 }
 ```
 
