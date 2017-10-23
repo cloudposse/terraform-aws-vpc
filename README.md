@@ -16,7 +16,7 @@ module "vpc" {
 }
 ```
 
-* Completive example with [`terraform-aws-dynamic-subnets`](https://github.com/cloudposse/terraform-aws-dynamic-subnets.git):
+* Full example with [`terraform-aws-dynamic-subnets`](https://github.com/cloudposse/terraform-aws-dynamic-subnets.git):
 
 ```terraform
 module "vpc" {
