@@ -1,19 +1,16 @@
 variable "namespace" {
   description = "Namespace (e.g. `cp` or `cloudposse`)"
   type        = "string"
-  default     = "cp"
 }
 
 variable "stage" {
   description = "Stage (e.g. `prod`, `dev`, `staging`)"
   type        = "string"
-  default     = "dev"
 }
 
 variable "name" {
   description = "Name  (e.g. `bastion` or `db`)"
   type        = "string"
-  default     = "subnet"
 }
 
 variable "delimiter" {
