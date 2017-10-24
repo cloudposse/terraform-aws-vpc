@@ -39,6 +39,6 @@ output "vpc_ipv6_association_id" {
 }
 
 output "ipv6_cidr_block" {
-  value       = "${aws_vpc.default.ipv6_cidr_block }"
+  value       = "${aws_vpc.default.ipv6_cidr_block}"
   description = "The IPv6 CIDR block"
 }
