@@ -7,7 +7,7 @@ Terraform module that defines a VPC with Internet Gateway.
 
 * Quick start example:
 
-```terraform
+```hcl
 module "vpc" {
   source    = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=master"
   name      = "${var.name}"
@@ -18,7 +18,7 @@ module "vpc" {
 
 * Full example with [`terraform-aws-dynamic-subnets`](https://github.com/cloudposse/terraform-aws-dynamic-subnets.git):
 
-```terraform
+```hcl
 module "vpc" {
   source    = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=master"
   name      = "${var.name}"
