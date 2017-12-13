@@ -39,7 +39,7 @@ variable "cidr_block" {
 
 variable "instance_tenancy" {
   description = "A tenancy option for instances launched into the VPC"
-  default     = ""
+  default     = "default"
 }
 
 variable "enable_dns_hostnames" {
