@@ -1,4 +1,4 @@
-# terraform-aws-vpc
+# terraform-aws-vpc [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-vpc.svg)](https://travis-ci.org/cloudposse/terraform-aws-vpc)
 
 Terraform module that defines a VPC with Internet Gateway.
 
