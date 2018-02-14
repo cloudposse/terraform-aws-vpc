@@ -32,13 +32,3 @@ output "vpc_default_route_table_id" {
   value       = "${aws_vpc.default.default_route_table_id}"
   description = "The ID of the route table created by default on VPC creation"
 }
-
-output "vpc_ipv6_association_id" {
-  value       = "${aws_vpc.default.ipv6_association_id}"
-  description = "The association ID for the IPv6 CIDR block"
-}
-
-output "ipv6_cidr_block" {
-  value       = "${aws_vpc.default.ipv6_cidr_block}"
-  description = "The IPv6 CIDR block"
-}

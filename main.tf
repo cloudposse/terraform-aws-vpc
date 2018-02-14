@@ -17,6 +17,10 @@ resource "aws_vpc" "default" {
   enable_classiclink_dns_support   = "${var.enable_classiclink_dns_support}"
   assign_generated_ipv6_cidr_block = "${var.assign_generated_ipv6_cidr_block}"
   tags                             = "${module.label.tags}"
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_internet_gateway" "default" {
