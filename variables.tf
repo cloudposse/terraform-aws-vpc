@@ -9,26 +9,26 @@ variable "stage" {
 }
 
 variable "name" {
-  description = "Name  (e.g. `bastion` or `db`)"
+  description = "Name  (e.g. `app` or `cluster`)"
   type        = "string"
 }
 
 variable "delimiter" {
   type        = "string"
   default     = "-"
-  description = "Delimiter to be used between `name`, `namespace`, `stage`, etc."
+  description = "Delimiter to be used between `namespace`, `stage`, `name` and `attributes`"
 }
 
 variable "attributes" {
   type        = "list"
   default     = []
-  description = "Additional attributes (e.g. `policy` or `role`)"
+  description = "Additional attributes (e.g. `1`)"
 }
 
 variable "tags" {
   type        = "map"
   default     = {}
-  description = "Additional tags (e.g. `map('BusinessUnit`,`XYZ`)"
+  description = "Additional tags (e.g. map(`BusinessUnit`,`XYZ`)"
 }
 
 variable "cidr_block" {
@@ -59,10 +59,5 @@ variable "enable_classiclink" {
 
 variable "enable_classiclink_dns_support" {
   description = "A boolean flag to enable/disable ClassicLink DNS Support for the VPC"
-  default     = "false"
-}
-
-variable "assign_generated_ipv6_cidr_block" {
-  description = "Requests an Amazon-provided IPv6 CIDR block with a /56 prefix length for the VPC"
   default     = "false"
 }
