@@ -1,5 +1,5 @@
 module "label" {
-  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.3.1"
+  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.3.3"
   namespace  = "${var.namespace}"
   name       = "${var.name}"
   stage      = "${var.stage}"
@@ -15,7 +15,7 @@ resource "aws_vpc" "default" {
   enable_dns_support               = "${var.enable_dns_support}"
   enable_classiclink               = "${var.enable_classiclink}"
   enable_classiclink_dns_support   = "${var.enable_classiclink_dns_support}"
-  assign_generated_ipv6_cidr_block = "${var.assign_generated_ipv6_cidr_block}"
+  assign_generated_ipv6_cidr_block = true
   tags                             = "${module.label.tags}"
 }
 
