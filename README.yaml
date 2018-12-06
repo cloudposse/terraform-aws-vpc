@@ -7,6 +7,18 @@
 # Name of this project
 name: terraform-aws-vpc
 
+# Tags of this project
+tags:
+  - aws
+  - terraform
+  - terraform-modules
+  - platform
+  - vpc
+
+# Categories of this project
+categories:
+  - terraform-modules/networking
+
 # Logo for this project
 #logo: docs/logo.png
 
