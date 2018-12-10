@@ -32,6 +32,7 @@ It's 100% Open Source and licensed under the [APACHE2](LICENSE).
 
 
 
+
 We literally have [*hundreds of terraform modules*][terraform_modules] that are Open Source and well-maintained. Check them out! 
 
 
@@ -78,7 +79,22 @@ module "dynamic_subnets" {
 }
 ```
 
+[`Geodesic`](https://github.com/cloudposse/geodesic) module usage example:
 
+
+add the terraform-aws-vpc module as a git submodule to the `conf/` directory in your geodessic module, set the git submodule to a specific branch or tag & update
+
+```
+cd conf/
+
+git submodule init
+
+git submodule add https://github.com/cloudposse/terraform-aws-vpc.git terraform-aws-vpc
+
+git config -f .gitmodules submodule.conf/terraform-aws-vpc.branch 0.3.5
+
+git submodule update --checkout
+```
 
 ## Makefile Targets
 ```
