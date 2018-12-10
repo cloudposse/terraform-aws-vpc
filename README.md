@@ -82,7 +82,7 @@ module "dynamic_subnets" {
 [`Geodesic`](https://github.com/cloudposse/geodesic) module usage example:
 
 
-add the terraform-aws-vpc module as a git submodule to the `conf/` directory in your geodessic module, set the git submodule to a specific branch or tag & update
+add the terraform-aws-vpc module as a git submodule to the `conf/` directory in your geodessic module, set the git submodule to a specific branch or tag & update.
 
 ```
 cd conf/
@@ -95,6 +95,15 @@ git config -f .gitmodules submodule.conf/terraform-aws-vpc.branch 0.3.5
 
 git submodule update --checkout
 ```
+
+Copy the `vpc.auto.tfvars.example` file and update (at least) the required paramaters
+
+```
+cp vpc.auto.tfvars.example vpc.auto.tfvars
+
+vim vpc.auto.tfvars
+```
+
 
 ## Makefile Targets
 ```
