@@ -1,0 +1,26 @@
+## Required values
+name = "" # Type: string. Name of your vpc. (e.g. `app` or `cluster`)
+
+## Geodessic module inherrited values
+namespace = "" #Type: string. Namespace (e.g. `cp` or `cloudposse`)
+
+stage = "" #Type: string. Stage (e.g. `prod`, `dev`, `staging`)
+
+## Terraform module default values
+delimiter = "" #Type: string. Delimiter to be used between `namespace`, `stage`, `name` and `attributes`. default: -
+
+attributes = "" #Type: list. Additional attributes (e.g. `1`) default: [] empty
+
+tags = "" #Type: map. Additional tags (e.g. map(`BusinessUnit`,`XYZ`). default: {} empty
+
+cidr_block = "" #Type: string. CIDR for the VPC, default: "10.0.0.0/16"
+
+instance_tenancy = "" # A tenancy option for instances launched into the VPC. default: default
+
+enable_dns_hostnames = "" # A boolean flag to enable/disable DNS hostnames in the VPC. default: true
+
+enable_dns_support = "" # A boolean flag to enable/disable DNS support in the VPC. default: true
+
+enable_classiclink = "" # A boolean flag to enable/disable ClassicLink for the VPC. default: false
+
+enable_classiclink_dns_support = "" # A boolean flag to enable/disable ClassicLink DNS Support for the VPC. default: false
