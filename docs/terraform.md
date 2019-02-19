@@ -1,10 +1,9 @@
-
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
 | attributes | Additional attributes (e.g. `1`) | list | `<list>` | no |
-| cidr_block | CIDR for the VPC | string | `10.0.0.0/16` | no |
+| cidr_block | CIDR for the VPC | string | - | yes |
 | delimiter | Delimiter to be used between `namespace`, `stage`, `name` and `attributes` | string | `-` | no |
 | enable_classiclink | A boolean flag to enable/disable ClassicLink for the VPC | string | `false` | no |
 | enable_classiclink_dns_support | A boolean flag to enable/disable ClassicLink DNS Support for the VPC | string | `false` | no |
