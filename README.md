@@ -48,10 +48,11 @@ We literally have [*hundreds of terraform modules*][terraform_modules] that are 
 
 ```hcl
 module "vpc" {
-  source    = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=master"
-  namespace = "cp"
-  stage     = "prod"
-  name      = "app"
+  source     = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=master"
+  namespace  = "cp"
+  stage      = "prod"
+  name       = "app"
+  cidr_block = "10.0.0.0/16"
 }
 ```
 
@@ -59,10 +60,11 @@ Full example with [`terraform-aws-dynamic-subnets`](https://github.com/cloudposs
 
 ```hcl
 module "vpc" {
-  source    = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=master"
-  namespace = "cp"
-  stage     = "prod"
-  name      = "app"
+  source     = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=master"
+  namespace  = "cp"
+  stage      = "prod"
+  name       = "app"
+  cidr_block = "10.0.0.0/16"
 }
 
 module "dynamic_subnets" {
