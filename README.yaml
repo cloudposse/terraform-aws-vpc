@@ -69,10 +69,11 @@ description: |-
 examples: |-
   ```hcl
   module "vpc" {
-    source    = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=master"
-    namespace = "cp"
-    stage     = "prod"
-    name      = "app"
+    source     = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=master"
+    namespace  = "cp"
+    stage      = "prod"
+    name       = "app"
+    cidr_block = "10.0.0.0/16"
   }
   ```
 
@@ -80,10 +81,11 @@ examples: |-
 
   ```hcl
   module "vpc" {
-    source    = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=master"
-    namespace = "cp"
-    stage     = "prod"
-    name      = "app"
+    source     = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=master"
+    namespace  = "cp"
+    stage      = "prod"
+    name       = "app"
+    cidr_block = "10.0.0.0/16"
   }
 
   module "dynamic_subnets" {
