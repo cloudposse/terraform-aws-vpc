@@ -1,12 +1,13 @@
 terraform {
   required_version = ">= 0.11.2"
-  backend          "s3"             {}
 }
 
-variable "aws_assume_role_arn" {}
-
 provider "aws" {
-  assume_role {
-    role_arn = "${var.aws_assume_role_arn}"
-  }
+  region = "${var.region}"
+
+  skip_requesting_account_id  = true # this can be tricky
+  skip_get_ec2_platforms      = true
+  skip_metadata_api_check     = true
+  skip_region_validation      = true
+  skip_credentials_validation = true
 }

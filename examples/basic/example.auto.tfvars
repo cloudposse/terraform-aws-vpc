@@ -1,6 +1,6 @@
-namespace = "eg"
+namespace = "cp"
 
-stage = "test"
+stage = "prod"
 
 name = "example"
 
