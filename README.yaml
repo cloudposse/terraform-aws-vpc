@@ -44,7 +44,7 @@ related:
   - name: "terraform-aws-vpc-peering"
     description: "Terraform module to create a peering connection between two VPCs"
     url: "https://github.com/cloudposse/terraform-aws-vpc-peering"
-    
+
   - name: "terraform-aws-kops-vpc-peering"
     description: "Terraform module to create a peering connection between a backing services VPC and a VPC created by Kops"
     url: "https://github.com/cloudposse/terraform-aws-kops-vpc-peering"
@@ -82,7 +82,7 @@ examples: |-
   ```hcl
   module "vpc" {
     source     = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=master"
-    namespace  = "cp"
+    namespace  = "eg"
     stage      = "prod"
     name       = "app"
     cidr_block = "10.0.0.0/16"
@@ -90,13 +90,13 @@ examples: |-
 
   module "dynamic_subnets" {
     source             = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=master"
-    namespace          = "cp"
+    namespace          = "eg"
     stage              = "prod"
     name               = "app"
     region             = "us-west-2"
     availability_zones = ["us-west-2a","us-west-2b","us-west-2c"]
-    vpc_id             = "${module.vpc.vpc_id}"
-    igw_id             = "${module.vpc.igw_id}"
+    vpc_id             = module.vpc.vpc_id
+    igw_id             = module.vpc.igw_id
     cidr_block         = "10.0.0.0/16"
   }
   ```
@@ -107,6 +107,8 @@ include:
 
 # Contributors to this project
 contributors:
+  - name: "Erik Osterman"
+    github: "osterman"
   - name: "Igor Rodionov"
     github: "goruha"
   - name: "Andriy Knysh"

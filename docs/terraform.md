@@ -2,18 +2,18 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| attributes | Additional attributes (e.g. `1`) | list | `<list>` | no |
+| attributes | Additional attributes (e.g. `1`) | list(string) | `<list>` | no |
 | cidr_block | CIDR for the VPC | string | - | yes |
 | delimiter | Delimiter to be used between `namespace`, `stage`, `name` and `attributes` | string | `-` | no |
-| enable_classiclink | A boolean flag to enable/disable ClassicLink for the VPC | string | `false` | no |
-| enable_classiclink_dns_support | A boolean flag to enable/disable ClassicLink DNS Support for the VPC | string | `false` | no |
-| enable_dns_hostnames | A boolean flag to enable/disable DNS hostnames in the VPC | string | `true` | no |
-| enable_dns_support | A boolean flag to enable/disable DNS support in the VPC | string | `true` | no |
+| enable_classiclink | A boolean flag to enable/disable ClassicLink for the VPC | bool | `false` | no |
+| enable_classiclink_dns_support | A boolean flag to enable/disable ClassicLink DNS Support for the VPC | bool | `false` | no |
+| enable_dns_hostnames | A boolean flag to enable/disable DNS hostnames in the VPC | bool | `true` | no |
+| enable_dns_support | A boolean flag to enable/disable DNS support in the VPC | bool | `true` | no |
 | instance_tenancy | A tenancy option for instances launched into the VPC | string | `default` | no |
 | name | Name  (e.g. `app` or `cluster`) | string | - | yes |
 | namespace | Namespace (e.g. `cp` or `cloudposse`) | string | - | yes |
 | stage | Stage (e.g. `prod`, `dev`, `staging`) | string | - | yes |
-| tags | Additional tags (e.g. map(`BusinessUnit`,`XYZ`) | map | `<map>` | no |
+| tags | Additional tags (e.g. map(`BusinessUnit`,`XYZ`) | map(string) | `<map>` | no |
 
 ## Outputs
 
