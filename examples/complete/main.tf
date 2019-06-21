@@ -12,7 +12,8 @@ module "vpc" {
 }
 
 module "subnets" {
-  source = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=tags/0.13.0"
+  #source = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=tags/0.13.0"
+  source = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=update-tests"
 
   providers = {
     aws = "aws"
