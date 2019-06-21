@@ -15,7 +15,7 @@ output "vpc_cidr_block" {
 
 output "vpc_main_route_table_id" {
   value       = aws_vpc.default.main_route_table_id
-  description = "The ID of the main route table associated with this VPC."
+  description = "The ID of the main route table associated with this VPC"
 }
 
 output "vpc_default_network_acl_id" {

@@ -1,20 +1,30 @@
 module "vpc" {
-  source     = "../../"
+  source = "../../"
+
+  providers = {
+    aws = "aws"
+  }
+
   namespace  = var.namespace
   stage      = var.stage
   name       = var.name
-  cidr_block = var.cidr_block
+  cidr_block = "172.16.0.0/16"
 }
 
-module "dynamic_subnets" {
-  source              = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=master"
-  namespace           = var.namespace
-  stage               = var.stage
-  name                = var.name
-  region              = var.region
-  availability_zones  = var.availability_zones
-  vpc_id              = module.vpc.vpc_id
-  igw_id              = module.vpc.igw_id
-  cidr_block          = var.cidr_block
-  nat_gateway_enabled = false
+module "subnets" {
+  source = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=tags/0.13.0"
+
+  providers = {
+    aws = "aws"
+  }
+
+  availability_zones   = var.availability_zones
+  namespace            = var.namespace
+  stage                = var.stage
+  name                 = var.name
+  vpc_id               = module.vpc.vpc_id
+  igw_id               = module.vpc.igw_id
+  cidr_block           = module.vpc.vpc_cidr_block
+  nat_gateway_enabled  = false
+  nat_instance_enabled = false
 }

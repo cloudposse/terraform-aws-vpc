@@ -27,5 +27,5 @@
 | vpc_default_security_group_id | The ID of the security group created by default on VPC creation |
 | vpc_id | The ID of the VPC |
 | vpc_ipv6_association_id | The association ID for the IPv6 CIDR block |
-| vpc_main_route_table_id | The ID of the main route table associated with this VPC. |
+| vpc_main_route_table_id | The ID of the main route table associated with this VPC |
 
