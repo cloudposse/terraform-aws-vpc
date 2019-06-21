@@ -26,7 +26,7 @@ func TestExamplesComplete(t *testing.T) {
 	terraform.InitAndApply(t, terraformOptions)
 
 	// Run `terraform output` to get the value of an output variable
-	vpcCidr := terraform.OutputList(t, terraformOptions, "vpc_cidr")
+	vpcCidr := terraform.Output(t, terraformOptions, "vpc_cidr")
 
 	expectedVpcCidr := "172.16.0.0/16"
 	// Verify we're getting back the outputs we expect
