@@ -1,38 +1,38 @@
 variable "namespace" {
   description = "Namespace (e.g. `cp` or `cloudposse`)"
-  type        = "string"
+  type        = string
 }
 
 variable "stage" {
   description = "Stage (e.g. `prod`, `dev`, `staging`)"
-  type        = "string"
+  type        = string
 }
 
 variable "name" {
   description = "Name  (e.g. `app` or `cluster`)"
-  type        = "string"
+  type        = string
 }
 
 variable "delimiter" {
-  type        = "string"
+  type        = string
   default     = "-"
   description = "Delimiter to be used between `namespace`, `stage`, `name` and `attributes`"
 }
 
 variable "attributes" {
-  type        = "list"
+  type        = list(string)
   default     = []
   description = "Additional attributes (e.g. `1`)"
 }
 
 variable "tags" {
-  type        = "map"
+  type        = map(string)
   default     = {}
   description = "Additional tags (e.g. map(`BusinessUnit`,`XYZ`)"
 }
 
 variable "cidr_block" {
-  type        = "string"
+  type        = string
   description = "CIDR for the VPC"
 }
 
@@ -60,3 +60,4 @@ variable "enable_classiclink_dns_support" {
   description = "A boolean flag to enable/disable ClassicLink DNS Support for the VPC"
   default     = "false"
 }
+
