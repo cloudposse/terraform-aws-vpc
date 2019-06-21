@@ -3,7 +3,7 @@
 
 [![Cloud Posse][logo]](https://cpco.io/homepage)
 
-# terraform-aws-vpc [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-vpc.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-aws-vpc) [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-aws-vpc.svg)](https://github.com/cloudposse/terraform-aws-vpc/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
+# terraform-aws-vpc [![Codefresh Build Status](https://g.codefresh.io/api/badges/pipeline/cloudposse/terraform-modules%2Fterraform-aws-vpc?type=cf-1)](https://g.codefresh.io/public/accounts/cloudposse/pipelines/5d04407b1fc622c0cf6d3df8) [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-aws-vpc.svg)](https://github.com/cloudposse/terraform-aws-vpc/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
 
 
 Terraform module to provision a VPC with Internet Gateway.
@@ -61,7 +61,7 @@ Full example with [`terraform-aws-dynamic-subnets`](https://github.com/cloudposs
 ```hcl
 module "vpc" {
   source     = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=master"
-  namespace  = "cp"
+  namespace  = "eg"
   stage      = "prod"
   name       = "app"
   cidr_block = "10.0.0.0/16"
@@ -69,13 +69,13 @@ module "vpc" {
 
 module "dynamic_subnets" {
   source             = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=master"
-  namespace          = "cp"
+  namespace          = "eg"
   stage              = "prod"
   name               = "app"
   region             = "us-west-2"
   availability_zones = ["us-west-2a","us-west-2b","us-west-2c"]
-  vpc_id             = "${module.vpc.vpc_id}"
-  igw_id             = "${module.vpc.igw_id}"
+  vpc_id             = module.vpc.vpc_id
+  igw_id             = module.vpc.igw_id
   cidr_block         = "10.0.0.0/16"
 }
 ```
@@ -96,18 +96,18 @@ Available targets:
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| attributes | Additional attributes (e.g. `1`) | list | `<list>` | no |
+| attributes | Additional attributes (e.g. `1`) | list(string) | `<list>` | no |
 | cidr_block | CIDR for the VPC | string | - | yes |
 | delimiter | Delimiter to be used between `namespace`, `stage`, `name` and `attributes` | string | `-` | no |
-| enable_classiclink | A boolean flag to enable/disable ClassicLink for the VPC | string | `false` | no |
-| enable_classiclink_dns_support | A boolean flag to enable/disable ClassicLink DNS Support for the VPC | string | `false` | no |
-| enable_dns_hostnames | A boolean flag to enable/disable DNS hostnames in the VPC | string | `true` | no |
-| enable_dns_support | A boolean flag to enable/disable DNS support in the VPC | string | `true` | no |
+| enable_classiclink | A boolean flag to enable/disable ClassicLink for the VPC | bool | `false` | no |
+| enable_classiclink_dns_support | A boolean flag to enable/disable ClassicLink DNS Support for the VPC | bool | `false` | no |
+| enable_dns_hostnames | A boolean flag to enable/disable DNS hostnames in the VPC | bool | `true` | no |
+| enable_dns_support | A boolean flag to enable/disable DNS support in the VPC | bool | `true` | no |
 | instance_tenancy | A tenancy option for instances launched into the VPC | string | `default` | no |
 | name | Name  (e.g. `app` or `cluster`) | string | - | yes |
 | namespace | Namespace (e.g. `cp` or `cloudposse`) | string | - | yes |
 | stage | Stage (e.g. `prod`, `dev`, `staging`) | string | - | yes |
-| tags | Additional tags (e.g. map(`BusinessUnit`,`XYZ`) | map | `<map>` | no |
+| tags | Additional tags (e.g. map(`BusinessUnit`,`XYZ`) | map(string) | `<map>` | no |
 
 ## Outputs
 
@@ -121,7 +121,7 @@ Available targets:
 | vpc_default_security_group_id | The ID of the security group created by default on VPC creation |
 | vpc_id | The ID of the VPC |
 | vpc_ipv6_association_id | The association ID for the IPv6 CIDR block |
-| vpc_main_route_table_id | The ID of the main route table associated with this VPC. |
+| vpc_main_route_table_id | The ID of the main route table associated with this VPC |
 
 
 
@@ -262,9 +262,11 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
 
 ### Contributors
 
-|  [![Igor Rodionov][goruha_avatar]][goruha_homepage]<br/>[Igor Rodionov][goruha_homepage] | [![Andriy Knysh][aknysh_avatar]][aknysh_homepage]<br/>[Andriy Knysh][aknysh_homepage] | [![Valeriy][drama17_avatar]][drama17_homepage]<br/>[Valeriy][drama17_homepage] | [![Vladimir][SweetOps_avatar]][SweetOps_homepage]<br/>[Vladimir][SweetOps_homepage] |
-|---|---|---|---|
+|  [![Erik Osterman][osterman_avatar]][osterman_homepage]<br/>[Erik Osterman][osterman_homepage] | [![Igor Rodionov][goruha_avatar]][goruha_homepage]<br/>[Igor Rodionov][goruha_homepage] | [![Andriy Knysh][aknysh_avatar]][aknysh_homepage]<br/>[Andriy Knysh][aknysh_homepage] | [![Valeriy][drama17_avatar]][drama17_homepage]<br/>[Valeriy][drama17_homepage] | [![Vladimir][SweetOps_avatar]][SweetOps_homepage]<br/>[Vladimir][SweetOps_homepage] |
+|---|---|---|---|---|
 
+  [osterman_homepage]: https://github.com/osterman
+  [osterman_avatar]: https://github.com/osterman.png?size=150
   [goruha_homepage]: https://github.com/goruha
   [goruha_avatar]: https://github.com/goruha.png?size=150
   [aknysh_homepage]: https://github.com/aknysh
