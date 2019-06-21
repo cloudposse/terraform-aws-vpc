@@ -30,9 +30,9 @@ github_repo: cloudposse/terraform-aws-vpc
 
 # Badges to display
 badges:
-  - name: "Build Status"
-    image: "https://travis-ci.org/cloudposse/terraform-aws-vpc.svg?branch=master"
-    url: "https://travis-ci.org/cloudposse/terraform-aws-vpc"
+  - name: "Codefresh Build Status"
+    image: "https://g.codefresh.io/api/badges/pipeline/cloudposse/terraform-modules%2Fterraform-aws-vpc?type=cf-1"
+    url: "https://g.codefresh.io/public/accounts/cloudposse/pipelines/5d04407b1fc622c0cf6d3df8"
   - name: "Latest Release"
     image: "https://img.shields.io/github/release/cloudposse/terraform-aws-vpc.svg"
     url: "https://github.com/cloudposse/terraform-aws-vpc/releases/latest"
