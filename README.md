@@ -105,8 +105,8 @@ Available targets:
 | enable_dns_support | A boolean flag to enable/disable DNS support in the VPC | bool | `true` | no |
 | instance_tenancy | A tenancy option for instances launched into the VPC | string | `default` | no |
 | name | Name  (e.g. `app` or `cluster`) | string | - | yes |
-| namespace | Namespace (e.g. `cp` or `cloudposse`) | string | - | yes |
-| stage | Stage (e.g. `prod`, `dev`, `staging`) | string | - | yes |
+| namespace | Namespace (e.g. `cp` or `cloudposse`) | string | `` | no |
+| stage | Stage (e.g. `prod`, `dev`, `staging`) | string | `` | no |
 | tags | Additional tags (e.g. map(`BusinessUnit`,`XYZ`) | map(string) | `<map>` | no |
 
 ## Outputs
