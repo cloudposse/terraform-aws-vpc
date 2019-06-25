@@ -1,4 +1,4 @@
-PACKAGE  = terraform-aws-dynamic-subnets
+PACKAGE  = terraform-aws-vpc
 GOEXE   ?= /usr/bin/go
 GOPATH   = $(CURDIR)/.gopath
 GOBIN    = $(GOPATH)/bin
