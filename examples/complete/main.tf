@@ -1,6 +1,9 @@
-module "vpc" {
-  source = "../../"
+provider "aws" {
+  region = var.region
+}
 
+module "vpc" {
+  source     = "../../"
   namespace  = var.namespace
   stage      = var.stage
   name       = var.name
@@ -8,12 +11,7 @@ module "vpc" {
 }
 
 module "subnets" {
-  source = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=tags/0.15.0"
-
-  providers = {
-    aws = "aws"
-  }
-
+  source               = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=tags/0.15.0"
   availability_zones   = var.availability_zones
   namespace            = var.namespace
   stage                = var.stage
