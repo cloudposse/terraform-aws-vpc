@@ -20,7 +20,7 @@ resource "aws_vpc" "default" {
 }
 
 resource "aws_default_security_group" "default" {
-  vpc_id = "${aws_vpc.default.id}"
+  vpc_id = aws_vpc.default.id
 
   tags = {
     Name = "Default Security Group"
