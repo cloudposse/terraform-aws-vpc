@@ -1,3 +1,9 @@
+variable "enabled" {
+  description = "Whether to enable the resources or not - if false, counts will be set to 0"
+  type        = bool
+  default     = true
+}
+
 variable "namespace" {
   description = "Namespace (e.g. `cp` or `cloudposse`)"
   type        = string
