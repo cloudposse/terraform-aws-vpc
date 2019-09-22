@@ -4,6 +4,12 @@ variable "namespace" {
   default     = ""
 }
 
+variable "environment" {
+  description = "Environment (e.g. `prod`, `staging`, `dev`, `pre-prod`, `UAT`)"
+  type        = string
+  default     = ""
+}
+
 variable "stage" {
   description = "Stage (e.g. `prod`, `dev`, `staging`)"
   type        = string
@@ -67,4 +73,3 @@ variable "enable_classiclink_dns_support" {
   description = "A boolean flag to enable/disable ClassicLink DNS Support for the VPC"
   default     = false
 }
-
