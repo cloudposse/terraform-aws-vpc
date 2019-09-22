@@ -9,6 +9,7 @@
 | enable_classiclink_dns_support | A boolean flag to enable/disable ClassicLink DNS Support for the VPC | bool | `false` | no |
 | enable_dns_hostnames | A boolean flag to enable/disable DNS hostnames in the VPC | bool | `true` | no |
 | enable_dns_support | A boolean flag to enable/disable DNS support in the VPC | bool | `true` | no |
+| environment | Environment (e.g. `prod`, `staging`, `dev`, `pre-prod`, `UAT`) | string | `` | no |
 | instance_tenancy | A tenancy option for instances launched into the VPC | string | `default` | no |
 | name | Name  (e.g. `app` or `cluster`) | string | - | yes |
 | namespace | Namespace (e.g. `cp` or `cloudposse`) | string | `` | no |
@@ -28,4 +29,3 @@
 | vpc_id | The ID of the VPC |
 | vpc_ipv6_association_id | The association ID for the IPv6 CIDR block |
 | vpc_main_route_table_id | The ID of the main route table associated with this VPC |
-
