@@ -68,3 +68,12 @@ variable "enable_classiclink_dns_support" {
   default     = false
 }
 
+variable "enable_custom_default_security_group" {
+  type        = bool
+  description = <<EOF
+A boolean flag to enable/disable custom restrictive
+default security group for the VPC
+EOF
+  default     = true
+}
+
