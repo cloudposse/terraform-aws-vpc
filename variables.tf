@@ -68,7 +68,7 @@ variable "enable_classiclink_dns_support" {
   default     = false
 }
 
-variable "enable_custom_default_security_group" {
+variable "enable_default_security_group_with_custom_rules" {
   type        = bool
   description = <<EOF
 A boolean flag to enable/disable custom restrictive
