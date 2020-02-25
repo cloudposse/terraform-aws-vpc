@@ -5,16 +5,16 @@ stages:
   - Test
 
 steps:
-  wait:
-    title: Wait
-    stage: Prepare
-    image: codefresh/cli:latest
-    commands:
-      - codefresh get builds --pipeline=${{CF_REPO_NAME}} --status running --limit 1000 -o json | jq --arg id ${{CF_BUILD_ID}} -ser 'flatten|.[-1].id==$id'
-    retry:
-      maxAttempts: 10
-      delay: 20
-      exponentialFactor: 1.1
+#  wait:
+#    title: Wait
+#    stage: Prepare
+#    image: codefresh/cli:latest
+#    commands:
+#      - codefresh get builds --pipeline=${{CF_REPO_NAME}} --status running --limit 1000 -o json | jq --arg id ${{CF_BUILD_ID}} -ser 'flatten|.[-1].id==$id'
+#    retry:
+#      maxAttempts: 10
+#      delay: 20
+#      exponentialFactor: 1.1
 
   main_clone:
     title: "Clone repository"
