@@ -21,6 +21,7 @@ resource "aws_vpc" "default" {
 
 # If `aws_default_security_group` is not defined, it would be created implicitly with access `0.0.0.0/0`
 resource "aws_default_security_group" "default" {
+  count  = var.enable_default_security_group_with_custom_rules ? 1 : 0
   vpc_id = aws_vpc.default.id
 
   tags = {
