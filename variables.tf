@@ -74,6 +74,12 @@ variable "enable_classiclink_dns_support" {
   default     = false
 }
 
+variable "assign_generated_ipv6_cidr_block" {
+  type        = bool
+  description = "A boolean flag to requests an Amazon-provided IPv6 CIDR block with a /56 prefix length for the VPC"
+  default     = true
+}
+
 variable "enable_default_security_group_with_custom_rules" {
   type        = bool
   description = "A boolean flag to enable/disable custom and restricive inbound/outbound rules for the default VPC's SG"
