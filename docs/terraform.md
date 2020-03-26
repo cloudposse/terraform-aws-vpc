@@ -2,6 +2,7 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
+| assign_generated_ipv6_cidr_block | A boolean flag to requests an Amazon-provided IPv6 CIDR block with a /56 prefix length for the VPC | bool | `true` | no |
 | attributes | Additional attributes (e.g. `1`) | list(string) | `<list>` | no |
 | cidr_block | CIDR for the VPC | string | - | yes |
 | delimiter | Delimiter to be used between `namespace`, `stage`, `name` and `attributes` | string | `-` | no |
