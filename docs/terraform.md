@@ -10,6 +10,7 @@
 | enable_default_security_group_with_custom_rules | A boolean flag to enable/disable custom and restricive inbound/outbound rules for the default VPC's SG | bool | `true` | no |
 | enable_dns_hostnames | A boolean flag to enable/disable DNS hostnames in the VPC | bool | `true` | no |
 | enable_dns_support | A boolean flag to enable/disable DNS support in the VPC | bool | `true` | no |
+| enable_internet_gateway | A boolean flag to enable/disable Internet Gateway provisioning | bool | `true` | no |
 | environment | Environment, e.g. 'prod', 'staging', 'dev', 'pre-prod', 'UAT' | string | `` | no |
 | instance_tenancy | A tenancy option for instances launched into the VPC | string | `default` | no |
 | name | Name  (e.g. `app` or `cluster`) | string | - | yes |

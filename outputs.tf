@@ -1,5 +1,5 @@
 output "igw_id" {
-  value       = aws_internet_gateway.default.id
+  value       = var.enable_internet_gateway ? aws_internet_gateway.default[0].id : ""
   description = "The ID of the Internet Gateway"
 }
 
