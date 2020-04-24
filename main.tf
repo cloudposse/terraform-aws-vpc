@@ -1,6 +1,6 @@
 locals {
   enable_default_security_group_with_custom_rules = var.enable_default_security_group_with_custom_rules && var.enabled ? 1 : 0
-  create_internet_gateway                         = var.create_internet_gateway && var.enabled ? 1 : 0
+  enable_internet_gateway                         = var.enable_internet_gateway && var.enabled ? 1 : 0
 }
 
 
@@ -39,7 +39,7 @@ resource "aws_default_security_group" "default" {
 }
 
 resource "aws_internet_gateway" "default" {
-  count  = local.create_internet_gateway
+  count  = local.enable_internet_gateway
   vpc_id = join("", aws_vpc.default.*.id)
   tags   = module.label.tags
 }

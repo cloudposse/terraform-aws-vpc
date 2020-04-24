@@ -86,8 +86,8 @@ variable "enable_default_security_group_with_custom_rules" {
   default     = true
 }
 
-variable "create_internet_gateway" {
+variable "enable_internet_gateway" {
   type        = bool
-  description = "Whether to create Internet Gateway"
+  description = "A boolean flag to enable/disable Internet Gateway creation"
   default     = true
 }
