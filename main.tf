@@ -25,9 +25,9 @@ resource "aws_default_security_group" "default" {
   count  = var.enable_default_security_group_with_custom_rules ? 1 : 0
   vpc_id = aws_vpc.default.id
 
-  tags = {
+  tags = merge({
     Name = "Default Security Group"
-  }
+  }, module.label.tags)
 }
 
 resource "aws_internet_gateway" "default" {
