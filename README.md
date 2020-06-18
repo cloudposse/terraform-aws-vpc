@@ -42,7 +42,7 @@
 
 [![Cloud Posse][logo]](https://cpco.io/homepage)
 
-# terraform-aws-vpc [![Codefresh Build Status](https://g.codefresh.io/api/badges/pipeline/cloudposse/terraform-modules%2Fterraform-aws-vpc?type=cf-1)](https://g.codefresh.io/public/accounts/cloudposse/pipelines/5d04407b1fc622c0cf6d3df8) [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-aws-vpc.svg)](https://github.com/cloudposse/terraform-aws-vpc/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
+# terraform-aws-vpc [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-aws-vpc.svg)](https://github.com/cloudposse/terraform-aws-vpc/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
 
 
 Terraform module to provision a VPC with Internet Gateway.
