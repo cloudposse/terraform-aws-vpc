@@ -5,7 +5,7 @@ locals {
 
 
 module "label" {
-  source      = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.14.0"
+  source      = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.16.0"
   namespace   = var.namespace
   name        = var.name
   stage       = var.stage
@@ -33,9 +33,7 @@ resource "aws_default_security_group" "default" {
   count  = local.enable_default_security_group_with_custom_rules
   vpc_id = join("", aws_vpc.default.*.id)
 
-  tags = {
-    Name = "Default Security Group"
-  }
+  tags = merge(module.label.tags, {Name = "Default Security Group"})
 }
 
 resource "aws_internet_gateway" "default" {
