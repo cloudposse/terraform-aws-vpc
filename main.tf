@@ -1,3 +1,9 @@
+locals {
+  enable_default_security_group_with_custom_rules = var.enable_default_security_group_with_custom_rules && var.enabled ? 1 : 0
+  enable_internet_gateway                         = var.enable_internet_gateway && var.enabled ? 1 : 0
+}
+
+
 module "label" {
   source      = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.16.0"
   namespace   = var.namespace
@@ -7,9 +13,11 @@ module "label" {
   delimiter   = var.delimiter
   attributes  = var.attributes
   tags        = var.tags
+  enabled     = var.enabled
 }
 
 resource "aws_vpc" "default" {
+  count                            = var.enabled ? 1 : 0
   cidr_block                       = var.cidr_block
   instance_tenancy                 = var.instance_tenancy
   enable_dns_hostnames             = var.enable_dns_hostnames
@@ -22,13 +30,14 @@ resource "aws_vpc" "default" {
 
 # If `aws_default_security_group` is not defined, it would be created implicitly with access `0.0.0.0/0`
 resource "aws_default_security_group" "default" {
-  count  = var.enable_default_security_group_with_custom_rules ? 1 : 0
-  vpc_id = aws_vpc.default.id
+  count  = local.enable_default_security_group_with_custom_rules
+  vpc_id = join("", aws_vpc.default.*.id)
 
-  tags = merge(module.label.tags, {Name = "Default Security Group"})
+  tags = merge(module.label.tags, { Name = "Default Security Group" })
 }
 
 resource "aws_internet_gateway" "default" {
-  vpc_id = aws_vpc.default.id
+  count  = local.enable_internet_gateway
+  vpc_id = join("", aws_vpc.default.*.id)
   tags   = module.label.tags
 }

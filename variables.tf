@@ -39,6 +39,12 @@ variable "tags" {
   description = "Additional tags (e.g. map(`BusinessUnit`,`XYZ`)"
 }
 
+variable "enabled" {
+  type        = bool
+  default     = true
+  description = "Set to false to prevent the module from creating any resources"
+}
+
 variable "cidr_block" {
   type        = string
   description = "CIDR for the VPC"
@@ -80,3 +86,8 @@ variable "enable_default_security_group_with_custom_rules" {
   default     = true
 }
 
+variable "enable_internet_gateway" {
+  type        = bool
+  description = "A boolean flag to enable/disable Internet Gateway creation"
+  default     = true
+}

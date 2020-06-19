@@ -26,6 +26,8 @@
 | enable\_default\_security\_group\_with\_custom\_rules | A boolean flag to enable/disable custom and restricive inbound/outbound rules for the default VPC's SG | `bool` | `true` | no |
 | enable\_dns\_hostnames | A boolean flag to enable/disable DNS hostnames in the VPC | `bool` | `true` | no |
 | enable\_dns\_support | A boolean flag to enable/disable DNS support in the VPC | `bool` | `true` | no |
+| enable\_internet\_gateway | A boolean flag to enable/disable Internet Gateway creation | `bool` | `true` | no |
+| enabled | Set to false to prevent the module from creating any resources | `bool` | `true` | no |
 | environment | Environment, e.g. 'prod', 'staging', 'dev', 'pre-prod', 'UAT' | `string` | `""` | no |
 | instance\_tenancy | A tenancy option for instances launched into the VPC | `string` | `"default"` | no |
 | name | Name  (e.g. `app` or `cluster`) | `string` | n/a | yes |
