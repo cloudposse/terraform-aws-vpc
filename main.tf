@@ -1,12 +1,12 @@
 locals {
-  enabled                                         = module.this.context.enabled
+  enabled                                         = module.this.enabled
   enable_default_security_group_with_custom_rules = var.enable_default_security_group_with_custom_rules && local.enabled ? 1 : 0
   enable_internet_gateway                         = var.enable_internet_gateway && local.enabled ? 1 : 0
 }
 
 
 module "label" {
-  source = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.19.1"
+  source = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.19.2"
 
   context = module.this.context
 }
