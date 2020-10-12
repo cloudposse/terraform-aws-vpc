@@ -15,6 +15,12 @@ variable "enable_dns_hostnames" {
   default     = true
 }
 
+variable "enable_enhanced_vpc_routing" {
+  type        = bool
+  description = "A boolean flag to enable/disable enhanced routing in the VPC"
+  default     = false
+}
+
 variable "enable_dns_support" {
   type        = bool
   description = "A boolean flag to enable/disable DNS support in the VPC"

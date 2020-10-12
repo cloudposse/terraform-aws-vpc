@@ -141,6 +141,7 @@ Available targets:
 | enable\_classiclink | A boolean flag to enable/disable ClassicLink for the VPC | `bool` | `false` | no |
 | enable\_classiclink\_dns\_support | A boolean flag to enable/disable ClassicLink DNS Support for the VPC | `bool` | `false` | no |
 | enable\_default\_security\_group\_with\_custom\_rules | A boolean flag to enable/disable custom and restricive inbound/outbound rules for the default VPC's SG | `bool` | `true` | no |
+| enable\_enhanced\_vpc\_routing | A boolean flag to enable/disable enhanced routing in the VPC | `bool` | `false` | no |
 | enable\_dns\_hostnames | A boolean flag to enable/disable DNS hostnames in the VPC | `bool` | `true` | no |
 | enable\_dns\_support | A boolean flag to enable/disable DNS support in the VPC | `bool` | `true` | no |
 | enable\_internet\_gateway | A boolean flag to enable/disable Internet Gateway creation | `bool` | `true` | no |
