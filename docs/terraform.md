@@ -3,22 +3,22 @@
 
 | Name | Version |
 |------|---------|
-| terraform | >= 0.12.0, < 0.14.0 |
-| aws | >= 2.0, < 4.0 |
-| local | ~> 1.2 |
-| null | ~> 2.0 |
-| template | ~> 2.0 |
+| terraform | >= 0.12.0 |
+| aws | >= 2.0 |
+| local | >= 1.2 |
+| null | >= 2.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| aws | >= 2.0, < 4.0 |
+| aws | >= 2.0 |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| additional\_cidr\_blocks | A list of additional IPv4 CIDR blocks to associate with the VPC | `list(string)` | `null` | no |
 | additional\_tag\_map | Additional tags for appending to tags\_as\_list\_of\_maps. Not added to `tags`. | `map(string)` | `{}` | no |
 | attributes | Additional attributes (e.g. `1`) | `list(string)` | `[]` | no |
 | cidr\_block | CIDR for the VPC | `string` | n/a | yes |
@@ -45,6 +45,8 @@
 
 | Name | Description |
 |------|-------------|
+| additional\_cidr\_blocks | A list of the additional IPv4 CIDR blocks associated with the VPC |
+| additional\_cidr\_blocks\_to\_association\_ids | A map of the additional IPv4 CIDR blocks to VPC CIDR association IDs |
 | igw\_id | The ID of the Internet Gateway |
 | ipv6\_cidr\_block | The IPv6 CIDR block |
 | vpc\_cidr\_block | The CIDR block of the VPC |
