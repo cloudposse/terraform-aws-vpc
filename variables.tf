@@ -47,6 +47,6 @@ variable "enable_internet_gateway" {
 
 variable "additional_cidr_blocks" {
   type        = list(string)
-  description = "The additional IPv4 CIDR blocks to associate with the VPC"
+  description = "A list of additional IPv4 CIDR blocks to associate with the VPC"
   default     = null
 }
