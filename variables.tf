@@ -44,3 +44,9 @@ variable "enable_internet_gateway" {
   description = "A boolean flag to enable/disable Internet Gateway creation"
   default     = true
 }
+
+variable "additional_cidr_blocks" {
+  type        = list(string)
+  description = "The additional IPv4 CIDR blocks to associate with the VPC"
+  default     = null
+}
