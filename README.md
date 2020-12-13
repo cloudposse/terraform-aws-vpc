@@ -1,4 +1,6 @@
+<!-- markdownlint-disable -->
 # terraform-aws-vpc [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-aws-vpc.svg)](https://github.com/cloudposse/terraform-aws-vpc/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
+<!-- markdownlint-restore -->
 
 [![README Header][readme_header_img]][readme_header_link]
 
@@ -67,7 +69,9 @@ We literally have [*hundreds of terraform modules*][terraform_modules] that are 
 
 ```hcl
 module "vpc" {
-  source     = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=master"
+  source = "cloudposse/vpc/aws"
+  # Cloud Posse recommends pinning every module to a specific version
+  # version     = "x.x.x"
   namespace  = "eg"
   stage      = "test"
   name       = "app"
@@ -79,7 +83,9 @@ Full example with [`terraform-aws-dynamic-subnets`](https://github.com/cloudposs
 
 ```hcl
 module "vpc" {
-  source     = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=master"
+  source = "cloudposse/vpc/aws"
+  # Cloud Posse recommends pinning every module to a specific version
+  # version     = "x.x.x"
   namespace  = "eg"
   stage      = "test"
   name       = "app"
@@ -87,7 +93,9 @@ module "vpc" {
 }
 
 module "dynamic_subnets" {
-  source             = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=master"
+  source = "cloudposse/dynamic-subnets/aws"
+  # Cloud Posse recommends pinning every module to a specific version
+  # version     = "x.x.x"
   namespace          = "eg"
   stage              = "test"
   name               = "app"
@@ -322,8 +330,10 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
 
 ### Contributors
 
+<!-- markdownlint-disable -->
 |  [![Erik Osterman][osterman_avatar]][osterman_homepage]<br/>[Erik Osterman][osterman_homepage] | [![Igor Rodionov][goruha_avatar]][goruha_homepage]<br/>[Igor Rodionov][goruha_homepage] | [![Andriy Knysh][aknysh_avatar]][aknysh_homepage]<br/>[Andriy Knysh][aknysh_homepage] | [![Valeriy][drama17_avatar]][drama17_homepage]<br/>[Valeriy][drama17_homepage] | [![Vladimir][SweetOps_avatar]][SweetOps_homepage]<br/>[Vladimir][SweetOps_homepage] |
 |---|---|---|---|---|
+<!-- markdownlint-restore -->
 
   [osterman_homepage]: https://github.com/osterman
   [osterman_avatar]: https://img.cloudposse.com/150x150/https://github.com/osterman.png
