@@ -69,7 +69,9 @@ We literally have [*hundreds of terraform modules*][terraform_modules] that are 
 
 ```hcl
 module "vpc" {
-  source     = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=master"
+  source = "cloudposse/vpc/aws"
+  # Cloud Posse recommends pinning every module to a specific version
+  # version     = "x.x.x"
   namespace  = "eg"
   stage      = "test"
   name       = "app"
@@ -81,7 +83,9 @@ Full example with [`terraform-aws-dynamic-subnets`](https://github.com/cloudposs
 
 ```hcl
 module "vpc" {
-  source     = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=master"
+  source = "cloudposse/vpc/aws"
+  # Cloud Posse recommends pinning every module to a specific version
+  # version     = "x.x.x"
   namespace  = "eg"
   stage      = "test"
   name       = "app"
@@ -89,7 +93,9 @@ module "vpc" {
 }
 
 module "dynamic_subnets" {
-  source             = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=master"
+  source = "cloudposse/dynamic-subnets/aws"
+  # Cloud Posse recommends pinning every module to a specific version
+  # version     = "x.x.x"
   namespace          = "eg"
   stage              = "test"
   name               = "app"
