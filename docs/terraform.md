@@ -27,8 +27,8 @@
 |------|
 | [aws_default_security_group](https://registry.terraform.io/providers/hashicorp/aws/2.0/docs/resources/default_security_group) |
 | [aws_internet_gateway](https://registry.terraform.io/providers/hashicorp/aws/2.0/docs/resources/internet_gateway) |
-| [aws_vpc](https://registry.terraform.io/providers/hashicorp/aws/2.0/docs/resources/vpc) |
 | [aws_vpc_ipv4_cidr_block_association](https://registry.terraform.io/providers/hashicorp/aws/2.0/docs/resources/vpc_ipv4_cidr_block_association) |
+| [aws_vpc](https://registry.terraform.io/providers/hashicorp/aws/2.0/docs/resources/vpc) |
 
 ## Inputs
 
