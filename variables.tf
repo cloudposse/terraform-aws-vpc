@@ -50,3 +50,9 @@ variable "additional_cidr_blocks" {
   description = "A list of additional IPv4 CIDR blocks to associate with the VPC"
   default     = null
 }
+
+variable "assign_generated_ipv6_cidr_block" {
+  type        = bool
+  description = "Whether to assign generated ipv6 cidr block to the VPC"
+  default     = true
+}
