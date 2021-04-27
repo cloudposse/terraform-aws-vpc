@@ -28,7 +28,7 @@
 
 -->
 
-Terraform module to provision a VPC with Internet Gateway.
+Terraform module to provision a VPC with Internet Gateway. Contains a submodule for provisioning Interface and/or Gateway VPC Endpoints.
 
 ---
 
@@ -122,6 +122,47 @@ module "dynamic_subnets" {
   igw_id             = module.vpc.igw_id
   cidr_block         = "10.0.0.0/16"
 }
+```
+
+Submodule for provisioning VPC Endpoints:
+
+```hcl
+  module "vpc-endpoints" {
+    source = "cloudposse/vpc/aws//modules/vpc-endpoints"
+    # Cloud Posse recommends pinning every module to a specific version
+    # version     = "x.x.x"
+
+    vpc_id = module.vpc.vpc_id
+
+    gateway_vpc_endpoints = {
+      "s3" = {
+        name = "s3"
+        policy = jsonencode({
+          Version = "2012-10-17"
+          Statement = [
+            {
+              Action = [
+                "s3:*",
+              ]
+              Effect    = "Allow"
+              Principal = "*"
+              Resource  = "*"
+            },
+          ]
+        })
+      }
+    }
+    interface_vpc_endpoints = {
+      "ec2" = {
+        name               = "ec2"
+        security_group_ids = ["sg-12341234123412345"]
+        subnet_ids         = [module.dynamic_subnets.private_subnet_ids[0]]
+        policy             = null
+      }
+    }
+
+    context = module.this.context
+  }
 ```
 
 
@@ -367,8 +408,8 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
 ### Contributors
 
 <!-- markdownlint-disable -->
-|  [![Erik Osterman][osterman_avatar]][osterman_homepage]<br/>[Erik Osterman][osterman_homepage] | [![Igor Rodionov][goruha_avatar]][goruha_homepage]<br/>[Igor Rodionov][goruha_homepage] | [![Andriy Knysh][aknysh_avatar]][aknysh_homepage]<br/>[Andriy Knysh][aknysh_homepage] | [![Valeriy][drama17_avatar]][drama17_homepage]<br/>[Valeriy][drama17_homepage] | [![Vladimir][SweetOps_avatar]][SweetOps_homepage]<br/>[Vladimir][SweetOps_homepage] |
-|---|---|---|---|---|
+|  [![Erik Osterman][osterman_avatar]][osterman_homepage]<br/>[Erik Osterman][osterman_homepage] | [![Igor Rodionov][goruha_avatar]][goruha_homepage]<br/>[Igor Rodionov][goruha_homepage] | [![Andriy Knysh][aknysh_avatar]][aknysh_homepage]<br/>[Andriy Knysh][aknysh_homepage] | [![Valeriy][drama17_avatar]][drama17_homepage]<br/>[Valeriy][drama17_homepage] | [![Vladimir][SweetOps_avatar]][SweetOps_homepage]<br/>[Vladimir][SweetOps_homepage] | [![Yonatan Koren][korenyoni_avatar]][korenyoni_homepage]<br/>[Yonatan Koren][korenyoni_homepage] |
+|---|---|---|---|---|---|
 <!-- markdownlint-restore -->
 
   [osterman_homepage]: https://github.com/osterman
@@ -381,6 +422,8 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
   [drama17_avatar]: https://img.cloudposse.com/150x150/https://github.com/drama17.png
   [SweetOps_homepage]: https://github.com/SweetOps
   [SweetOps_avatar]: https://img.cloudposse.com/150x150/https://github.com/SweetOps.png
+  [korenyoni_homepage]: https://github.com/korenyoni
+  [korenyoni_avatar]: https://img.cloudposse.com/150x150/https://github.com/korenyoni.png
 
 [![README Footer][readme_footer_img]][readme_footer_link]
 [![Beacon][beacon]][website]
