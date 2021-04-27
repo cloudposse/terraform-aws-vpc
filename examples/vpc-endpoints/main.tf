@@ -69,5 +69,6 @@ resource "aws_security_group" "ec2_vpc_endpoint_sg" {
     protocol    = "TCP"
     to_port     = 443
     cidr_blocks = [module.vpc.vpc_cidr_block]
+    description = "Security Group for EC2 Interface VPC Endpoint"
   }
 }
