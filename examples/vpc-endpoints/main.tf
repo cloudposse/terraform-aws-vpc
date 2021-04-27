@@ -45,6 +45,8 @@ module "vpc-endpoints" {
 
   gateway_vpc_endpoints   = local.gateway_vpc_endpoints
   interface_vpc_endpoints = local.interface_vpc_endpoints
+
+  context = module.this.context
 }
 
 
