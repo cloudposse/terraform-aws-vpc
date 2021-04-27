@@ -1,5 +1,5 @@
 locals {
-  enabled = var.context.enabled && (length(var.gateway_vpc_endpoints) > 0 || length(var.interface_vpc_endpoints > 0))
+  enabled = var.context.enabled && (length(var.gateway_vpc_endpoints) > 0 || length(var.interface_vpc_endpoints) > 0)
 }
 
 data "aws_vpc" "vpc" {
