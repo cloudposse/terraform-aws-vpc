@@ -1,5 +1,10 @@
+locals {
+  enabled = var.context.enabled && (length(var.gateway_vpc_endpoints) > 0 || length(var.interface_vpc_endpoints > 0))
+}
+
 data "aws_vpc" "vpc" {
-  id = var.vpc_id
+  count = local.enabled ? 1 : 0
+  id    = var.vpc_id
 }
 
 data "aws_vpc_endpoint_service" "gateway_endpoint_service" {
