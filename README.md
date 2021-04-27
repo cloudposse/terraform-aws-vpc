@@ -160,8 +160,6 @@ Submodule for provisioning VPC Endpoints:
         policy             = null
       }
     }
-
-    context = module.this.context
   }
 ```
 
