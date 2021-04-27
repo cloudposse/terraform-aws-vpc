@@ -139,8 +139,6 @@ examples: |-
           policy             = null
         }
       }
-
-      context = module.this.context
     }
   ```
 
