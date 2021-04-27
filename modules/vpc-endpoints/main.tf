@@ -25,7 +25,7 @@ resource "aws_vpc_endpoint" "gateway_endpoint" {
   policy            = var.gateway_vpc_endpoints[each.key].policy
   vpc_endpoint_type = data.aws_vpc_endpoint_service.gateway_endpoint_service[each.key].service_type
 
-  vpc_id = data.aws_vpc.vpc.id
+  vpc_id = data.aws_vpc.vpc[0].id
 }
 
 resource "aws_vpc_endpoint" "interface_endpoint" {
@@ -36,5 +36,5 @@ resource "aws_vpc_endpoint" "interface_endpoint" {
   subnet_ids         = var.interface_vpc_endpoints[each.key].subnet_ids
   vpc_endpoint_type  = data.aws_vpc_endpoint_service.interface_endpoint_service[each.key].service_type
 
-  vpc_id = data.aws_vpc.vpc.id
+  vpc_id = data.aws_vpc.vpc[0].id
 }
