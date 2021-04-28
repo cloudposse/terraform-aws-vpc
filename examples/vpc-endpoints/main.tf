@@ -105,3 +105,13 @@ resource "aws_security_group" "kinesis_vpc_endpoint_sg" {
     module.this.tags,
   { Name = "${module.this.id}-kinesis-vpc-endpoint-sg" })
 }
+
+resource "aws_vpc_endpoint_route_table_association" "s3_gateway_vpc_endpoint_route_table_association" {
+  route_table_id  = module.vpc.vpc_main_route_table_id
+  vpc_endpoint_id = module.vpc_endpoints.gateway_vpc_endpoints[0].id
+}
+
+resource "aws_vpc_endpoint_route_table_association" "dynamodb_gateway_vpc_endpoint_route_table_association" {
+  route_table_id  = module.vpc.vpc_main_route_table_id
+  vpc_endpoint_id = module.vpc_endpoints.gateway_vpc_endpoints[1].id
+}
