@@ -127,7 +127,7 @@ module "dynamic_subnets" {
 Submodule for provisioning VPC Endpoints:
 
 ```hcl
-  module "vpc-endpoints" {
+  module "vpc_endpoints" {
     source = "cloudposse/vpc/aws//modules/vpc-endpoints"
     # Cloud Posse recommends pinning every module to a specific version
     # version     = "x.x.x"
