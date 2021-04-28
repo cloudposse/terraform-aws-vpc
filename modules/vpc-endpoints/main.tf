@@ -20,11 +20,12 @@ data "aws_vpc_endpoint_service" "interface_endpoint_service" {
 }
 
 resource "aws_vpc_endpoint" "gateway_endpoint" {
-  for_each          = data.aws_vpc_endpoint_service.gateway_endpoint_service
-  service_name      = data.aws_vpc_endpoint_service.gateway_endpoint_service[each.key].service_name
-  policy            = var.gateway_vpc_endpoints[each.key].policy
-  vpc_endpoint_type = data.aws_vpc_endpoint_service.gateway_endpoint_service[each.key].service_type
-  vpc_id            = data.aws_vpc.vpc[0].id
+  for_each            = data.aws_vpc_endpoint_service.gateway_endpoint_service
+  service_name        = data.aws_vpc_endpoint_service.gateway_endpoint_service[each.key].service_name
+  policy              = var.gateway_vpc_endpoints[each.key].policy
+  vpc_endpoint_type   = data.aws_vpc_endpoint_service.gateway_endpoint_service[each.key].service_type
+  vpc_id              = data.aws_vpc.vpc[0].id
+  private_dns_enabled = var.gateway_vpc_endpoints[each.key].private_dns_enabled
 
   tags = merge(
     module.this.tags,
@@ -32,13 +33,14 @@ resource "aws_vpc_endpoint" "gateway_endpoint" {
 }
 
 resource "aws_vpc_endpoint" "interface_endpoint" {
-  for_each           = data.aws_vpc_endpoint_service.interface_endpoint_service
-  service_name       = data.aws_vpc_endpoint_service.interface_endpoint_service[each.key].service_name
-  policy             = var.interface_vpc_endpoints[each.key].policy
-  security_group_ids = var.interface_vpc_endpoints[each.key].security_group_ids
-  subnet_ids         = var.interface_vpc_endpoints[each.key].subnet_ids
-  vpc_endpoint_type  = data.aws_vpc_endpoint_service.interface_endpoint_service[each.key].service_type
-  vpc_id             = data.aws_vpc.vpc[0].id
+  for_each            = data.aws_vpc_endpoint_service.interface_endpoint_service
+  service_name        = data.aws_vpc_endpoint_service.interface_endpoint_service[each.key].service_name
+  policy              = var.interface_vpc_endpoints[each.key].policy
+  security_group_ids  = var.interface_vpc_endpoints[each.key].security_group_ids
+  subnet_ids          = var.interface_vpc_endpoints[each.key].subnet_ids
+  vpc_endpoint_type   = data.aws_vpc_endpoint_service.interface_endpoint_service[each.key].service_type
+  vpc_id              = data.aws_vpc.vpc[0].id
+  private_dns_enabled = var.interface_vpc_endpoints[each.key].private_dns_enabled
 
   tags = merge(
     module.this.tags,
