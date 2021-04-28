@@ -19,13 +19,6 @@ data "aws_vpc_endpoint_service" "interface_endpoint_service" {
   service_type = "Interface"
 }
 
-module "label" {
-  source  = "cloudposse/label/null"
-  version = "0.24.1"
-
-  context = module.this.context
-}
-
 resource "aws_vpc_endpoint" "gateway_endpoint" {
   for_each          = data.aws_vpc_endpoint_service.gateway_endpoint_service
   service_name      = data.aws_vpc_endpoint_service.gateway_endpoint_service[each.key].service_name
@@ -34,8 +27,8 @@ resource "aws_vpc_endpoint" "gateway_endpoint" {
   vpc_id            = data.aws_vpc.vpc[0].id
 
   tags = merge(
-    module.label.tags,
-  { Name = "${module.label.id}-${each.key}" })
+    module.this.tags,
+  { Name = "${module.this.id}-${each.key}" })
 }
 
 resource "aws_vpc_endpoint" "interface_endpoint" {
@@ -48,6 +41,6 @@ resource "aws_vpc_endpoint" "interface_endpoint" {
   vpc_id             = data.aws_vpc.vpc[0].id
 
   tags = merge(
-    module.label.tags,
-  { Name = "${module.label.id}-${each.key}" })
+    module.this.tags,
+  { Name = "${module.this.id}-${each.key}" })
 }

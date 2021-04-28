@@ -64,13 +64,6 @@ module "subnets" {
   context = module.this.context
 }
 
-module "label" {
-  source  = "cloudposse/label/null"
-  version = "0.24.1"
-
-  context = module.this.context
-}
-
 resource "aws_security_group" "ec2_vpc_endpoint_sg" {
   vpc_id = module.vpc.vpc_id
   ingress {
@@ -82,6 +75,6 @@ resource "aws_security_group" "ec2_vpc_endpoint_sg" {
   }
 
   tags = merge(
-    module.label.tags,
-  { Name = "${module.label.id}-ec2-vpc-endpoint-sg" })
+    module.this.tags,
+  { Name = "${module.this.id}-ec2-vpc-endpoint-sg" })
 }
