@@ -15,9 +15,9 @@ output "vpc_id" {
 }
 
 output "gateway_vpc_endpoints" {
-  value = module.vpc-endpoints.gateway_vpc_endpoints
+  value = module.vpc_endpoints.gateway_vpc_endpoints
 }
 
 output "interface_vpc_endpoints" {
-  value = module.vpc-endpoints.interface_vpc_endpoints
+  value = module.vpc_endpoints.interface_vpc_endpoints
 }
