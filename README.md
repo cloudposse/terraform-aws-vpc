@@ -158,6 +158,7 @@ Submodule for provisioning VPC Endpoints:
         security_group_ids = ["sg-12341234123412345"]
         subnet_ids         = [module.dynamic_subnets.private_subnet_ids[0]]
         policy             = null
+        private_dns_enabled = false
       }
     }
   }
