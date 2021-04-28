@@ -86,7 +86,6 @@ func TestExamplesVPCEndpoints(t *testing.T) {
 	assert.Equal(t, interfaceVpcEndpoints[0].PrivateDNSEnabled, true)
 	foundEC2PrivateDNSEntry := false
 	for _, entry := range interfaceVpcEndpoints[0].DNSEntry {
-	    t.Log(entry["dns_name"])
 	    if entry["dns_name"] == "ec2.us-east-2.amazonaws.com" && !foundEC2PrivateDNSEntry {
 	        foundEC2PrivateDNSEntry = true
 	    }
@@ -99,7 +98,6 @@ func TestExamplesVPCEndpoints(t *testing.T) {
 	assert.Equal(t, interfaceVpcEndpoints[1].PrivateDNSEnabled, false)
 	foundKinesisStreamsPrivateDNSEntry := false
 	for _, entry := range interfaceVpcEndpoints[0].DNSEntry {
-	    t.Log(entry["dns_name"])
 	    if entry["dns_name"] == "kinesis-streams.us-east-2.amazonaws.com" && !foundKinesisStreamsPrivateDNSEntry {
 	        foundKinesisStreamsPrivateDNSEntry = true
 	    }
