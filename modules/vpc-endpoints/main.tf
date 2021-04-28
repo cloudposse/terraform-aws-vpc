@@ -20,12 +20,11 @@ data "aws_vpc_endpoint_service" "interface_endpoint_service" {
 }
 
 resource "aws_vpc_endpoint" "gateway_endpoint" {
-  for_each            = data.aws_vpc_endpoint_service.gateway_endpoint_service
-  service_name        = data.aws_vpc_endpoint_service.gateway_endpoint_service[each.key].service_name
-  policy              = var.gateway_vpc_endpoints[each.key].policy
-  vpc_endpoint_type   = data.aws_vpc_endpoint_service.gateway_endpoint_service[each.key].service_type
-  vpc_id              = data.aws_vpc.vpc[0].id
-  private_dns_enabled = var.gateway_vpc_endpoints[each.key].private_dns_enabled
+  for_each          = data.aws_vpc_endpoint_service.gateway_endpoint_service
+  service_name      = data.aws_vpc_endpoint_service.gateway_endpoint_service[each.key].service_name
+  policy            = var.gateway_vpc_endpoints[each.key].policy
+  vpc_endpoint_type = data.aws_vpc_endpoint_service.gateway_endpoint_service[each.key].service_type
+  vpc_id            = data.aws_vpc.vpc[0].id
 
   tags = merge(
     module.this.tags,

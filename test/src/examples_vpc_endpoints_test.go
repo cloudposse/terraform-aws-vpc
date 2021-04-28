@@ -9,25 +9,26 @@ import (
 )
 
 type VpcEndpoint struct {
-	S3                  string            `json:"arn"`
-	AutoAccept          bool              `json:"auto_accept"`
-	CidrBlocks          []string          `json:"cidr_blocks"`
-	DNSEntry            []interface{}     `json:"dns_entry"`
-	ID                  string            `json:"id"`
-	NetworkInterfaceIds []string          `json:"network_interface_ids"`
-	OwnerID             string            `json:"owner_id"`
-	Policy              string            `json:"policy"`
-	PrefixListID        string            `json:"prefix_list_id"`
-	RequesterManaged    bool              `json:"requester_managed"`
-	RouteTableIDs       []string          `json:"route_table_ids"`
-	SecurityGroupIDs    []string          `json:"security_group_ids"`
-	ServiceName         string            `json:"service_name"`
-	State               string            `json:"state"`
-	SubnetIDs           []string          `json:"subnet_ids"`
-	Tags                map[string]string `json:"tags"`
-	Timeouts            interface{}       `json:"timeouts"`
-	VpcEndpointType     string            `json:"vpc_endpoint_type"`
-	VpcID               string            `json:"vpc_id"`
+	S3                  string              `json:"arn"`
+	AutoAccept          bool                `json:"auto_accept"`
+	CidrBlocks          []string            `json:"cidr_blocks"`
+	DNSEntry            []map[string]string `json:"dns_entry"`
+	ID                  string              `json:"id"`
+	NetworkInterfaceIds []string            `json:"network_interface_ids"`
+	OwnerID             string              `json:"owner_id"`
+	Policy              string              `json:"policy"`
+	PrivateDNSEnabled   bool                `json:"private_dns_enabled"`
+	PrefixListID        string              `json:"prefix_list_id"`
+	RequesterManaged    bool                `json:"requester_managed"`
+	RouteTableIDs       []string            `json:"route_table_ids"`
+	SecurityGroupIDs    []string            `json:"security_group_ids"`
+	ServiceName         string              `json:"service_name"`
+	State               string              `json:"state"`
+	SubnetIDs           []string            `json:"subnet_ids"`
+	Tags                map[string]string   `json:"tags"`
+	Timeouts            interface{}         `json:"timeouts"`
+	VpcEndpointType     string              `json:"vpc_endpoint_type"`
+	VpcID               string              `json:"vpc_id"`
 }
 
 // Test the Terraform module in examples/vpc_endpoints using Terratest.
@@ -69,9 +70,12 @@ func TestExamplesVPCEndpoints(t *testing.T) {
 	// Validate created Gateway VPC Endpoints
 	gatewayVpcEndpoints := []VpcEndpoint{}
 	terraform.OutputStruct(t, terraformOptions, "gateway_vpc_endpoints", &gatewayVpcEndpoints)
-	assert.Equal(t, "com.amazonaws.us-east-2.s3", gatewayVpcEndpoints[0].ServiceName)
+	assert.Equal(t, "com.amazonaws.us-east-2.dynamodb", gatewayVpcEndpoints[0].ServiceName)
 	assert.Equal(t, "Gateway", gatewayVpcEndpoints[0].VpcEndpointType)
 	assert.Equal(t, vpcId, gatewayVpcEndpoints[0].VpcID)
+	assert.Equal(t, "com.amazonaws.us-east-2.s3", gatewayVpcEndpoints[1].ServiceName)
+	assert.Equal(t, "Gateway", gatewayVpcEndpoints[1].VpcEndpointType)
+	assert.Equal(t, vpcId, gatewayVpcEndpoints[1].VpcID)
 
 	// Validate created Interface VPC Endpoints
 	interfaceVpcEndpoints := []VpcEndpoint{}
@@ -79,5 +83,27 @@ func TestExamplesVPCEndpoints(t *testing.T) {
 	assert.Equal(t, "com.amazonaws.us-east-2.ec2", interfaceVpcEndpoints[0].ServiceName)
 	assert.Equal(t, "Interface", interfaceVpcEndpoints[0].VpcEndpointType)
 	assert.Equal(t, vpcId, interfaceVpcEndpoints[0].VpcID)
+	assert.Equal(t, interfaceVpcEndpoints[0].PrivateDNSEnabled, true)
+	foundEC2PrivateDNSEntry := false
+	for _, entry := range interfaceVpcEndpoints[0].DNSEntry {
+	    t.Log(entry["dns_name"])
+	    if entry["dns_name"] == "ec2.us-east-2.amazonaws.com" && !foundEC2PrivateDNSEntry {
+	        foundEC2PrivateDNSEntry = true
+	    }
+	}
+	assert.Equal(t, foundEC2PrivateDNSEntry, true)
+
+	assert.Equal(t, "com.amazonaws.us-east-2.kinesis-streams", interfaceVpcEndpoints[1].ServiceName)
+	assert.Equal(t, "Interface", interfaceVpcEndpoints[1].VpcEndpointType)
+	assert.Equal(t, vpcId, interfaceVpcEndpoints[1].VpcID)
+	assert.Equal(t, interfaceVpcEndpoints[1].PrivateDNSEnabled, false)
+	foundKinesisStreamsPrivateDNSEntry := false
+	for _, entry := range interfaceVpcEndpoints[0].DNSEntry {
+	    t.Log(entry["dns_name"])
+	    if entry["dns_name"] == "kinesis-streams.us-east-2.amazonaws.com" && !foundKinesisStreamsPrivateDNSEntry {
+	        foundKinesisStreamsPrivateDNSEntry = true
+	    }
+	}
+	assert.Equal(t, foundKinesisStreamsPrivateDNSEntry, false)
 
 }

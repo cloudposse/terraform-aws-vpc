@@ -20,13 +20,25 @@ locals {
         ]
       })
     }
+    "dynamodb" = {
+      name   = "dynamodb"
+      policy = null
+    }
   }
   interface_vpc_endpoints = {
     "ec2" = {
-      name               = "ec2"
-      security_group_ids = [aws_security_group.ec2_vpc_endpoint_sg.id]
-      subnet_ids         = [module.subnets.private_subnet_ids[0]]
-      policy             = null
+      name                = "ec2"
+      security_group_ids  = [aws_security_group.ec2_vpc_endpoint_sg.id]
+      subnet_ids          = [module.subnets.private_subnet_ids[0]]
+      policy              = null
+      private_dns_enabled = true
+    }
+    "kinesis-streams" = {
+      name                = "kinesis-streams"
+      security_group_ids  = [aws_security_group.kinesis_vpc_endpoint_sg.id]
+      subnet_ids          = [module.subnets.private_subnet_ids[0]]
+      policy              = null
+      private_dns_enabled = false
     }
   }
 }
@@ -77,4 +89,19 @@ resource "aws_security_group" "ec2_vpc_endpoint_sg" {
   tags = merge(
     module.this.tags,
   { Name = "${module.this.id}-ec2-vpc-endpoint-sg" })
+}
+
+resource "aws_security_group" "kinesis_vpc_endpoint_sg" {
+  vpc_id = module.vpc.vpc_id
+  ingress {
+    from_port   = 443
+    protocol    = "TCP"
+    to_port     = 443
+    cidr_blocks = [module.vpc.vpc_cidr_block]
+    description = "Security Group for Kinesis Interface VPC Endpoint"
+  }
+
+  tags = merge(
+    module.this.tags,
+  { Name = "${module.this.id}-kinesis-vpc-endpoint-sg" })
 }

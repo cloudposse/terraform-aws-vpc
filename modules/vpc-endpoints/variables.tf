@@ -5,11 +5,10 @@ variable "vpc_id" {
 
 variable "gateway_vpc_endpoints" {
   type = map(object({
-    name                = string
-    policy              = string
-    private_dns_enabled = bool
+    name   = string
+    policy = string
   }))
-  description = "A map of Gateway VPC Endpoints to provision into the VPC. This is a map of objects with the following valid attributes: 'name' (either be one of 's3' or 'dynamodb'), 'private_dns_enabled' are required; 'policy' is optional and can be specified as null."
+  description = "A map of Gateway VPC Endpoints to provision into the VPC. This is a map of objects with the following valid attributes: 'name' (either be one of 's3' or 'dynamodb') is required; 'policy' is optional and can be specified as null."
   default     = {}
 }
 
