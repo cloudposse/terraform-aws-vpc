@@ -8,13 +8,13 @@ data "aws_vpc" "vpc" {
 }
 
 data "aws_vpc_endpoint_service" "gateway_endpoint_service" {
-  for_each     = var.gateway_vpc_endpoints
+  for_each     = local.enabled ? var.gateway_vpc_endpoints : {}
   service      = var.gateway_vpc_endpoints[each.key].name
   service_type = "Gateway"
 }
 
 data "aws_vpc_endpoint_service" "interface_endpoint_service" {
-  for_each     = var.interface_vpc_endpoints
+  for_each     = local.enabled ? var.interface_vpc_endpoints : {}
   service      = var.interface_vpc_endpoints[each.key].name
   service_type = "Interface"
 }
