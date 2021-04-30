@@ -127,41 +127,41 @@ module "dynamic_subnets" {
 Submodule for provisioning VPC Endpoints:
 
 ```hcl
-  module "vpc_endpoints" {
-    source = "cloudposse/vpc/aws//modules/vpc-endpoints"
-    # Cloud Posse recommends pinning every module to a specific version
-    # version     = "x.x.x"
+module "vpc_endpoints" {
+  source = "cloudposse/vpc/aws//modules/vpc-endpoints"
+  # Cloud Posse recommends pinning every module to a specific version
+  # version     = "x.x.x"
 
-    vpc_id = module.vpc.vpc_id
+  vpc_id = module.vpc.vpc_id
 
-    gateway_vpc_endpoints = {
-      "s3" = {
-        name = "s3"
-        policy = jsonencode({
-          Version = "2012-10-17"
-          Statement = [
-            {
-              Action = [
-                "s3:*",
-              ]
-              Effect    = "Allow"
-              Principal = "*"
-              Resource  = "*"
-            },
-          ]
-        })
-      }
-    }
-    interface_vpc_endpoints = {
-      "ec2" = {
-        name               = "ec2"
-        security_group_ids = ["sg-12341234123412345"]
-        subnet_ids         = [module.dynamic_subnets.private_subnet_ids[0]]
-        policy             = null
-        private_dns_enabled = false
-      }
+  gateway_vpc_endpoints = {
+    "s3" = {
+      name = "s3"
+      policy = jsonencode({
+        Version = "2012-10-17"
+        Statement = [
+          {
+            Action = [
+              "s3:*",
+            ]
+            Effect    = "Allow"
+            Principal = "*"
+            Resource  = "*"
+          },
+        ]
+      })
     }
   }
+  interface_vpc_endpoints = {
+    "ec2" = {
+      name                = "ec2"
+      security_group_ids  = ["sg-12341234123412345"]
+      subnet_ids          = [module.dynamic_subnets.private_subnet_ids[0]]
+      policy              = null
+      private_dns_enabled = false
+    }
+  }
+}
 ```
 
 
