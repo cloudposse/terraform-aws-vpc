@@ -20,7 +20,7 @@ data "aws_vpc_endpoint_service" "interface_endpoint_service" {
 }
 
 resource "aws_vpc_endpoint" "gateway_endpoint" {
-  for_each          = data.aws_vpc_endpoint_service.gateway_endpoint_service
+  for_each          = local.enabled ? data.aws_vpc_endpoint_service.gateway_endpoint_service : set()
   service_name      = data.aws_vpc_endpoint_service.gateway_endpoint_service[each.key].service_name
   policy            = var.gateway_vpc_endpoints[each.key].policy
   vpc_endpoint_type = data.aws_vpc_endpoint_service.gateway_endpoint_service[each.key].service_type
@@ -32,7 +32,7 @@ resource "aws_vpc_endpoint" "gateway_endpoint" {
 }
 
 resource "aws_vpc_endpoint" "interface_endpoint" {
-  for_each            = data.aws_vpc_endpoint_service.interface_endpoint_service
+  for_each            = local.enabled ? data.aws_vpc_endpoint_service.interface_endpoint_service : set()
   service_name        = data.aws_vpc_endpoint_service.interface_endpoint_service[each.key].service_name
   policy              = var.interface_vpc_endpoints[each.key].policy
   security_group_ids  = var.interface_vpc_endpoints[each.key].security_group_ids
