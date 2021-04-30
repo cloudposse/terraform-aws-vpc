@@ -29,14 +29,14 @@ locals {
     "ec2" = {
       name                = "ec2"
       security_group_ids  = [aws_security_group.ec2_vpc_endpoint_sg.id]
-      subnet_ids          = [module.subnets.private_subnet_ids[0]]
+      subnet_ids          = module.subnets.private_subnet_ids
       policy              = null
       private_dns_enabled = true
     }
     "kinesis-streams" = {
       name                = "kinesis-streams"
       security_group_ids  = [aws_security_group.kinesis_vpc_endpoint_sg.id]
-      subnet_ids          = [module.subnets.private_subnet_ids[0]]
+      subnet_ids          = module.subnets.private_subnet_ids
       policy              = null
       private_dns_enabled = false
     }
