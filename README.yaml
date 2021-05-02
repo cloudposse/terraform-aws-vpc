@@ -135,7 +135,7 @@ examples: |-
       "ec2" = {
         name                = "ec2"
         security_group_ids  = ["sg-12341234123412345"]
-        subnet_ids          = [module.dynamic_subnets.private_subnet_ids[0]]
+        subnet_ids          = module.dynamic_subnets.private_subnet_ids
         policy              = null
         private_dns_enabled = false
       }

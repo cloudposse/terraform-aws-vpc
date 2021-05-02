@@ -76,6 +76,24 @@ module "subnets" {
   context = module.this.context
 }
 
+module "ec2_vpc_endpoint_sg_label" {
+  source  = "cloudposse/label/null"
+  version = "0.24.1"
+
+  attributes = ["ec2-vpc-endpoint-sg"]
+
+  context = module.this.context
+}
+
+module "kinesis_vpc_endpoint_sg_label" {
+  source  = "cloudposse/label/null"
+  version = "0.24.1"
+
+  attributes = ["kinesis-vpc-endpoint-sg"]
+
+  context = module.this.context
+}
+
 resource "aws_security_group" "ec2_vpc_endpoint_sg" {
   vpc_id = module.vpc.vpc_id
   ingress {
@@ -86,9 +104,7 @@ resource "aws_security_group" "ec2_vpc_endpoint_sg" {
     description = "Security Group for EC2 Interface VPC Endpoint"
   }
 
-  tags = merge(
-    module.this.tags,
-  { Name = "${module.this.id}-ec2-vpc-endpoint-sg" })
+  tags = module.ec2_vpc_endpoint_sg_label.tags
 }
 
 resource "aws_security_group" "kinesis_vpc_endpoint_sg" {
@@ -101,9 +117,7 @@ resource "aws_security_group" "kinesis_vpc_endpoint_sg" {
     description = "Security Group for Kinesis Interface VPC Endpoint"
   }
 
-  tags = merge(
-    module.this.tags,
-  { Name = "${module.this.id}-kinesis-vpc-endpoint-sg" })
+  tags = module.kinesis_vpc_endpoint_sg_label.tags
 }
 
 resource "aws_vpc_endpoint_route_table_association" "s3_gateway_vpc_endpoint_route_table_association" {
