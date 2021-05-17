@@ -28,22 +28,9 @@ resource "aws_vpc" "default" {
 
 # If `aws_default_security_group` is not defined, it would be created implicitly with access `0.0.0.0/0`
 resource "aws_default_security_group" "default" {
-  count  = local.enable_default_security_group_with_custom_rules
+  count = local.enable_default_security_group_with_custom_rules
+  #checkov:skip=BC_AWS_NETWORKING_4: This Bridgecrew policy checks for explicit ingress/egress blocks, however this default security group implementation does not add any inbound or outbound rules and is therefore inherently secure.
   vpc_id = join("", aws_vpc.default.*.id)
-
-  ingress {
-    protocol  = "-1"
-    self      = true
-    from_port = 0
-    to_port   = 0
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
 
   tags = merge(module.label.tags, { Name = "Default Security Group" })
 }
