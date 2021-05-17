@@ -16,6 +16,7 @@ module "label" {
 resource "aws_vpc" "default" {
   count = local.enabled ? 1 : 0
   #bridgecrew:skip=BC_AWS_LOGGING_9:VPC Flow Logs are meant to be enabled by terraform-aws-vpc-flow-logs-s3-bucket and/or terraform-aws-cloudwatch-flow-logs
+  #bridgecrew:skip=BC_AWS_NETWORKING_4:See aws_default_security_group.default for comments
   cidr_block                       = var.cidr_block
   instance_tenancy                 = var.instance_tenancy
   enable_dns_hostnames             = var.enable_dns_hostnames
