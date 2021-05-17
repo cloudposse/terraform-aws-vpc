@@ -31,6 +31,20 @@ resource "aws_default_security_group" "default" {
   count  = local.enable_default_security_group_with_custom_rules
   vpc_id = join("", aws_vpc.default.*.id)
 
+  ingress {
+    protocol  = "-1"
+    self      = true
+    from_port = 0
+    to_port   = 0
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   tags = merge(module.label.tags, { Name = "Default Security Group" })
 }
 
