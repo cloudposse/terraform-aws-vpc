@@ -14,7 +14,9 @@ module "label" {
 }
 
 resource "aws_vpc" "default" {
-  count                            = local.enabled ? 1 : 0
+  count = local.enabled ? 1 : 0
+  #bridgecrew:skip=BC_AWS_LOGGING_9:VPC Flow Logs are meant to be enabled by terraform-aws-vpc-flow-logs-s3-bucket and/or terraform-aws-cloudwatch-flow-logs
+  #bridgecrew:skip=BC_AWS_NETWORKING_4:See aws_default_security_group.default for comments
   cidr_block                       = var.cidr_block
   instance_tenancy                 = var.instance_tenancy
   enable_dns_hostnames             = var.enable_dns_hostnames
@@ -27,7 +29,8 @@ resource "aws_vpc" "default" {
 
 # If `aws_default_security_group` is not defined, it would be created implicitly with access `0.0.0.0/0`
 resource "aws_default_security_group" "default" {
-  count  = local.enable_default_security_group_with_custom_rules
+  count = local.enable_default_security_group_with_custom_rules
+  #bridgecrew:skip=BC_AWS_NETWORKING_4:This Bridgecrew policy checks for explicit ingress/egress blocks, however this default security group implementation does not add any inbound or outbound rules and is therefore inherently secure.
   vpc_id = join("", aws_vpc.default.*.id)
 
   tags = merge(module.label.tags, { Name = "Default Security Group" })
