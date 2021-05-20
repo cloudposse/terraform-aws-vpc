@@ -1,6 +1,6 @@
 locals {
   enabled                        = module.this.enabled
-  security_group_enabled         = var.security_group_enabled && local.enabled ? 1 : 0
+  security_group_enabled         = var.security_group_enabled && local.enabled
   enable_internet_gateway        = var.enable_internet_gateway && local.enabled ? 1 : 0
   additional_cidr_blocks_defined = local.enabled && var.additional_cidr_blocks != null ? true : false
   additional_cidr_blocks         = local.additional_cidr_blocks_defined ? var.additional_cidr_blocks : []
