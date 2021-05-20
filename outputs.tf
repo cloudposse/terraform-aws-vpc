@@ -60,3 +60,18 @@ output "additional_cidr_blocks_to_association_ids" {
     if local.additional_cidr_blocks_defined
   }
 }
+
+output "security_group_id" {
+  value       = module.security_group.id
+  description = "VPC Security Group ID"
+}
+
+output "security_group_arn" {
+  value       = module.security_group.arn
+  description = "VPC Security Group ARN"
+}
+
+output "security_group_name" {
+  value       = module.security_group.name
+  description = "VPC Security Group name"
+}
