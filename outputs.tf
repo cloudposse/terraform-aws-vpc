@@ -23,11 +23,6 @@ output "vpc_default_network_acl_id" {
   description = "The ID of the network ACL created by default on VPC creation"
 }
 
-output "vpc_default_security_group_id" {
-  value       = join("", aws_vpc.default.*.default_security_group_id)
-  description = "The ID of the security group created by default on VPC creation"
-}
-
 output "vpc_default_route_table_id" {
   value       = join("", aws_vpc.default.*.default_route_table_id)
   description = "The ID of the route table created by default on VPC creation"
@@ -59,4 +54,19 @@ output "additional_cidr_blocks_to_association_ids" {
     i.cidr_block => i.id
     if local.additional_cidr_blocks_defined
   }
+}
+
+output "security_group_id" {
+  value       = module.security_group.id
+  description = "VPC Security Group ID"
+}
+
+output "security_group_arn" {
+  value       = module.security_group.arn
+  description = "VPC Security Group ARN"
+}
+
+output "security_group_name" {
+  value       = module.security_group.name
+  description = "VPC Security Group name"
 }

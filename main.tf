@@ -1,9 +1,9 @@
 locals {
-  enabled                                         = module.this.enabled
-  enable_default_security_group_with_custom_rules = var.enable_default_security_group_with_custom_rules && local.enabled ? 1 : 0
-  enable_internet_gateway                         = var.enable_internet_gateway && local.enabled ? 1 : 0
-  additional_cidr_blocks_defined                  = local.enabled && var.additional_cidr_blocks != null ? true : false
-  additional_cidr_blocks                          = local.additional_cidr_blocks_defined ? var.additional_cidr_blocks : []
+  enabled                        = module.this.enabled
+  security_group_enabled         = var.security_group_enabled && local.enabled
+  enable_internet_gateway        = var.enable_internet_gateway && local.enabled ? 1 : 0
+  additional_cidr_blocks_defined = local.enabled && var.additional_cidr_blocks != null ? true : false
+  additional_cidr_blocks         = local.additional_cidr_blocks_defined ? var.additional_cidr_blocks : []
 }
 
 module "label" {
@@ -27,13 +27,18 @@ resource "aws_vpc" "default" {
   tags                             = module.label.tags
 }
 
-# If `aws_default_security_group` is not defined, it would be created implicitly with access `0.0.0.0/0`
-resource "aws_default_security_group" "default" {
-  count = local.enable_default_security_group_with_custom_rules
-  #bridgecrew:skip=BC_AWS_NETWORKING_4:This Bridgecrew policy checks for explicit ingress/egress blocks, however this default security group implementation does not add any inbound or outbound rules and is therefore inherently secure.
-  vpc_id = join("", aws_vpc.default.*.id)
+module "security_group" {
+  source  = "cloudposse/security-group/aws"
+  version = "0.3.1"
 
-  tags = merge(module.label.tags, { Name = "Default Security Group" })
+  use_name_prefix = var.security_group_use_name_prefix
+  rules           = var.security_group_rules
+  vpc_id          = join("", aws_vpc.default.*.id)
+  description     = var.security_group_description
+
+  enabled = local.security_group_enabled
+  tags    = merge(module.label.tags, { Name = "Default Security Group" })
+  context = module.label.context
 }
 
 resource "aws_internet_gateway" "default" {
