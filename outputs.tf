@@ -3,6 +3,11 @@ output "igw_id" {
   description = "The ID of the Internet Gateway"
 }
 
+output "vpc" {
+  value       = join("", aws_vpc.default.*.id)
+  description = "The `aws_vpc.default` resource"
+}
+
 output "vpc_id" {
   value       = join("", aws_vpc.default.*.id)
   description = "The ID of the VPC"
