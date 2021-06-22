@@ -23,6 +23,11 @@ output "vpc_default_network_acl_id" {
   description = "The ID of the network ACL created by default on VPC creation"
 }
 
+output "vpc_default_security_group_id" {
+  value       = join("", aws_vpc.default.*.default_security_group_id)
+  description = "The ID of the security group created by default on VPC creation"
+}
+
 output "vpc_default_route_table_id" {
   value       = join("", aws_vpc.default.*.default_route_table_id)
   description = "The ID of the route table created by default on VPC creation"
