@@ -45,6 +45,12 @@ variable "enable_internet_gateway" {
   default     = true
 }
 
+variable "enable_egress_only_internet_gateway" {
+  type        = bool
+  description = "A boolean flag to enable/disable egress-only Internet gateway creation"
+  default     = true
+}
+
 variable "additional_cidr_blocks" {
   type        = list(string)
   description = "A list of additional IPv4 CIDR blocks to associate with the VPC"
