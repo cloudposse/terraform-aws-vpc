@@ -16,7 +16,7 @@ data "aws_vpc_endpoint_service" "interface_endpoint_service" {
 
 module "gateway_endpoint_label" {
   source  = "cloudposse/label/null"
-  version = "0.25.0"
+  version = "0.24.1"
 
   for_each   = local.enabled ? data.aws_vpc_endpoint_service.gateway_endpoint_service : {}
   attributes = [each.key]
@@ -26,7 +26,7 @@ module "gateway_endpoint_label" {
 
 module "interface_endpoint_label" {
   source  = "cloudposse/label/null"
-  version = "0.25.0"
+  version = "0.24.1"
 
   for_each   = local.enabled ? data.aws_vpc_endpoint_service.interface_endpoint_service : {}
   attributes = [each.key]
