@@ -35,7 +35,7 @@ variable "enable_classiclink_dns_support" {
 
 variable "enable_default_security_group_with_custom_rules" {
   type        = bool
-  description = "A boolean flag to enable/disable custom and restricive inbound/outbound rules for the default VPC's SG"
+  description = "A boolean flag to enable/disable custom and restrictive inbound/outbound rules for the default VPC's SG"
   default     = true
 }
 
