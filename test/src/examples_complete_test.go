@@ -1,23 +1,43 @@
 package test
 
 import (
-	"testing"
-	"strings"
-
+	"github.com/gruntwork-io/terratest/modules/random"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
+	"path/filepath"
+	"strings"
+	"testing"
 )
 
 // Test the Terraform module in examples/complete using Terratest.
 func TestExamplesComplete(t *testing.T) {
-	t.Parallel()
+	// to use t.Parallel() you need to use test_structure.CopyTerraformFolderToTemp
+	// but that leaves a copy of the whole repo laying around in /tmp
+	// t.Parallel()
+
+	attributes := []string{random.UniqueId()}
+	rootFolder := "../../"
+	terraformFolderRelativeToRoot := "examples/complete"
+	varFiles := []string{"fixtures.us-east-2.tfvars"}
+
+/*	testFolder := test_structure.CopyTerraformFolderToTemp(t, rootFolder, terraformFolderRelativeToRoot)
+    // In some cases, CopyTerraformFolderToTemp does not actually copy the files,
+    // so before deleting the folder, check that it is not actually the source folder.
+	if testFolder != filepath.Join(rootFolder, terraformFolderRelativeToRoot) {
+		defer os.RemoveAll(testFolder)
+	}
+*/
+	testFolder := filepath.Join(rootFolder, terraformFolderRelativeToRoot)
 
 	terraformOptions := &terraform.Options{
 		// The path to where our Terraform code is located
-		TerraformDir: "../../examples/complete",
+		TerraformDir: testFolder,
 		Upgrade:      true,
 		// Variables to pass to our Terraform code using -var-file options
-		VarFiles: []string{"fixtures.us-east-2.tfvars"},
+		VarFiles: varFiles,
+		Vars: map[string]interface{}{
+			"attributes": attributes,
+		},
 	}
 
 	// At the end of the test, run `terraform destroy` to clean up any resources that were created
