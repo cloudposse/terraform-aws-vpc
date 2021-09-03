@@ -1,31 +1,40 @@
 package test
 
 import (
-	"math/rand"
-	"strconv"
-	"strings"
-	"testing"
-	"time"
-
+	"github.com/gruntwork-io/terratest/modules/random"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
+	"path/filepath"
+	"strings"
+	"testing"
 )
 
 // Test the Terraform module in examples/complete using Terratest.
 func TestExamplesComplete(t *testing.T) {
-	t.Parallel()
+	// to use t.Parallel() you need to use test_structure.CopyTerraformFolderToTemp
+	// but that leaves a copy of the whole repo laying around in /tmp
+	// t.Parallel()
 
-	rand.Seed(time.Now().UnixNano())
+	attributes := []string{random.UniqueId()}
+	rootFolder := "../../"
+	terraformFolderRelativeToRoot := "examples/complete"
+	varFiles := []string{"fixtures.us-east-2.tfvars"}
 
-	randID := strconv.Itoa(rand.Intn(100000))
-	attributes := []string{randID}
+/*	testFolder := test_structure.CopyTerraformFolderToTemp(t, rootFolder, terraformFolderRelativeToRoot)
+    // In some cases, CopyTerraformFolderToTemp does not actually copy the files,
+    // so before deleting the folder, check that it is not actually the source folder.
+	if testFolder != filepath.Join(rootFolder, terraformFolderRelativeToRoot) {
+		defer os.RemoveAll(testFolder)
+	}
+*/
+	testFolder := filepath.Join(rootFolder, terraformFolderRelativeToRoot)
 
 	terraformOptions := &terraform.Options{
 		// The path to where our Terraform code is located
-		TerraformDir: "../../examples/complete",
+		TerraformDir: testFolder,
 		Upgrade:      true,
 		// Variables to pass to our Terraform code using -var-file options
-		VarFiles: []string{"fixtures.us-east-2.tfvars"},
+		VarFiles: varFiles,
 		Vars: map[string]interface{}{
 			"attributes": attributes,
 		},
@@ -51,20 +60,4 @@ func TestExamplesComplete(t *testing.T) {
 	publicSubnetCidrs := terraform.OutputList(t, terraformOptions, "public_subnet_cidrs")
 	expectedPublicSubnetCidrs := []string{"172.16.96.0/19", "172.16.128.0/19"}
 	assert.Equal(t, expectedPublicSubnetCidrs, publicSubnetCidrs)
-
-	// Run `terraform output` to get the value of an output variable
-	securityGroupName := terraform.Output(t, terraformOptions, "security_group_name")
-	expectedSecurityGroupName := "eg-test-vpc-subnets-" + randID
-	// Verify we're getting back the outputs we expect
-	assert.Equal(t, expectedSecurityGroupName, securityGroupName)
-
-	// Run `terraform output` to get the value of an output variable
-	securityGroupID := terraform.Output(t, terraformOptions, "security_group_id")
-	// Verify we're getting back the outputs we expect
-	assert.Contains(t, securityGroupID, "sg-", "SG ID should contains substring 'sg-'")
-
-	// Run `terraform output` to get the value of an output variable
-	securityGroupARN := terraform.Output(t, terraformOptions, "security_group_arn")
-	// Verify we're getting back the outputs we expect
-	assert.Contains(t, securityGroupARN, "arn:aws:ec2", "SG ID should contains substring 'arn:aws:ec2'")
 }

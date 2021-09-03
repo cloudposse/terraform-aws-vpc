@@ -1,11 +1,10 @@
 package test
 
 import (
-	"testing"
-	"strings"
-
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
+	"strings"
+	"testing"
 )
 
 type VpcEndpoint struct {
@@ -33,7 +32,10 @@ type VpcEndpoint struct {
 
 // Test the Terraform module in examples/vpc_endpoints using Terratest.
 func TestExamplesVPCEndpoints(t *testing.T) {
-	t.Parallel()
+	// Do not use t.Parallel() unless you are using test_structure.CopyTerraformFolderToTemp
+	// or else you risk parallel executions clobbering each other's state or
+	// not really running in parallel due to state locks.
+    // t.Parallel()
 
 	terraformOptions := &terraform.Options{
 		// The path to where our Terraform code is located

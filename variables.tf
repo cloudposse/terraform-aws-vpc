@@ -33,41 +33,10 @@ variable "enable_classiclink_dns_support" {
   default     = false
 }
 
-variable "security_group_enabled" {
+variable "enable_default_security_group_with_custom_rules" {
   type        = bool
-  description = "Whether to create default Security Group for VPC."
+  description = "A boolean flag to enable/disable custom and restrictive inbound/outbound rules for the default VPC's SG"
   default     = true
-}
-
-variable "security_group_description" {
-  type        = string
-  default     = "VPC Security Group"
-  description = "The Security Group description."
-}
-
-variable "security_group_use_name_prefix" {
-  type        = bool
-  default     = false
-  description = "Whether to create a default Security Group with unique name beginning with the normalized prefix."
-}
-
-variable "security_group_rules" {
-  type = list(any)
-  default = [
-    {
-      type        = "egress"
-      from_port   = 0
-      to_port     = 65535
-      protocol    = "-1"
-      cidr_blocks = ["0.0.0.0/0"]
-      description = "Allow ALL egress traffic"
-    }
-  ]
-  description = <<-EOT
-    A list of maps of Security Group rules. 
-    The values of map is fully complated with `aws_security_group_rule` resource. 
-    To get more info see https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule .
-  EOT
 }
 
 variable "enable_internet_gateway" {
