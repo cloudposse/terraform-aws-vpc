@@ -71,7 +71,7 @@
 |------|-------------|
 | <a name="output_additional_cidr_blocks"></a> [additional\_cidr\_blocks](#output\_additional\_cidr\_blocks) | A list of the additional IPv4 CIDR blocks associated with the VPC |
 | <a name="output_additional_cidr_blocks_to_association_ids"></a> [additional\_cidr\_blocks\_to\_association\_ids](#output\_additional\_cidr\_blocks\_to\_association\_ids) | A map of the additional IPv4 CIDR blocks to VPC CIDR association IDs |
-| <a name="output_egress_only_gw_id"></a> [egress\_only\_gw\_id](#output\_egress\_only\_gw\_id) | The ID of the egress-only Internet Gateway |
+| <a name="output_egress_only_igw_id"></a> [egress\_only\_igw\_id](#output\_egress\_only\_igw\_id) | The ID of the egress-only Internet Gateway |
 | <a name="output_igw_id"></a> [igw\_id](#output\_igw\_id) | The ID of the Internet Gateway |
 | <a name="output_ipv6_cidr_block"></a> [ipv6\_cidr\_block](#output\_ipv6\_cidr\_block) | The IPv6 CIDR block |
 | <a name="output_vpc_cidr_block"></a> [vpc\_cidr\_block](#output\_vpc\_cidr\_block) | The CIDR block of the VPC |
