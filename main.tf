@@ -38,6 +38,12 @@ resource "aws_internet_gateway" "default" {
   tags   = module.label.tags
 }
 
+resource "aws_egress_only_internet_gateway" "default" {
+  count = local.enabled && var.ipv6_egress_only_internet_gateway_enabled ? 1 : 0
+
+  vpc_id = aws_vpc.default[0].id
+  tags   = module.label.tags
+}
 resource "aws_vpc_ipv4_cidr_block_association" "default" {
   for_each = local.enabled ? toset(var.additional_cidr_blocks) : []
 

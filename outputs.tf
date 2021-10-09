@@ -3,6 +3,11 @@ output "igw_id" {
   description = "The ID of the Internet Gateway"
 }
 
+output "ipv6_egress_only_igw_id" {
+  value       = join("", aws_egress_only_internet_gateway.default.*.id)
+  description = "The ID of the egress-only Internet Gateway"
+}
+
 output "vpc_id" {
   value       = join("", aws_vpc.default.*.id)
   description = "The ID of the VPC"
