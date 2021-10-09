@@ -32,10 +32,11 @@ type VpcEndpoint struct {
 
 // Test the Terraform module in examples/vpc_endpoints using Terratest.
 func TestExamplesVPCEndpoints(t *testing.T) {
-	// Do not use t.Parallel() unless you are using test_structure.CopyTerraformFolderToTemp
+	// Be careful with t.Parallel() unless you are using test_structure.CopyTerraformFolderToTemp
 	// or else you risk parallel executions clobbering each other's state or
-	// not really running in parallel due to state locks.
-    // t.Parallel()
+	// not really running in parallel due to state locks. We can do it here
+	// because each test is in its own directory.
+    t.Parallel()
 
 	terraformOptions := &terraform.Options{
 		// The path to where our Terraform code is located

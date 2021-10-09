@@ -11,22 +11,18 @@ import (
 
 // Test the Terraform module in examples/complete using Terratest.
 func TestExamplesComplete(t *testing.T) {
-	// to use t.Parallel() you need to use test_structure.CopyTerraformFolderToTemp
-	// but that leaves a copy of the whole repo laying around in /tmp
-	// t.Parallel()
+	// to use t.Parallel() with multiple tests in the same directory
+	// you need to use test_structure.CopyTerraformFolderToTemp
+	// but that leaves a copy of the whole repo lying around in /tmp
+	// Does not apply here, because we only are running 2 tests,
+	// each in its own directory.
+	t.Parallel()
 
 	attributes := []string{random.UniqueId()}
 	rootFolder := "../../"
 	terraformFolderRelativeToRoot := "examples/complete"
 	varFiles := []string{"fixtures.us-east-2.tfvars"}
 
-/*	testFolder := test_structure.CopyTerraformFolderToTemp(t, rootFolder, terraformFolderRelativeToRoot)
-    // In some cases, CopyTerraformFolderToTemp does not actually copy the files,
-    // so before deleting the folder, check that it is not actually the source folder.
-	if testFolder != filepath.Join(rootFolder, terraformFolderRelativeToRoot) {
-		defer os.RemoveAll(testFolder)
-	}
-*/
 	testFolder := filepath.Join(rootFolder, terraformFolderRelativeToRoot)
 
 	terraformOptions := &terraform.Options{

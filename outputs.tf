@@ -48,7 +48,6 @@ output "additional_cidr_blocks" {
   value = [
     for i in aws_vpc_ipv4_cidr_block_association.default :
     i.cidr_block
-    if local.additional_cidr_blocks_defined
   ]
 }
 
@@ -57,6 +56,5 @@ output "additional_cidr_blocks_to_association_ids" {
   value = {
     for i in aws_vpc_ipv4_cidr_block_association.default :
     i.cidr_block => i.id
-    if local.additional_cidr_blocks_defined
   }
 }

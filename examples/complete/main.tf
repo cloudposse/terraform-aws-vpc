@@ -22,3 +22,13 @@ module "subnets" {
 
   context = module.this.context
 }
+
+# Verify that a disabled VPC generates a plan without errors
+module "vpc_disabled" {
+  source  = "../../"
+  enabled = false
+
+  cidr_block = "172.16.0.0/16"
+
+  context = module.this.context
+}

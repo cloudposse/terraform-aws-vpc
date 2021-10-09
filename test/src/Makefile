@@ -16,8 +16,11 @@ init:
 ## Run tests
 test: init
 	go mod download
-	go test -v -timeout 60m -run TestExamplesComplete
-	go test -v -timeout 60m -run TestExamplesVPCEndpoints
+	go test -v -timeout 2
+
+
+
+0m
 
 ## Run tests in docker container
 docker/test:
