@@ -18,7 +18,7 @@ variable "enable_classiclink" {
 
 variable "enable_classiclink_dns_support" {
   type        = bool
-  description = "DEPRECATED, use `classiclink_dns_support instead`: A boolean flag to enable/disable ClassicLink DNS Support for the VPC"
+  description = "DEPRECATED, use `classiclink_dns_support_enabled instead`: A boolean flag to enable/disable ClassicLink DNS Support for the VPC"
   default     = null
 }
 
