@@ -3,6 +3,11 @@ output "igw_id" {
   description = "The ID of the Internet Gateway"
 }
 
+output "ipv6_egress_only_igw_id" {
+  value       = join("", aws_egress_only_internet_gateway.default.*.id)
+  description = "The ID of the egress-only Internet Gateway"
+}
+
 output "vpc_id" {
   value       = join("", aws_vpc.default.*.id)
   description = "The ID of the VPC"
@@ -48,7 +53,6 @@ output "additional_cidr_blocks" {
   value = [
     for i in aws_vpc_ipv4_cidr_block_association.default :
     i.cidr_block
-    if local.additional_cidr_blocks_defined
   ]
 }
 
@@ -57,6 +61,5 @@ output "additional_cidr_blocks_to_association_ids" {
   value = {
     for i in aws_vpc_ipv4_cidr_block_association.default :
     i.cidr_block => i.id
-    if local.additional_cidr_blocks_defined
   }
 }
