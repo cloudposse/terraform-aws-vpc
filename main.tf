@@ -1,5 +1,6 @@
 locals {
-  enabled = module.this.enabled
+  enabled                                   = module.this.enabled
+  ipv6_egress_only_internet_gateway_enabled = local.enabled && var.ipv6_egress_only_internet_gateway_enabled
 }
 
 module "label" {
@@ -18,7 +19,7 @@ resource "aws_vpc" "default" {
   enable_dns_hostnames             = local.dns_hostnames_enabled
   enable_dns_support               = local.dns_support_enabled
   enable_classiclink               = local.classiclink_enabled
-  enable_classiclink_dns_support   = local.classiclink_dns_support
+  enable_classiclink_dns_support   = local.classiclink_dns_support_enabled
   assign_generated_ipv6_cidr_block = local.ipv6_enabled
   tags                             = module.label.tags
 }
@@ -39,7 +40,7 @@ resource "aws_internet_gateway" "default" {
 }
 
 resource "aws_egress_only_internet_gateway" "default" {
-  count = local.enabled && var.ipv6_egress_only_internet_gateway_enabled ? 1 : 0
+  count = local.ipv6_egress_only_internet_gateway_enabled ? 1 : 0
 
   vpc_id = aws_vpc.default[0].id
   tags   = module.label.tags
