@@ -1,8 +1,20 @@
 variable "cidr_block" {
   type        = string
-  description = "IPv4 CIDR to assign to the VPC"
+  description = "(Optional) The IPv4 CIDR block for the VPC."
+  default     = null
 }
 
+variable "ipv4_ipam_pool_id" {
+  type        = string
+  description = "(Optional) The ID of an IPv4 IPAM pool you want to use for allocating this VPC's CIDR."
+  default     = null
+}
+
+variable "ipv4_netmask_length" {
+  type        = number
+  description = "(Optional) The netmask length of the IPv4 CIDR you want to allocate to this VPC."
+  default     = 16
+}
 variable "additional_cidr_blocks" {
   type        = list(string)
   description = "A list of additional IPv4 CIDR blocks to associate with the VPC"
