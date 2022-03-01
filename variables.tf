@@ -1,6 +1,12 @@
 variable "cidr_block" {
   type        = string
-  description = "IPv4 CIDR to assign to the VPC"
+  description = "IPv4 CIDR to assign to the VPC! This parameter is ignored if ipam_pool_id is passed"
+  default = ""
+}
+
+variable "ipam_pool_id" {
+  type = string
+  default = "Id of the IPAM pool to obtain ip from"
 }
 
 variable "additional_cidr_blocks" {
