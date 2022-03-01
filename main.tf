@@ -15,7 +15,7 @@ resource "aws_vpc" "default" {
   count = local.enabled ? 1 : 0
 
   #bridgecrew:skip=BC_AWS_LOGGING_9:VPC Flow Logs are meant to be enabled by terraform-aws-vpc-flow-logs-s3-bucket and/or terraform-aws-cloudwatch-flow-logs
-  cidr_block                       = local.use_ipam_pool? null : var.cidr_block
+  cidr_block                       = local.use_ipam_pool ? null : var.cidr_block
   ipv4_ipam_pool_id                = var.ipam_pool_id
   instance_tenancy                 = var.instance_tenancy
   enable_dns_hostnames             = local.dns_hostnames_enabled
@@ -52,7 +52,7 @@ resource "aws_vpc_ipv4_cidr_block_association" "default" {
   ]
 
   vpc_id = aws_vpc.default[
-  0
+    0
   ].id
   cidr_block = each.key
 }
