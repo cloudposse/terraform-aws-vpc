@@ -1,5 +1,4 @@
-export TF_CLI_ARGS_init ?= -get-plugins=true
-export TERRAFORM_VERSION ?= $(shell curl -s https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r -M '.current_version' | cut -d. -f1-2)
+export TERRAFORM_VERSION ?= $(shell curl -s https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r -M '.current_version' | cut -d. -f1)
 
 .DEFAULT_GOAL : all
 .PHONY: all

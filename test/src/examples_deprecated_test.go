@@ -1,7 +1,6 @@
 package test
 
 import (
-	"os"
 	"strings"
 	"testing"
 
@@ -11,19 +10,14 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func cleanup(t *testing.T, terraformOptions *terraform.Options, tempTestFolder string) {
-	terraform.Destroy(t, terraformOptions)
-	os.RemoveAll(tempTestFolder)
-}
-
 // Test the Terraform module in examples/complete using Terratest.
-func TestExamplesComplete(t *testing.T) {
+func TestExamplesDeprecated(t *testing.T) {
 	t.Parallel()
 	randID := strings.ToLower(random.UniqueId())
 	attributes := []string{randID}
 
 	rootFolder := "../../"
-	terraformFolderRelativeToRoot := "examples/complete"
+	terraformFolderRelativeToRoot := "examples/deprecated"
 	varFiles := []string{"fixtures.us-east-2.tfvars"}
 
 	tempTestFolder := test_structure.CopyTerraformFolderToTemp(t, rootFolder, terraformFolderRelativeToRoot)

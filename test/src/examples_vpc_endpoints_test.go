@@ -1,7 +1,9 @@
 package test
 
 import (
+	"github.com/gruntwork-io/terratest/modules/random"
 	"github.com/gruntwork-io/terratest/modules/terraform"
+	test_structure "github.com/gruntwork-io/terratest/modules/test-structure"
 	"github.com/stretchr/testify/assert"
 	"strings"
 	"testing"
@@ -31,23 +33,34 @@ type VpcEndpoint struct {
 }
 
 // Test the Terraform module in examples/vpc_endpoints using Terratest.
-func TestExamplesVPCEndpoints(t *testing.T) {
+func disabledTestExamplesVPCEndpoints(t *testing.T) {
 	// Be careful with t.Parallel() unless you are using test_structure.CopyTerraformFolderToTemp
 	// or else you risk parallel executions clobbering each other's state or
 	// not really running in parallel due to state locks. We can do it here
 	// because each test is in its own directory.
-    t.Parallel()
+	t.Parallel()
+	randID := strings.ToLower(random.UniqueId())
+	attributes := []string{randID}
+
+	rootFolder := "../../"
+	terraformFolderRelativeToRoot := "examples/vpc-endpoints"
+	varFiles := []string{"fixtures.us-east-2.tfvars"}
+
+	tempTestFolder := test_structure.CopyTerraformFolderToTemp(t, rootFolder, terraformFolderRelativeToRoot)
 
 	terraformOptions := &terraform.Options{
 		// The path to where our Terraform code is located
-		TerraformDir: "../../examples/vpc-endpoints",
+		TerraformDir: tempTestFolder,
 		Upgrade:      true,
 		// Variables to pass to our Terraform code using -var-file options
-		VarFiles: []string{"fixtures.us-east-2.tfvars"},
+		VarFiles: varFiles,
+		Vars: map[string]interface{}{
+			"attributes": attributes,
+		},
 	}
 
 	// At the end of the test, run `terraform destroy` to clean up any resources that were created
-	defer terraform.Destroy(t, terraformOptions)
+	defer cleanup(t, terraformOptions, tempTestFolder)
 
 	// This will run `terraform init` and `terraform apply` and fail the test if there are any errors
 	terraform.InitAndApply(t, terraformOptions)
@@ -67,7 +80,7 @@ func TestExamplesVPCEndpoints(t *testing.T) {
 	expectedPublicSubnetCidrs := []string{"172.17.96.0/19", "172.17.128.0/19"}
 	assert.Equal(t, expectedPublicSubnetCidrs, publicSubnetCidrs)
 
-    // Get VPC ID for VPC Endpoint validation
+	// Get VPC ID for VPC Endpoint validation
 	vpcId := terraform.Output(t, terraformOptions, "vpc_id")
 
 	// Validate created Gateway VPC Endpoints
@@ -89,9 +102,9 @@ func TestExamplesVPCEndpoints(t *testing.T) {
 	assert.Equal(t, interfaceVpcEndpoints[0].PrivateDNSEnabled, true)
 	foundEC2PrivateDNSEntry := false
 	for _, entry := range interfaceVpcEndpoints[0].DNSEntry {
-	    if entry["dns_name"] == "ec2.us-east-2.amazonaws.com" && !foundEC2PrivateDNSEntry {
-	        foundEC2PrivateDNSEntry = true
-	    }
+		if entry["dns_name"] == "ec2.us-east-2.amazonaws.com" && !foundEC2PrivateDNSEntry {
+			foundEC2PrivateDNSEntry = true
+		}
 	}
 	assert.Equal(t, foundEC2PrivateDNSEntry, true)
 
@@ -101,9 +114,9 @@ func TestExamplesVPCEndpoints(t *testing.T) {
 	assert.Equal(t, interfaceVpcEndpoints[1].PrivateDNSEnabled, false)
 	foundKinesisStreamsPrivateDNSEntry := false
 	for _, entry := range interfaceVpcEndpoints[0].DNSEntry {
-	    if entry["dns_name"] == "kinesis-streams.us-east-2.amazonaws.com" && !foundKinesisStreamsPrivateDNSEntry {
-	        foundKinesisStreamsPrivateDNSEntry = true
-	    }
+		if entry["dns_name"] == "kinesis-streams.us-east-2.amazonaws.com" && !foundKinesisStreamsPrivateDNSEntry {
+			foundKinesisStreamsPrivateDNSEntry = true
+		}
 	}
 	assert.Equal(t, foundKinesisStreamsPrivateDNSEntry, false)
 

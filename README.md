@@ -29,6 +29,7 @@
 -->
 
 Terraform module to provision a VPC with Internet Gateway. Contains a submodule for provisioning Interface and/or Gateway VPC Endpoints.
+This module also supports provisioning additional CIDR blocks for the VPC, with or without using [IPAM](https://docs.aws.amazon.com/vpc/latest/ipam/what-it-is-ipam.html).
 
 ---
 
@@ -90,10 +91,13 @@ module "vpc" {
   source = "cloudposse/vpc/aws"
   # Cloud Posse recommends pinning every module to a specific version
   # version = "x.x.x"
-  namespace  = "eg"
-  stage      = "test"
-  name       = "app"
-  cidr_block = "10.0.0.0/16"
+  namespace = "eg"
+  stage     = "test"
+  name      = "app"
+
+  ipv4_primary_cidr_block = "10.0.0.0/16"
+
+  assign_generated_ipv6_cidr_block = true
 }
 ```
 
@@ -104,10 +108,13 @@ module "vpc" {
   source = "cloudposse/vpc/aws"
   # Cloud Posse recommends pinning every module to a specific version
   # version     = "x.x.x"
-  namespace  = "eg"
-  stage      = "test"
-  name       = "app"
-  cidr_block = "10.0.0.0/16"
+  namespace = "eg"
+  stage     = "test"
+  name      = "app"
+
+  ipv4_primary_cidr_block = "10.0.0.0/16"
+
+  assign_generated_ipv6_cidr_block = false
 }
 
 module "dynamic_subnets" {
@@ -208,16 +215,17 @@ Available targets:
 | [aws_internet_gateway.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/internet_gateway) | resource |
 | [aws_vpc.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc) | resource |
 | [aws_vpc_ipv4_cidr_block_association.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_ipv4_cidr_block_association) | resource |
+| [aws_vpc_ipv6_cidr_block_association.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_ipv6_cidr_block_association) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_additional_cidr_blocks"></a> [additional\_cidr\_blocks](#input\_additional\_cidr\_blocks) | A list of additional IPv4 CIDR blocks to associate with the VPC | `list(string)` | `[]` | no |
+| <a name="input_additional_cidr_blocks"></a> [additional\_cidr\_blocks](#input\_additional\_cidr\_blocks) | DEPRECATED: Use `ipv4_additional_cidr_block_associations` instead.<br>A list of additional IPv4 CIDR blocks to associate with the VPC | `list(string)` | `[]` | no |
 | <a name="input_additional_tag_map"></a> [additional\_tag\_map](#input\_additional\_tag\_map) | Additional key-value pairs to add to each map in `tags_as_list_of_maps`. Not added to `tags` or `id`.<br>This is for some rare cases where resources want additional configuration of tags<br>and therefore take a list of maps with tag key, value, and additional configuration. | `map(string)` | `{}` | no |
-| <a name="input_assign_generated_ipv6_cidr_block"></a> [assign\_generated\_ipv6\_cidr\_block](#input\_assign\_generated\_ipv6\_cidr\_block) | DEPRECATED, use `ipv6_enabled` instead: Whether to assign generated ipv6 cidr block to the VPC | `bool` | `null` | no |
+| <a name="input_assign_generated_ipv6_cidr_block"></a> [assign\_generated\_ipv6\_cidr\_block](#input\_assign\_generated\_ipv6\_cidr\_block) | Whether to assign generated ipv6 cidr block to the VPC (defaults to `true`).  Conflicts with `ipv6_ipam_pool_id`. | `bool` | `null` | no |
 | <a name="input_attributes"></a> [attributes](#input\_attributes) | ID element. Additional attributes (e.g. `workers` or `cluster`) to add to `id`,<br>in the order they appear in the list. New attributes are appended to the<br>end of the list. The elements of the list are joined by the `delimiter`<br>and treated as a single ID element. | `list(string)` | `[]` | no |
-| <a name="input_cidr_block"></a> [cidr\_block](#input\_cidr\_block) | The IPv4 CIDR block for the VPC.<br>Either `cidr_block` or `ipv4_ipam_pool_id` must be set, but not both. | `string` | `null` | no |
+| <a name="input_cidr_block"></a> [cidr\_block](#input\_cidr\_block) | DEPRECATED: Use `ipv4_primary_cidr_block` instead.<br>Historical description: The IPv4 CIDR block for the VPC.<br>Either `cidr_block` or `ipv4_ipam_pool_id` must be set, but not both. | `string` | `null` | no |
 | <a name="input_classiclink_dns_support_enabled"></a> [classiclink\_dns\_support\_enabled](#input\_classiclink\_dns\_support\_enabled) | A boolean flag to enable/disable ClassicLink DNS Support for the VPC | `bool` | `false` | no |
 | <a name="input_classiclink_enabled"></a> [classiclink\_enabled](#input\_classiclink\_enabled) | A boolean flag to enable/disable ClassicLink for the VPC | `bool` | `false` | no |
 | <a name="input_context"></a> [context](#input\_context) | Single object for setting entire context at once.<br>See description of individual variables for details.<br>Leave string and numeric variables as `null` to use default value.<br>Individual variable settings (non-null) override settings in context object,<br>except for attributes, tags, and additional\_tag\_map, which are merged. | `any` | <pre>{<br>  "additional_tag_map": {},<br>  "attributes": [],<br>  "delimiter": null,<br>  "descriptor_formats": {},<br>  "enabled": true,<br>  "environment": null,<br>  "id_length_limit": null,<br>  "label_key_case": null,<br>  "label_order": [],<br>  "label_value_case": null,<br>  "labels_as_tags": [<br>    "unset"<br>  ],<br>  "name": null,<br>  "namespace": null,<br>  "regex_replace_chars": null,<br>  "stage": null,<br>  "tags": {},<br>  "tenant": null<br>}</pre> | no |
@@ -237,10 +245,16 @@ Available targets:
 | <a name="input_id_length_limit"></a> [id\_length\_limit](#input\_id\_length\_limit) | Limit `id` to this many characters (minimum 6).<br>Set to `0` for unlimited length.<br>Set to `null` for keep the existing setting, which defaults to `0`.<br>Does not affect `id_full`. | `number` | `null` | no |
 | <a name="input_instance_tenancy"></a> [instance\_tenancy](#input\_instance\_tenancy) | A tenancy option for instances launched into the VPC | `string` | `"default"` | no |
 | <a name="input_internet_gateway_enabled"></a> [internet\_gateway\_enabled](#input\_internet\_gateway\_enabled) | A boolean flag to enable/disable Internet Gateway creation | `bool` | `true` | no |
-| <a name="input_ipv4_ipam_pool_id"></a> [ipv4\_ipam\_pool\_id](#input\_ipv4\_ipam\_pool\_id) | The ID of an IPv4 IPAM pool you want to use for allocating this VPC's CIDR.<br>Either `cidr_block` or `ipv4_ipam_pool_id` must be set, but not both. | `string` | `null` | no |
-| <a name="input_ipv4_netmask_length"></a> [ipv4\_netmask\_length](#input\_ipv4\_netmask\_length) | The netmask length of the IPv4 CIDR you want to allocate to this VPC. | `number` | `16` | no |
+| <a name="input_ipv4_additional_cidr_block_associations"></a> [ipv4\_additional\_cidr\_block\_associations](#input\_ipv4\_additional\_cidr\_block\_associations) | IPv4 CIDR blocks to assign to the VPC.<br>`ipv4_cidr_block` may be set explicitly or derived from `ipv4_ipam_pool_id` using `ipv4_netmask_length`.<br>Map keys must be known at `plan` time. When migrating from `additional_cidr_blocks`,<br>set map key to `ipv4_cidr_block` value to avoid Terraform changes. | <pre>map(object({<br>    ipv4_cidr_block     = string<br>    ipv4_ipam_pool_id   = string<br>    ipv4_netmask_length = number<br>  }))</pre> | `{}` | no |
+| <a name="input_ipv4_cidr_block_association_timeouts"></a> [ipv4\_cidr\_block\_association\_timeouts](#input\_ipv4\_cidr\_block\_association\_timeouts) | Timeouts (in `go` duration format) for creating and destroying IPv4 CIDR block associations | <pre>object({<br>    create = string<br>    delete = string<br>  })</pre> | `null` | no |
+| <a name="input_ipv4_primary_cidr_block"></a> [ipv4\_primary\_cidr\_block](#input\_ipv4\_primary\_cidr\_block) | The primary IPv4 CIDR block for the VPC.<br>Either `ipv4_primary_cidr_block` or `ipv4_primary_cidr_block_association` must be set, but not both. | `string` | `null` | no |
+| <a name="input_ipv4_primary_cidr_block_association"></a> [ipv4\_primary\_cidr\_block\_association](#input\_ipv4\_primary\_cidr\_block\_association) | Configuration of the VPC's primary IPv4 CIDR block via IPAM. Conflicts with `ipv4_primary_cidr_block`.<br>One of `ipv4_primary_cidr_block` or `ipv4_primary_cidr_block_association` must be set.<br>Additional CIDR blocks can be set via `ipv4_additional_cidr_block_associations`. | <pre>object({<br>    ipv4_ipam_pool_id   = string<br>    ipv4_netmask_length = number<br>  })</pre> | `null` | no |
+| <a name="input_ipv6_additional_cidr_block_associations"></a> [ipv6\_additional\_cidr\_block\_associations](#input\_ipv6\_additional\_cidr\_block\_associations) | IPv6 CIDR blocks to assign to the VPC (in addition to the autogenerated one).<br>`ipv6_cidr_block` be set explicitly or derived from `ipv6_ipam_pool_id` using `ipv6_netmask_length`.<br>Map keys must be known at `plan` time and are used solely to prevent unnecessary changes. | <pre>map(object({<br>    ipv6_cidr_block     = string<br>    ipv6_ipam_pool_id   = string<br>    ipv6_netmask_length = number<br>  }))</pre> | `{}` | no |
+| <a name="input_ipv6_cidr_block_association_timeouts"></a> [ipv6\_cidr\_block\_association\_timeouts](#input\_ipv6\_cidr\_block\_association\_timeouts) | Timeouts (in `go` duration format) for creating and destroying IPv6 CIDR block associations | <pre>object({<br>    create = string<br>    delete = string<br>  })</pre> | `null` | no |
+| <a name="input_ipv6_cidr_block_network_border_group"></a> [ipv6\_cidr\_block\_network\_border\_group](#input\_ipv6\_cidr\_block\_network\_border\_group) | Set this to restrict advertisement of public addresses to specific Network Border Groups such as LocalZones. | `string` | `null` | no |
 | <a name="input_ipv6_egress_only_internet_gateway_enabled"></a> [ipv6\_egress\_only\_internet\_gateway\_enabled](#input\_ipv6\_egress\_only\_internet\_gateway\_enabled) | A boolean flag to enable/disable IPv6 Egress-Only Internet Gateway creation | `bool` | `false` | no |
-| <a name="input_ipv6_enabled"></a> [ipv6\_enabled](#input\_ipv6\_enabled) | If `true`, enable IPv6 and assign a generated CIDR block to the VPC | `bool` | `true` | no |
+| <a name="input_ipv6_enabled"></a> [ipv6\_enabled](#input\_ipv6\_enabled) | DEPRECATED: use `assign_generated_ipv6_cidr_block` or `ipv6_ipam_pool_id` instead.<br>Historical description: If `true`, enable IPv6 and assign a generated CIDR block to the VPC" | `bool` | `null` | no |
+| <a name="input_ipv6_primary_cidr_block_association"></a> [ipv6\_primary\_cidr\_block\_association](#input\_ipv6\_primary\_cidr\_block\_association) | Primary IPv6 CIDR blocksto assign to the VPC. Conflicts with `assign_generated_ipv6_cidr_block`.<br>`ipv6_cidr_block` be set explicitly or derived from `ipv6_ipam_pool_id` using `ipv6_netmask_length`. | <pre>object({<br>    ipv6_cidr_block     = string<br>    ipv6_ipam_pool_id   = string<br>    ipv6_netmask_length = number<br>  })</pre> | `null` | no |
 | <a name="input_label_key_case"></a> [label\_key\_case](#input\_label\_key\_case) | Controls the letter case of the `tags` keys (label names) for tags generated by this module.<br>Does not affect keys of tags passed in via the `tags` input.<br>Possible values: `lower`, `title`, `upper`.<br>Default value: `title`. | `string` | `null` | no |
 | <a name="input_label_order"></a> [label\_order](#input\_label\_order) | The order in which the labels (ID elements) appear in the `id`.<br>Defaults to ["namespace", "environment", "stage", "name", "attributes"].<br>You can omit any of the 6 labels ("tenant" is the 6th), but at least one must be present. | `list(string)` | `null` | no |
 | <a name="input_label_value_case"></a> [label\_value\_case](#input\_label\_value\_case) | Controls the letter case of ID elements (labels) as included in `id`,<br>set as tag values, and output by this module individually.<br>Does not affect values of tags passed in via the `tags` input.<br>Possible values: `lower`, `title`, `upper` and `none` (no transformation).<br>Set this to `title` and set `delimiter` to `""` to yield Pascal Case IDs.<br>Default value: `lower`. | `string` | `null` | no |
@@ -258,15 +272,19 @@ Available targets:
 |------|-------------|
 | <a name="output_additional_cidr_blocks"></a> [additional\_cidr\_blocks](#output\_additional\_cidr\_blocks) | A list of the additional IPv4 CIDR blocks associated with the VPC |
 | <a name="output_additional_cidr_blocks_to_association_ids"></a> [additional\_cidr\_blocks\_to\_association\_ids](#output\_additional\_cidr\_blocks\_to\_association\_ids) | A map of the additional IPv4 CIDR blocks to VPC CIDR association IDs |
+| <a name="output_additional_ipv6_cidr_blocks"></a> [additional\_ipv6\_cidr\_blocks](#output\_additional\_ipv6\_cidr\_blocks) | A list of the additional IPv4 CIDR blocks associated with the VPC |
+| <a name="output_additional_ipv6_cidr_blocks_to_association_ids"></a> [additional\_ipv6\_cidr\_blocks\_to\_association\_ids](#output\_additional\_ipv6\_cidr\_blocks\_to\_association\_ids) | A map of the additional IPv4 CIDR blocks to VPC CIDR association IDs |
 | <a name="output_igw_id"></a> [igw\_id](#output\_igw\_id) | The ID of the Internet Gateway |
-| <a name="output_ipv6_cidr_block"></a> [ipv6\_cidr\_block](#output\_ipv6\_cidr\_block) | The IPv6 CIDR block |
+| <a name="output_ipv6_cidr_block_network_border_group"></a> [ipv6\_cidr\_block\_network\_border\_group](#output\_ipv6\_cidr\_block\_network\_border\_group) | The IPv6 Network Border Group Zone name |
 | <a name="output_ipv6_egress_only_igw_id"></a> [ipv6\_egress\_only\_igw\_id](#output\_ipv6\_egress\_only\_igw\_id) | The ID of the egress-only Internet Gateway |
-| <a name="output_vpc_cidr_block"></a> [vpc\_cidr\_block](#output\_vpc\_cidr\_block) | The CIDR block of the VPC |
+| <a name="output_vpc_arn"></a> [vpc\_arn](#output\_vpc\_arn) | The ARN of the VPC |
+| <a name="output_vpc_cidr_block"></a> [vpc\_cidr\_block](#output\_vpc\_cidr\_block) | The primary IPv4 CIDR block of the VPC |
 | <a name="output_vpc_default_network_acl_id"></a> [vpc\_default\_network\_acl\_id](#output\_vpc\_default\_network\_acl\_id) | The ID of the network ACL created by default on VPC creation |
 | <a name="output_vpc_default_route_table_id"></a> [vpc\_default\_route\_table\_id](#output\_vpc\_default\_route\_table\_id) | The ID of the route table created by default on VPC creation |
 | <a name="output_vpc_default_security_group_id"></a> [vpc\_default\_security\_group\_id](#output\_vpc\_default\_security\_group\_id) | The ID of the security group created by default on VPC creation |
 | <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | The ID of the VPC |
-| <a name="output_vpc_ipv6_association_id"></a> [vpc\_ipv6\_association\_id](#output\_vpc\_ipv6\_association\_id) | The association ID for the IPv6 CIDR block |
+| <a name="output_vpc_ipv6_association_id"></a> [vpc\_ipv6\_association\_id](#output\_vpc\_ipv6\_association\_id) | The association ID for the primary IPv6 CIDR block |
+| <a name="output_vpc_ipv6_cidr_block"></a> [vpc\_ipv6\_cidr\_block](#output\_vpc\_ipv6\_cidr\_block) | The primary IPv6 CIDR block |
 | <a name="output_vpc_main_route_table_id"></a> [vpc\_main\_route\_table\_id](#output\_vpc\_main\_route\_table\_id) | The ID of the main route table associated with this VPC |
 <!-- markdownlint-restore -->
 
