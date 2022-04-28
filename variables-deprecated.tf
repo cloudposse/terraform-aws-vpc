@@ -34,8 +34,31 @@ variable "enable_internet_gateway" {
   default     = null
 }
 
-variable "assign_generated_ipv6_cidr_block" {
+variable "ipv6_enabled" {
   type        = bool
-  description = "DEPRECATED, use `ipv6_enabled` instead: Whether to assign generated ipv6 cidr block to the VPC"
+  description = <<-EOT
+    DEPRECATED: use `assign_generated_ipv6_cidr_block` or `ipv6_ipam_pool_id` instead.
+    Historical description: If `true`, enable IPv6 and assign a generated CIDR block to the VPC"
+    EOT
   default     = null
 }
+
+variable "cidr_block" {
+  type        = string
+  description = <<-EOT
+    DEPRECATED: Use `ipv4_primary_cidr_block` instead.
+    Historical description: The IPv4 CIDR block for the VPC.
+    Either `cidr_block` or `ipv4_ipam_pool_id` must be set, but not both.
+    EOT
+  default     = null
+}
+
+variable "additional_cidr_blocks" {
+  type        = list(string)
+  description = <<-EOT
+    DEPRECATED: Use `ipv4_additional_cidr_block_associations` instead.
+    A list of additional IPv4 CIDR blocks to associate with the VPC
+    EOT
+  default     = []
+}
+

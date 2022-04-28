@@ -64,7 +64,7 @@ module "vpc_endpoints" {
 
 module "subnets" {
   source  = "cloudposse/dynamic-subnets/aws"
-  version = "0.39.0"
+  version = "0.39.8"
 
   availability_zones   = var.availability_zones
   vpc_id               = module.vpc.vpc_id
@@ -78,7 +78,7 @@ module "subnets" {
 
 module "ec2_vpc_endpoint_sg_label" {
   source  = "cloudposse/label/null"
-  version = "0.24.1"
+  version = "0.25.0"
 
   attributes = ["ec2-vpc-endpoint-sg"]
 
@@ -87,7 +87,7 @@ module "ec2_vpc_endpoint_sg_label" {
 
 module "kinesis_vpc_endpoint_sg_label" {
   source  = "cloudposse/label/null"
-  version = "0.24.1"
+  version = "0.25.0"
 
   attributes = ["kinesis-vpc-endpoint-sg"]
 
