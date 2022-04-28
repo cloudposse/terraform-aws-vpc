@@ -29,6 +29,7 @@
 -->
 
 Terraform module to provision a VPC with Internet Gateway. Contains a submodule for provisioning Interface and/or Gateway VPC Endpoints.
+This module also supports provisioning additional CIDR blocks for the VPC, with or without using [IPAM](https://docs.aws.amazon.com/vpc/latest/ipam/what-it-is-ipam.html).
 
 ---
 
@@ -90,10 +91,13 @@ module "vpc" {
   source = "cloudposse/vpc/aws"
   # Cloud Posse recommends pinning every module to a specific version
   # version = "x.x.x"
-  namespace  = "eg"
-  stage      = "test"
-  name       = "app"
-  cidr_block = "10.0.0.0/16"
+  namespace = "eg"
+  stage     = "test"
+  name      = "app"
+
+  ipv4_primary_cidr_block = "10.0.0.0/16"
+
+  assign_generated_ipv6_cidr_block = true
 }
 ```
 
@@ -104,10 +108,13 @@ module "vpc" {
   source = "cloudposse/vpc/aws"
   # Cloud Posse recommends pinning every module to a specific version
   # version     = "x.x.x"
-  namespace  = "eg"
-  stage      = "test"
-  name       = "app"
-  cidr_block = "10.0.0.0/16"
+  namespace = "eg"
+  stage     = "test"
+  name      = "app"
+
+  ipv4_primary_cidr_block = "10.0.0.0/16"
+
+  assign_generated_ipv6_cidr_block = false
 }
 
 module "dynamic_subnets" {

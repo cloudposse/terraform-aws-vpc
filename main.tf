@@ -1,11 +1,13 @@
 locals {
   enabled                                   = module.this.enabled
   ipv6_egress_only_internet_gateway_enabled = local.enabled && var.ipv6_egress_only_internet_gateway_enabled
-  additional_cidr_blocks_map = local.enabled ? { for v in var.additional_cidr_blocks : v => {
-    ipv4_cidr_block     = v
-    ipv4_ipam_pool_id   = null
-    ipv4_netmask_length = null
-  } } : {}
+  additional_cidr_blocks_map = local.enabled ? {
+    for v in var.additional_cidr_blocks : v => {
+      ipv4_cidr_block     = v
+      ipv4_ipam_pool_id   = null
+      ipv4_netmask_length = null
+    }
+  } : {}
   ipv4_cidr_block_associations = local.enabled ? (
     length(local.additional_cidr_blocks_map) > 0 ? local.additional_cidr_blocks_map : var.ipv4_additional_cidr_block_associations
   ) : {}
@@ -25,14 +27,12 @@ resource "aws_vpc" "default" {
   cidr_block          = local.ipv4_primary_cidr_block
   ipv4_ipam_pool_id   = try(var.ipv4_primary_cidr_block_association.ipv4_ipam_pool_id, null)
   ipv4_netmask_length = try(var.ipv4_primary_cidr_block_association.ipv4_netmask_length, null)
+  # Additional IPv4 CIDRs are handled by aws_vpc_ipv4_cidr_block_association below
 
   ipv6_cidr_block     = try(var.ipv6_primary_cidr_block_association.ipv6_cidr_block, null)
   ipv6_ipam_pool_id   = try(var.ipv6_primary_cidr_block_association.ipv6_ipam_pool_id, null)
   ipv6_netmask_length = try(var.ipv6_primary_cidr_block_association.ipv6_netmask_length, null)
-
-
-  # Additional ipv4 CIDRs are handled by aws_vpc_ipv4_cidr_block_association below
-  # Additional ipv6 CIDRs are handled by aws_vpc_ipv6_cidr_block_association below
+  # Additional IPv6 CIDRs are handled by aws_vpc_ipv6_cidr_block_association below
 
   instance_tenancy                 = var.instance_tenancy
   enable_dns_hostnames             = local.dns_hostnames_enabled
