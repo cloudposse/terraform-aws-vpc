@@ -33,12 +33,13 @@ type VpcEndpoint struct {
 }
 
 // Test the Terraform module in examples/vpc_endpoints using Terratest.
-func disabledTestExamplesVPCEndpoints(t *testing.T) {
+func TestExamplesVPCEndpoints(t *testing.T) {
 	// Be careful with t.Parallel() unless you are using test_structure.CopyTerraformFolderToTemp
 	// or else you risk parallel executions clobbering each other's state or
 	// not really running in parallel due to state locks. We can do it here
 	// because each test is in its own directory.
 	t.Parallel()
+
 	randID := strings.ToLower(random.UniqueId())
 	attributes := []string{randID}
 
