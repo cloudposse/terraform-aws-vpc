@@ -100,3 +100,11 @@ resource "aws_vpc_ipv6_cidr_block_association" "default" {
     }
   }
 }
+
+resource "aws_default_route_table" "default" {
+  count = local.enabled ? 1 : 0
+  default_route_table_id = aws_vpc.default.id
+  tags = merge(module.label.tags, {
+    Name = join(module.label.delimiter, [module.label.id, "default"])
+  })
+}
