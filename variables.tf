@@ -160,3 +160,18 @@ variable "ipv6_egress_only_internet_gateway_enabled" {
   description = "A boolean flag to enable/disable IPv6 Egress-Only Internet Gateway creation"
   default     = false
 }
+variable "adopt_default_route_table" {
+  type        = bool
+  description = "A boolean flag to enable/disable adoption of the default route table"
+  default     = false
+}
+variable "adopt_default_network_acl" {
+  type        = bool
+  description = "A boolean flag to enable/disable adoption of the default network acl"
+  default     = false
+}
+variable "adopt_default_security_group" {
+  type        = bool
+  description = "A boolean flag to enable/disable adoption of the default security group"
+  default     = false
+}
