@@ -210,6 +210,7 @@ Available targets:
 
 | Name | Type |
 |------|------|
+| [aws_default_network_acl.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_network_acl) | resource |
 | [aws_default_route_table.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_route_table) | resource |
 | [aws_default_security_group.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_security_group) | resource |
 | [aws_egress_only_internet_gateway.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/egress_only_internet_gateway) | resource |
@@ -224,6 +225,9 @@ Available targets:
 |------|-------------|------|---------|:--------:|
 | <a name="input_additional_cidr_blocks"></a> [additional\_cidr\_blocks](#input\_additional\_cidr\_blocks) | DEPRECATED: Use `ipv4_additional_cidr_block_associations` instead.<br>A list of additional IPv4 CIDR blocks to associate with the VPC | `list(string)` | `[]` | no |
 | <a name="input_additional_tag_map"></a> [additional\_tag\_map](#input\_additional\_tag\_map) | Additional key-value pairs to add to each map in `tags_as_list_of_maps`. Not added to `tags` or `id`.<br>This is for some rare cases where resources want additional configuration of tags<br>and therefore take a list of maps with tag key, value, and additional configuration. | `map(string)` | `{}` | no |
+| <a name="input_adopt_default_network_acl"></a> [adopt\_default\_network\_acl](#input\_adopt\_default\_network\_acl) | A boolean flag to enable/disable adoption of the default network acl | `bool` | `false` | no |
+| <a name="input_adopt_default_route_table"></a> [adopt\_default\_route\_table](#input\_adopt\_default\_route\_table) | A boolean flag to enable/disable adoption of the default route table | `bool` | `false` | no |
+| <a name="input_adopt_default_security_group"></a> [adopt\_default\_security\_group](#input\_adopt\_default\_security\_group) | A boolean flag to enable/disable adoption of the default security group | `bool` | `false` | no |
 | <a name="input_assign_generated_ipv6_cidr_block"></a> [assign\_generated\_ipv6\_cidr\_block](#input\_assign\_generated\_ipv6\_cidr\_block) | Whether to assign generated ipv6 cidr block to the VPC (defaults to `true`).  Conflicts with `ipv6_ipam_pool_id`. | `bool` | `null` | no |
 | <a name="input_attributes"></a> [attributes](#input\_attributes) | ID element. Additional attributes (e.g. `workers` or `cluster`) to add to `id`,<br>in the order they appear in the list. New attributes are appended to the<br>end of the list. The elements of the list are joined by the `delimiter`<br>and treated as a single ID element. | `list(string)` | `[]` | no |
 | <a name="input_cidr_block"></a> [cidr\_block](#input\_cidr\_block) | DEPRECATED: Use `ipv4_primary_cidr_block` instead.<br>Historical description: The IPv4 CIDR block for the VPC.<br>Either `cidr_block` or `ipv4_ipam_pool_id` must be set, but not both. | `string` | `null` | no |
