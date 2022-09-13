@@ -20,6 +20,17 @@ module "vpc" {
 
   assign_generated_ipv6_cidr_block = true
 
+  adopt_default_network_acl    = true
+  adopt_default_route_table    = true
+  adopt_default_security_group = true
+
+  context = module.this.context
+}
+
+module "vpc_defaults" {
+  source                  = "../../"
+  ipv4_primary_cidr_block = "172.17.0.0/16"
+
   context = module.this.context
 }
 
