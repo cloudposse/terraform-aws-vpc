@@ -56,7 +56,7 @@ resource "aws_default_security_group" "default" {
 
 # If `aws_default_route_table` is not defined, it will be created implicitly with default routes
 resource "aws_default_route_table" "default" {
-  count = local.default_route_table_deny_all ? 1 : 0
+  count = local.default_route_table_no_routes ? 1 : 0
 
   default_route_table_id = aws_vpc.default[0].default_route_table_id
   tags                   = local.default_adoption_tags
