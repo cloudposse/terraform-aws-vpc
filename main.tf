@@ -11,6 +11,9 @@ locals {
   ipv4_cidr_block_associations = local.enabled ? (
     length(local.additional_cidr_blocks_map) > 0 ? local.additional_cidr_blocks_map : var.ipv4_additional_cidr_block_associations
   ) : {}
+  default_adoption_tags = merge(module.label.tags, {
+    Name = join(module.label.delimiter, [module.label.id, "default"])
+  })
 }
 
 module "label" {
@@ -104,23 +107,17 @@ resource "aws_vpc_ipv6_cidr_block_association" "default" {
 resource "aws_default_route_table" "default" {
   count                  = local.enabled && var.adopt_default_route_table ? 1 : 0
   default_route_table_id = aws_vpc.default[0].default_route_table_id
-  tags = merge(module.label.tags, {
-    Name = join(module.label.delimiter, [module.label.id, "default"])
-  })
+  tags = local.default_adoption_tags
 }
 
 resource "aws_default_network_acl" "default" {
   count                  = local.enabled && var.adopt_default_network_acl ? 1 : 0
   default_network_acl_id = aws_vpc.default[0].default_network_acl_id
-  tags = merge(module.label.tags, {
-    Name = join(module.label.delimiter, [module.label.id, "default"])
-  })
+  tags = local.default_adoption_tags
 }
 
 resource "aws_default_security_group" "default" {
   count  = local.enabled && var.adopt_default_security_group ? 1 : 0
   vpc_id = aws_vpc.default[0].id
-  tags = merge(module.label.tags, {
-    Name = join(module.label.delimiter, [module.label.id, "default"])
-  })
+  tags = local.default_adoption_tags
 }
