@@ -112,28 +112,28 @@ variable "instance_tenancy" {
 
 variable "dns_hostnames_enabled" {
   type        = bool
-  description = "A boolean flag to enable/disable DNS hostnames in the VPC"
+  description = "Whether to enable/disable DNS hostnames in the VPC"
   default     = true
 }
 locals { dns_hostnames_enabled = coalesce(var.enable_dns_hostnames, var.dns_hostnames_enabled) }
 
 variable "dns_support_enabled" {
   type        = bool
-  description = "A boolean flag to enable/disable DNS support in the VPC"
+  description = "Whether to enable/disable DNS support in the VPC"
   default     = true
 }
 locals { dns_support_enabled = coalesce(var.enable_dns_support, var.dns_support_enabled) }
 
 variable "classiclink_enabled" {
   type        = bool
-  description = "A boolean flag to enable/disable ClassicLink for the VPC"
+  description = "Whether to enable/disable ClassicLink for the VPC"
   default     = false
 }
 locals { classiclink_enabled = coalesce(var.enable_classiclink, var.classiclink_enabled) }
 
 variable "classiclink_dns_support_enabled" {
   type        = bool
-  description = "A boolean flag to enable/disable ClassicLink DNS Support for the VPC"
+  description = "Whether to enable/disable ClassicLink DNS Support for the VPC"
   default     = false
 }
 locals { classiclink_dns_support_enabled = coalesce(var.enable_classiclink_dns_support, var.classiclink_dns_support_enabled) }
@@ -150,28 +150,31 @@ locals { default_security_group_deny_all = local.enabled && coalesce(var.enable_
 
 variable "internet_gateway_enabled" {
   type        = bool
-  description = "A boolean flag to enable/disable Internet Gateway creation"
+  description = "Whether to enable/disable Internet Gateway creation"
   default     = true
 }
 locals { internet_gateway_enabled = local.enabled && coalesce(var.enable_internet_gateway, var.internet_gateway_enabled) }
 
 variable "ipv6_egress_only_internet_gateway_enabled" {
   type        = bool
-  description = "A boolean flag to enable/disable IPv6 Egress-Only Internet Gateway creation"
+  description = "Whether to enable/disable IPv6 Egress-Only Internet Gateway creation"
   default     = false
 }
+
 variable "adopt_default_route_table" {
   type        = bool
-  description = "A boolean flag to enable/disable adoption of the default route table"
+  description = "Whether to enable/disable adoption of the default route table"
   default     = false
 }
+
 variable "adopt_default_network_acl" {
   type        = bool
-  description = "A boolean flag to enable/disable adoption of the default network acl"
+  description = "Whether to enable/disable adoption of the default network acl"
   default     = false
 }
+
 variable "adopt_default_security_group" {
   type        = bool
-  description = "A boolean flag to enable/disable adoption of the default security group"
+  description = "Whether to enable/disable adoption of the default security group"
   default     = false
 }
