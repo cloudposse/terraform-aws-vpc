@@ -59,7 +59,7 @@ resource "aws_default_route_table" "default" {
   count = local.default_route_table_deny_all ? 1 : 0
 
   default_route_table_id = aws_vpc.default[0].default_route_table_id
-  tags = local.default_adoption_tags
+  tags                   = local.default_adoption_tags
 }
 
 # If `aws_default_network_acl` is not defined, it will be created implicitly with access `0.0.0.0/0`
@@ -67,7 +67,7 @@ resource "aws_default_network_acl" "default" {
   count = local.default_network_acl_deny_all ? 1 : 0
 
   default_network_acl_id = aws_vpc.default[0].default_network_acl_id
-  tags = local.default_adoption_tags
+  tags                   = local.default_adoption_tags
 }
 
 resource "aws_internet_gateway" "default" {
