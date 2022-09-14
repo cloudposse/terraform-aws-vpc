@@ -149,8 +149,8 @@ variable "default_security_group_deny_all" {
 locals { default_security_group_deny_all = local.enabled && coalesce(var.enable_default_security_group_with_custom_rules, var.default_security_group_deny_all) }
 
 variable "default_route_table_no_routes" {
-  type = bool
-  default = false
+  type        = bool
+  default     = false
   description = <<-EOT
     When `true`, manage the default route table and remove all routes, disabling all ingress and egress.
     When `false`, do not mange the default route table, allowing it to be managed by another component.
