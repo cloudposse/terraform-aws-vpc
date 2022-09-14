@@ -148,6 +148,26 @@ variable "default_security_group_deny_all" {
 }
 locals { default_security_group_deny_all = local.enabled && coalesce(var.enable_default_security_group_with_custom_rules, var.default_security_group_deny_all) }
 
+variable "default_route_table_deny_all" {
+  type = bool
+  default = false
+  description = <<-EOT
+    When `true`, manage the default route table and remove all routes, disabling all ingress and egress.
+    When `false`, do not mange the default route table, allowing it to be managed by another component.
+    EOT
+}
+locals { default_route_table_deny_all = local.enabled && var.default_route_table_deny_all }
+
+variable "default_network_acl_deny_all" {
+  type = bool
+  default = false
+  description = <<-EOT
+    When `true`, manage the default network acl and remove all rules, disabling all ingress and egress.
+    When `false`, do not mange the default networking acl, allowing it to be managed by another component.
+    EOT
+}
+locals { default_network_acl_deny_all = local.enabled && var.default_network_acl_deny_all }
+
 variable "internet_gateway_enabled" {
   type        = bool
   description = "Whether to enable/disable Internet Gateway creation"
@@ -158,23 +178,5 @@ locals { internet_gateway_enabled = local.enabled && coalesce(var.enable_interne
 variable "ipv6_egress_only_internet_gateway_enabled" {
   type        = bool
   description = "Whether to enable/disable IPv6 Egress-Only Internet Gateway creation"
-  default     = false
-}
-
-variable "adopt_default_route_table" {
-  type        = bool
-  description = "Whether to enable/disable adoption of the default route table"
-  default     = false
-}
-
-variable "adopt_default_network_acl" {
-  type        = bool
-  description = "Whether to enable/disable adoption of the default network acl"
-  default     = false
-}
-
-variable "adopt_default_security_group" {
-  type        = bool
-  description = "Whether to enable/disable adoption of the default security group"
   default     = false
 }
