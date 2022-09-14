@@ -94,14 +94,14 @@ func TestExamplesCompleteDisabled(t *testing.T) {
 	assert.Contains(t, results, "Resources: 0 added, 0 changed, 0 destroyed.")
 }
 
-func TestExamplesCompleteDefaults(t *testing.T) {
+func TestExamplesCompleteWithDefaultResources(t *testing.T) {
     t.Parallel()
     randID := strings.ToLower(random.UniqueId())
 	attributes := []string{randID}
 
 	rootFolder := "../../"
 	terraformFolderRelativeToRoot := "examples/complete"
-	varFiles := []string{"fixtures.default-resources.tfvars"}
+	varFiles := []string{"fixtures.default-resources.default.tfvars"}
 
     tempTestFolder := test_structure.CopyTerraformFolderToTemp(t, rootFolder, terraformFolderRelativeToRoot)
 
