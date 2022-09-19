@@ -93,32 +93,3 @@ func TestExamplesCompleteDisabled(t *testing.T) {
 	// Should complete successfully without creating or changing any resources
 	assert.Contains(t, results, "Resources: 0 added, 0 changed, 0 destroyed.")
 }
-
-func TestExamplesCompleteWithDefaultResources(t *testing.T) {
-    t.Parallel()
-    randID := strings.ToLower(random.UniqueId())
-	attributes := []string{randID}
-
-	rootFolder := "../../"
-	terraformFolderRelativeToRoot := "examples/complete"
-	varFiles := []string{"fixtures.default-resources.default.tfvars"}
-
-    tempTestFolder := test_structure.CopyTerraformFolderToTemp(t, rootFolder, terraformFolderRelativeToRoot)
-
-    terraformOptions := &terraform.Options{
-		// The path to where our Terraform code is located
-		TerraformDir: tempTestFolder,
-		Upgrade:      true,
-		// Variables to pass to our Terraform code using -var-file options
-		VarFiles: varFiles,
-		Vars: map[string]interface{}{
-			"attributes": attributes,
-		},
-	}
-
-	// At the end of the test, run `terraform destroy` to clean up any resources that were created
-	defer cleanup(t, terraformOptions, tempTestFolder)
-
-	// This will run `terraform init` and `terraform apply` and fail the test if there are any errors
-	terraform.InitAndApply(t, terraformOptions)
-}
