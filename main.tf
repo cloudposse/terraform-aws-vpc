@@ -11,6 +11,9 @@ locals {
   ipv4_cidr_block_associations = local.enabled ? (
     length(local.additional_cidr_blocks_map) > 0 ? local.additional_cidr_blocks_map : var.ipv4_additional_cidr_block_associations
   ) : {}
+  default_adoption_tags = merge(module.label.tags, {
+    Name = join(module.label.delimiter, [module.label.id, "default"])
+  })
 }
 
 module "label" {
@@ -48,7 +51,23 @@ resource "aws_default_security_group" "default" {
   count = local.default_security_group_deny_all ? 1 : 0
 
   vpc_id = aws_vpc.default[0].id
-  tags   = merge(module.label.tags, { Name = "Default Security Group" })
+  tags   = local.default_adoption_tags
+}
+
+# If `aws_default_route_table` is not defined, it will be created implicitly with default routes
+resource "aws_default_route_table" "default" {
+  count = local.default_route_table_no_routes ? 1 : 0
+
+  default_route_table_id = aws_vpc.default[0].default_route_table_id
+  tags                   = local.default_adoption_tags
+}
+
+# If `aws_default_network_acl` is not defined, it will be created implicitly with access `0.0.0.0/0`
+resource "aws_default_network_acl" "default" {
+  count = local.default_network_acl_deny_all ? 1 : 0
+
+  default_network_acl_id = aws_vpc.default[0].default_network_acl_id
+  tags                   = local.default_adoption_tags
 }
 
 resource "aws_internet_gateway" "default" {
