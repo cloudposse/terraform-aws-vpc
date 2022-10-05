@@ -1,19 +1,23 @@
 locals {
-  enabled                                   = module.this.enabled
-  ipv6_egress_only_internet_gateway_enabled = local.enabled && var.ipv6_egress_only_internet_gateway_enabled
-  additional_cidr_blocks_map = local.enabled ? {
-    for v in var.additional_cidr_blocks : v => {
-      ipv4_cidr_block     = v
-      ipv4_ipam_pool_id   = null
-      ipv4_netmask_length = null
-    }
-  } : {}
-  ipv4_cidr_block_associations = local.enabled ? (
-    length(local.additional_cidr_blocks_map) > 0 ? local.additional_cidr_blocks_map : var.ipv4_additional_cidr_block_associations
-  ) : {}
+  enabled = module.this.enabled
+
   default_adoption_tags = merge(module.label.tags, {
     Name = join(module.label.delimiter, [module.label.id, "default"])
   })
+
+  # Local variables corresponding to v2 module inputs that replace v0 inputs
+  ipv4_primary_cidr_block          = var.ipv4_primary_cidr_block
+  ipv4_cidr_block_associations     = var.ipv4_additional_cidr_block_associations
+  assign_generated_ipv6_cidr_block = var.assign_generated_ipv6_cidr_block
+  dns_hostnames_enabled            = var.dns_hostnames_enabled
+  dns_support_enabled              = var.dns_support_enabled
+  default_security_group_deny_all  = local.enabled && var.default_security_group_deny_all
+  internet_gateway_enabled         = local.enabled && var.internet_gateway_enabled
+
+  # Local variables that should be false when the module is disabled
+  default_route_table_no_routes             = local.enabled && var.default_route_table_no_routes
+  default_network_acl_deny_all              = local.enabled && var.default_network_acl_deny_all
+  ipv6_egress_only_internet_gateway_enabled = local.enabled && var.ipv6_egress_only_internet_gateway_enabled
 }
 
 module "label" {
@@ -40,8 +44,6 @@ resource "aws_vpc" "default" {
   instance_tenancy                 = var.instance_tenancy
   enable_dns_hostnames             = local.dns_hostnames_enabled
   enable_dns_support               = local.dns_support_enabled
-  enable_classiclink               = local.classiclink_enabled
-  enable_classiclink_dns_support   = local.classiclink_dns_support_enabled
   assign_generated_ipv6_cidr_block = local.assign_generated_ipv6_cidr_block
   tags                             = module.label.tags
 }

@@ -73,52 +73,51 @@ func TestExamplesVPCEndpoints(t *testing.T) {
 
 	// Verify we're getting back the private Subnet CIDR Blocks we expect
 	privateSubnetCidrs := terraform.OutputList(t, terraformOptions, "private_subnet_cidrs")
-	expectedPrivateSubnetCidrs := []string{"172.17.0.0/19", "172.17.32.0/19"}
+	expectedPrivateSubnetCidrs := []string{"172.17.0.0/18", "172.17.64.0/18"}
 	assert.Equal(t, expectedPrivateSubnetCidrs, privateSubnetCidrs)
 
 	// Verify we're getting back the public Subnet CIDR Blocks we expect
 	publicSubnetCidrs := terraform.OutputList(t, terraformOptions, "public_subnet_cidrs")
-	expectedPublicSubnetCidrs := []string{"172.17.96.0/19", "172.17.128.0/19"}
-	assert.Equal(t, expectedPublicSubnetCidrs, publicSubnetCidrs)
+	assert.Empty(t, publicSubnetCidrs)
 
 	// Get VPC ID for VPC Endpoint validation
 	vpcId := terraform.Output(t, terraformOptions, "vpc_id")
 
 	// Validate created Gateway VPC Endpoints
-	gatewayVpcEndpoints := []VpcEndpoint{}
+	gatewayVpcEndpoints := map[string]VpcEndpoint{}
 	terraform.OutputStruct(t, terraformOptions, "gateway_vpc_endpoints", &gatewayVpcEndpoints)
-	assert.Equal(t, "com.amazonaws.us-east-2.dynamodb", gatewayVpcEndpoints[0].ServiceName)
-	assert.Equal(t, "Gateway", gatewayVpcEndpoints[0].VpcEndpointType)
-	assert.Equal(t, vpcId, gatewayVpcEndpoints[0].VpcID)
-	assert.Equal(t, "com.amazonaws.us-east-2.s3", gatewayVpcEndpoints[1].ServiceName)
-	assert.Equal(t, "Gateway", gatewayVpcEndpoints[1].VpcEndpointType)
-	assert.Equal(t, vpcId, gatewayVpcEndpoints[1].VpcID)
+	assert.Equal(t, "com.amazonaws.us-east-2.dynamodb", gatewayVpcEndpoints["dynamodb"].ServiceName)
+	assert.Equal(t, "Gateway", gatewayVpcEndpoints["dynamodb"].VpcEndpointType)
+	assert.Equal(t, vpcId, gatewayVpcEndpoints["dynamodb"].VpcID)
+	assert.Equal(t, "com.amazonaws.us-east-2.s3", gatewayVpcEndpoints["s3"].ServiceName)
+	assert.Equal(t, "Gateway", gatewayVpcEndpoints["s3"].VpcEndpointType)
+	assert.Equal(t, vpcId, gatewayVpcEndpoints["s3"].VpcID)
 
 	// Validate created Interface VPC Endpoints
-	interfaceVpcEndpoints := []VpcEndpoint{}
+	interfaceVpcEndpoints := map[string]VpcEndpoint{}
 	terraform.OutputStruct(t, terraformOptions, "interface_vpc_endpoints", &interfaceVpcEndpoints)
-	assert.Equal(t, "com.amazonaws.us-east-2.ec2", interfaceVpcEndpoints[0].ServiceName)
-	assert.Equal(t, "Interface", interfaceVpcEndpoints[0].VpcEndpointType)
-	assert.Equal(t, vpcId, interfaceVpcEndpoints[0].VpcID)
-	assert.Equal(t, interfaceVpcEndpoints[0].PrivateDNSEnabled, true)
+	assert.Equal(t, "com.amazonaws.us-east-2.ec2", interfaceVpcEndpoints["ec2"].ServiceName)
+	assert.Equal(t, "Interface", interfaceVpcEndpoints["ec2"].VpcEndpointType)
+	assert.Equal(t, vpcId, interfaceVpcEndpoints["ec2"].VpcID)
+	assert.Equal(t, true, interfaceVpcEndpoints["ec2"].PrivateDNSEnabled)
 	foundEC2PrivateDNSEntry := false
-	for _, entry := range interfaceVpcEndpoints[0].DNSEntry {
+	for _, entry := range interfaceVpcEndpoints["ec2"].DNSEntry {
 		if entry["dns_name"] == "ec2.us-east-2.amazonaws.com" && !foundEC2PrivateDNSEntry {
 			foundEC2PrivateDNSEntry = true
 		}
 	}
-	assert.Equal(t, foundEC2PrivateDNSEntry, true)
+	assert.Equal(t, true, foundEC2PrivateDNSEntry)
 
-	assert.Equal(t, "com.amazonaws.us-east-2.kinesis-streams", interfaceVpcEndpoints[1].ServiceName)
-	assert.Equal(t, "Interface", interfaceVpcEndpoints[1].VpcEndpointType)
-	assert.Equal(t, vpcId, interfaceVpcEndpoints[1].VpcID)
-	assert.Equal(t, interfaceVpcEndpoints[1].PrivateDNSEnabled, false)
+	assert.Equal(t, "com.amazonaws.us-east-2.kinesis-streams", interfaceVpcEndpoints["kinesis-streams"].ServiceName)
+	assert.Equal(t, "Interface", interfaceVpcEndpoints["kinesis-streams"].VpcEndpointType)
+	assert.Equal(t, vpcId, interfaceVpcEndpoints["kinesis-streams"].VpcID)
+	assert.Equal(t, false, interfaceVpcEndpoints["kinesis-streams"].PrivateDNSEnabled)
 	foundKinesisStreamsPrivateDNSEntry := false
-	for _, entry := range interfaceVpcEndpoints[0].DNSEntry {
+	for _, entry := range interfaceVpcEndpoints["kinesis-streams"].DNSEntry {
 		if entry["dns_name"] == "kinesis-streams.us-east-2.amazonaws.com" && !foundKinesisStreamsPrivateDNSEntry {
 			foundKinesisStreamsPrivateDNSEntry = true
 		}
 	}
-	assert.Equal(t, foundKinesisStreamsPrivateDNSEntry, false)
+	assert.Equal(t, false, foundKinesisStreamsPrivateDNSEntry)
 
 }
