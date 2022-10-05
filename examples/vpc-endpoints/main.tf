@@ -3,6 +3,9 @@ provider "aws" {
 }
 
 locals {
+  enabled    = module.this.enabled
+  interfaces = ["ec2", "kinesis"]
+
   gateway_vpc_endpoints = {
     "s3" = {
       name = "s3"
@@ -19,23 +22,25 @@ locals {
           },
         ]
       })
+      route_table_ids = [aws_route_table.other.id, module.vpc.vpc_default_route_table_id]
     }
     "dynamodb" = {
-      name   = "dynamodb"
-      policy = null
+      name            = "dynamodb"
+      policy          = null
+      route_table_ids = [aws_route_table.other.id]
     }
   }
   interface_vpc_endpoints = {
     "ec2" = {
       name                = "ec2"
-      security_group_ids  = [aws_security_group.ec2_vpc_endpoint_sg.id]
+      security_group_ids  = [module.vpc.vpc_default_security_group_id, module.endpoint_security_groups[local.interfaces[0]].id]
       subnet_ids          = module.subnets.private_subnet_ids
       policy              = null
       private_dns_enabled = true
     }
     "kinesis-streams" = {
       name                = "kinesis-streams"
-      security_group_ids  = [aws_security_group.kinesis_vpc_endpoint_sg.id]
+      security_group_ids  = [module.endpoint_security_groups[local.interfaces[1]].id, module.vpc.vpc_default_security_group_id]
       subnet_ids          = module.subnets.private_subnet_ids
       policy              = null
       private_dns_enabled = false
@@ -44,10 +49,15 @@ locals {
 }
 
 module "vpc" {
-  source     = "../../"
-  cidr_block = "172.17.0.0/16"
+  source                   = "../../"
+  ipv4_primary_cidr_block  = "172.17.0.0/16"
+  internet_gateway_enabled = false
 
   context = module.this.context
+}
+
+resource "aws_route_table" "other" {
+  vpc_id = module.vpc.vpc_id
 }
 
 module "vpc_endpoints" {
@@ -64,68 +74,41 @@ module "vpc_endpoints" {
 
 module "subnets" {
   source  = "cloudposse/dynamic-subnets/aws"
-  version = "0.40.1"
+  version = "2.0.4"
 
-  availability_zones   = var.availability_zones
-  vpc_id               = module.vpc.vpc_id
-  igw_id               = module.vpc.igw_id
-  cidr_block           = module.vpc.vpc_cidr_block
-  nat_gateway_enabled  = false
-  nat_instance_enabled = false
-
-  context = module.this.context
-}
-
-module "ec2_vpc_endpoint_sg_label" {
-  source  = "cloudposse/label/null"
-  version = "0.25.0"
-
-  attributes = ["ec2-vpc-endpoint-sg"]
+  availability_zones     = var.availability_zones
+  vpc_id                 = module.vpc.vpc_id
+  igw_id                 = []
+  ipv4_cidr_block        = [module.vpc.vpc_cidr_block]
+  public_subnets_enabled = false
+  nat_gateway_enabled    = false
+  nat_instance_enabled   = false
 
   context = module.this.context
 }
 
-module "kinesis_vpc_endpoint_sg_label" {
-  source  = "cloudposse/label/null"
-  version = "0.25.0"
+module "endpoint_security_groups" {
+  for_each = local.enabled ? toset(local.interfaces) : []
+  source   = "cloudposse/security-group/aws"
+  version  = "2.0.0-rc1"
 
-  attributes = ["kinesis-vpc-endpoint-sg"]
+  create_before_destroy      = true
+  preserve_security_group_id = false
+  attributes                 = [each.value]
+  vpc_id                     = module.vpc.vpc_id
+
+  rules = [{
+    key              = "vpc_ingress"
+    type             = "ingress"
+    from_port        = 443
+    to_port          = 443
+    protocol         = "tcp"
+    cidr_blocks      = compact(concat([module.vpc.vpc_cidr_block], module.vpc.additional_cidr_blocks))
+    ipv6_cidr_blocks = compact(concat([module.vpc.vpc_ipv6_cidr_block], module.vpc.additional_ipv6_cidr_blocks))
+    description      = "Ingress from VPC to ${each.value}"
+  }]
+
+  allow_all_egress = true
 
   context = module.this.context
-}
-
-resource "aws_security_group" "ec2_vpc_endpoint_sg" {
-  vpc_id = module.vpc.vpc_id
-  ingress {
-    from_port   = 443
-    protocol    = "TCP"
-    to_port     = 443
-    cidr_blocks = [module.vpc.vpc_cidr_block]
-    description = "Security Group for EC2 Interface VPC Endpoint"
-  }
-
-  tags = module.ec2_vpc_endpoint_sg_label.tags
-}
-
-resource "aws_security_group" "kinesis_vpc_endpoint_sg" {
-  vpc_id = module.vpc.vpc_id
-  ingress {
-    from_port   = 443
-    protocol    = "TCP"
-    to_port     = 443
-    cidr_blocks = [module.vpc.vpc_cidr_block]
-    description = "Security Group for Kinesis Interface VPC Endpoint"
-  }
-
-  tags = module.kinesis_vpc_endpoint_sg_label.tags
-}
-
-resource "aws_vpc_endpoint_route_table_association" "s3_gateway_vpc_endpoint_route_table_association" {
-  route_table_id  = module.vpc.vpc_main_route_table_id
-  vpc_endpoint_id = module.vpc_endpoints.gateway_vpc_endpoints[0].id
-}
-
-resource "aws_vpc_endpoint_route_table_association" "dynamodb_gateway_vpc_endpoint_route_table_association" {
-  route_table_id  = module.vpc.vpc_main_route_table_id
-  vpc_endpoint_id = module.vpc_endpoints.gateway_vpc_endpoints[1].id
 }

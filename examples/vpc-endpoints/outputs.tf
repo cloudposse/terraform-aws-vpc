@@ -19,11 +19,11 @@ output "vpc_id" {
 }
 
 output "gateway_vpc_endpoints" {
-  value       = module.vpc_endpoints.gateway_vpc_endpoints
+  value       = module.vpc_endpoints.gateway_vpc_endpoints_map
   description = "List of Gateway VPC Endpoints deployed to the VPC."
 }
 
 output "interface_vpc_endpoints" {
-  value       = module.vpc_endpoints.interface_vpc_endpoints
+  value       = module.vpc_endpoints.interface_vpc_endpoints_map
   description = "List of Interface VPC Endpoints deployed to the VPC."
 }
