@@ -60,7 +60,7 @@ output "additional_cidr_blocks_to_association_ids" {
 }
 
 output "additional_ipv6_cidr_blocks" {
-  description = "A list of the additional IPv4 CIDR blocks associated with the VPC"
+  description = "A list of the additional IPv6 CIDR blocks associated with the VPC"
   value = [
     for i in aws_vpc_ipv6_cidr_block_association.default :
     i.ipv6_cidr_block
@@ -68,7 +68,7 @@ output "additional_ipv6_cidr_blocks" {
 }
 
 output "additional_ipv6_cidr_blocks_to_association_ids" {
-  description = "A map of the additional IPv4 CIDR blocks to VPC CIDR association IDs"
+  description = "A map of the additional IPv6 CIDR blocks to VPC CIDR association IDs"
   value = {
     for i in aws_vpc_ipv6_cidr_block_association.default :
     i.ipv6_cidr_block => i.id

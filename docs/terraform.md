@@ -78,8 +78,8 @@
 |------|-------------|
 | <a name="output_additional_cidr_blocks"></a> [additional\_cidr\_blocks](#output\_additional\_cidr\_blocks) | A list of the additional IPv4 CIDR blocks associated with the VPC |
 | <a name="output_additional_cidr_blocks_to_association_ids"></a> [additional\_cidr\_blocks\_to\_association\_ids](#output\_additional\_cidr\_blocks\_to\_association\_ids) | A map of the additional IPv4 CIDR blocks to VPC CIDR association IDs |
-| <a name="output_additional_ipv6_cidr_blocks"></a> [additional\_ipv6\_cidr\_blocks](#output\_additional\_ipv6\_cidr\_blocks) | A list of the additional IPv4 CIDR blocks associated with the VPC |
-| <a name="output_additional_ipv6_cidr_blocks_to_association_ids"></a> [additional\_ipv6\_cidr\_blocks\_to\_association\_ids](#output\_additional\_ipv6\_cidr\_blocks\_to\_association\_ids) | A map of the additional IPv4 CIDR blocks to VPC CIDR association IDs |
+| <a name="output_additional_ipv6_cidr_blocks"></a> [additional\_ipv6\_cidr\_blocks](#output\_additional\_ipv6\_cidr\_blocks) | A list of the additional IPv6 CIDR blocks associated with the VPC |
+| <a name="output_additional_ipv6_cidr_blocks_to_association_ids"></a> [additional\_ipv6\_cidr\_blocks\_to\_association\_ids](#output\_additional\_ipv6\_cidr\_blocks\_to\_association\_ids) | A map of the additional IPv6 CIDR blocks to VPC CIDR association IDs |
 | <a name="output_igw_id"></a> [igw\_id](#output\_igw\_id) | The ID of the Internet Gateway |
 | <a name="output_ipv6_cidr_block_network_border_group"></a> [ipv6\_cidr\_block\_network\_border\_group](#output\_ipv6\_cidr\_block\_network\_border\_group) | The IPv6 Network Border Group Zone name |
 | <a name="output_ipv6_egress_only_igw_id"></a> [ipv6\_egress\_only\_igw\_id](#output\_ipv6\_egress\_only\_igw\_id) | The ID of the egress-only Internet Gateway |
