@@ -18,6 +18,7 @@ locals {
   default_route_table_no_routes             = local.enabled && var.default_route_table_no_routes
   default_network_acl_deny_all              = local.enabled && var.default_network_acl_deny_all
   ipv6_egress_only_internet_gateway_enabled = local.enabled && var.ipv6_egress_only_internet_gateway_enabled
+  ipv6_egress_only_internet_gateway_test.   = local.enabled && var.ipv6_egress_only_internet_gateway_enabled
 }
 
 module "label" {
