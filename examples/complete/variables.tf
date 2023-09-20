@@ -17,3 +17,7 @@ variable "default_route_table_no_routes" {
 variable "default_network_acl_deny_all" {
   type = bool
 }
+
+variable "enable_network_address_usage" {
+  type = bool
+}

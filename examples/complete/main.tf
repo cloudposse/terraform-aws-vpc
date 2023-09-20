@@ -20,11 +20,11 @@ module "vpc" {
 
   assign_generated_ipv6_cidr_block = true
 
-  default_security_group_deny_all = var.default_security_group_deny_all
-  default_route_table_no_routes   = var.default_route_table_no_routes
-  default_network_acl_deny_all    = var.default_network_acl_deny_all
-
-  context = module.this.context
+  default_security_group_deny_all      = var.default_security_group_deny_all
+  default_route_table_no_routes        = var.default_route_table_no_routes
+  default_network_acl_deny_all         = var.default_network_acl_deny_all
+  enable_network_address_usage_metrics = var.enable_network_address_usage_metrics
+  context                              = module.this.context
 }
 
 module "subnets" {
