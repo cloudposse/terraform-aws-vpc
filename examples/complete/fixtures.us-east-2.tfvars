@@ -8,7 +8,7 @@ stage = "test"
 
 name = "vpc-subnets"
 
-default_security_group_deny_all = true
-default_route_table_no_routes   = true
-default_network_acl_deny_all    = true
-enable_network_address_usage    = true 
+default_security_group_deny_all       = true
+default_route_table_no_routes         = true
+default_network_acl_deny_all          = true
+network_address_usage_metrics_enabled = true 

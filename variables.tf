@@ -156,7 +156,7 @@ variable "ipv6_egress_only_internet_gateway_enabled" {
   default     = false
 }
 
-variable "enable_network_address_usage_metrics" {
+variable "network_address_usage_metrics_enabled" {
   type        = bool
   description = "Set `true` to enable Network Address Usage Metrics for the VPC"
   default     = false

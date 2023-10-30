@@ -45,7 +45,7 @@ resource "aws_vpc" "default" {
   enable_dns_hostnames                 = local.dns_hostnames_enabled
   enable_dns_support                   = local.dns_support_enabled
   assign_generated_ipv6_cidr_block     = local.assign_generated_ipv6_cidr_block
-  enable_network_address_usage_metrics = var.enable_network_address_usage_metrics
+  enable_network_address_usage_metrics = var.network_address_usage_metrics_enabled
   tags                                 = module.label.tags
 }
 

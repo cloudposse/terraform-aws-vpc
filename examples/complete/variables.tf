@@ -18,6 +18,6 @@ variable "default_network_acl_deny_all" {
   type = bool
 }
 
-variable "enable_network_address_usage" {
+variable "network_address_usage_metrics_enabled" {
   type = bool
 }
