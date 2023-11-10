@@ -41,11 +41,12 @@ resource "aws_vpc" "default" {
   ipv6_netmask_length = try(var.ipv6_primary_cidr_block_association.ipv6_netmask_length, null)
   # Additional IPv6 CIDRs are handled by aws_vpc_ipv6_cidr_block_association below
 
-  instance_tenancy                 = var.instance_tenancy
-  enable_dns_hostnames             = local.dns_hostnames_enabled
-  enable_dns_support               = local.dns_support_enabled
-  assign_generated_ipv6_cidr_block = local.assign_generated_ipv6_cidr_block
-  tags                             = module.label.tags
+  instance_tenancy                     = var.instance_tenancy
+  enable_dns_hostnames                 = local.dns_hostnames_enabled
+  enable_dns_support                   = local.dns_support_enabled
+  assign_generated_ipv6_cidr_block     = local.assign_generated_ipv6_cidr_block
+  enable_network_address_usage_metrics = var.network_address_usage_metrics_enabled
+  tags                                 = module.label.tags
 }
 
 # If `aws_default_security_group` is not defined, it will be created implicitly with access `0.0.0.0/0`
