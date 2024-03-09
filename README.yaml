@@ -29,6 +29,9 @@ github_repo: cloudposse/terraform-aws-vpc
 
 # Badges to display
 badges:
+  - name: Last Updated
+    image: https://img.shields.io/github/last-commit/cloudposse/terraform-aws-vpc.svg?style=for-the-badge
+    url: https://github.com/cloudposse/terraform-aws-vpc/commits
   - name: Latest Release
     image: https://img.shields.io/github/release/cloudposse/terraform-aws-vpc.svg?style=for-the-badge
     url: https://github.com/cloudposse/terraform-aws-vpc/releases/latest
