@@ -5,3 +5,4 @@ repository:
   description: Terraform Module that defines a VPC with public/private subnets across multiple AZs with Internet Gateways
   homepage: https://cloudposse.com/accelerate
   topics: terraform, terraform-modules, vpc, aws, hcl2
+
