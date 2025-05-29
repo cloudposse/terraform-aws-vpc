@@ -29,9 +29,6 @@ github_repo: cloudposse/terraform-aws-vpc
 
 # Badges to display
 badges:
-  - name: Last Updated
-    image: https://img.shields.io/github/last-commit/cloudposse/terraform-aws-vpc.svg?style=for-the-badge
-    url: https://github.com/cloudposse/terraform-aws-vpc/commits
   - name: Latest Release
     image: https://img.shields.io/github/release/cloudposse/terraform-aws-vpc.svg?style=for-the-badge
     url: https://github.com/cloudposse/terraform-aws-vpc/releases/latest
@@ -40,7 +37,7 @@ badges:
     url: https://github.com/cloudposse/terraform-aws-vpc/commits
   - name: Slack Community
     image: https://slack.cloudposse.com/for-the-badge.svg
-    url: https://slack.cloudposse.com
+    url: https://cloudposse.com/slack
 
 # List any related terraform modules that this module may be used with or that this module depends on.
 related:
@@ -156,9 +153,5 @@ examples: |-
   }
   ```
 
-include:
-  - "docs/targets.md"
-  - "docs/terraform.md"
-
-# Contributors to this project
+include: []
 contributors: []
