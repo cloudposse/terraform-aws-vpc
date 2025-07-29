@@ -27,6 +27,24 @@ module "label" {
   context = module.this.context
 }
 
+module "igw_label" {
+  source  = "cloudposse/label/null"
+  version = "0.25.0"
+
+  enabled = local.internet_gateway_enabled
+  attributes = ["igw"]
+  context = module.this.context
+}
+
+module "eigw_label" {
+  source  = "cloudposse/label/null"
+  version = "0.25.0"
+
+  enabled = local.ipv6_egress_only_internet_gateway_enabled
+  attributes = ["eigw"]
+  context = module.this.context
+}
+
 resource "aws_vpc" "default" {
   count = local.enabled ? 1 : 0
 
@@ -77,14 +95,14 @@ resource "aws_internet_gateway" "default" {
   count = local.internet_gateway_enabled ? 1 : 0
 
   vpc_id = aws_vpc.default[0].id
-  tags   = module.label.tags
+  tags   = module.igw_label.tags
 }
 
 resource "aws_egress_only_internet_gateway" "default" {
   count = local.ipv6_egress_only_internet_gateway_enabled ? 1 : 0
 
   vpc_id = aws_vpc.default[0].id
-  tags   = module.label.tags
+  tags   = module.eigw_label.tags
 }
 
 resource "aws_vpc_ipv4_cidr_block_association" "default" {
