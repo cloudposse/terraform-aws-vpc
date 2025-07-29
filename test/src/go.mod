@@ -1,6 +1,8 @@
 module github.com/cloudposse/terraform-aws-vpc
 
-go 1.19
+go 1.24
+
+toolchain go1.24.0
 
 require (
 	github.com/gruntwork-io/terratest v0.40.22
