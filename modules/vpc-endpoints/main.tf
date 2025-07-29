@@ -130,5 +130,15 @@ resource "aws_vpc_endpoint_security_group_association" "interface" {
   security_group_id = each.value.security_group_id
   vpc_endpoint_id   = aws_vpc_endpoint.interface_endpoint[each.value.interface].id
 
-  depends_on = [aws_vpc_endpoint_subnet_association.interface]
+  # Ensure all subnet associations are complete before starting security group associations
+  # This reduces the likelihood of race conditions
+  depends_on = [
+    aws_vpc_endpoint_subnet_association.interface,
+    aws_vpc_endpoint.interface_endpoint
+  ]
+
+  lifecycle {
+    # Help prevent race conditions during parallel operations
+    create_before_destroy = true
+  }
 }
