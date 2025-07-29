@@ -31,18 +31,18 @@ module "igw_label" {
   source  = "cloudposse/label/null"
   version = "0.25.0"
 
-  enabled = local.internet_gateway_enabled
+  enabled    = local.internet_gateway_enabled
   attributes = ["igw"]
-  context = module.this.context
+  context    = module.this.context
 }
 
 module "eigw_label" {
   source  = "cloudposse/label/null"
   version = "0.25.0"
 
-  enabled = local.ipv6_egress_only_internet_gateway_enabled
+  enabled    = local.ipv6_egress_only_internet_gateway_enabled
   attributes = ["eigw"]
-  context = module.this.context
+  context    = module.this.context
 }
 
 resource "aws_vpc" "default" {
