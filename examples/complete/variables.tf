@@ -1,5 +1,6 @@
 variable "region" {
   type = string
+  description = "The region to use for the VPC"
 }
 
 variable "availability_zones" {
