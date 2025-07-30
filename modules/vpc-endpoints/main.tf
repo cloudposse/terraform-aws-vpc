@@ -27,13 +27,22 @@ locals {
   security_group_associations_list = flatten([for k, v in var.interface_vpc_endpoints : [
     for i, s in v.security_group_ids : {
       key               = "${k}[${i}]"
-      index             = i
+      local_index       = i # Index within this VPC endpoint
       interface         = k
       security_group_id = s
     }
   ]])
 
-  security_group_associations_map = { for v in local.security_group_associations_list : v.key => v }
+  # Create a global index for serializing ALL security group operations
+  security_group_associations_with_global_index = [
+    for i, v in local.security_group_associations_list : merge(v, {
+      global_index = i # Global index across ALL security group associations
+    })
+  ]
+
+  security_group_associations_map = {
+    for v in local.security_group_associations_with_global_index : v.key => v
+  }
 }
 
 # Unfortunately, the AWS provider makes us jump through hoops to deal with the
@@ -138,19 +147,21 @@ resource "aws_vpc_endpoint_subnet_association" "interface" {
   vpc_endpoint_id = time_sleep.endpoint_settling[each.value.interface].triggers["endpoint_id"]
 }
 
-# Create individual time delays for each security group association to serialize operations
+# Create time delays to serialize ALL security group operations globally
+# This prevents ANY concurrent VPC endpoint modifications
 resource "time_sleep" "security_group_delay" {
   for_each = local.enabled ? local.security_group_associations_map : {}
 
-  # Stagger delays based on index: 0s, 10s, 20s, etc.
-  create_duration = "${each.value.index * 10}s"
+  # Serialize ALL security group operations globally: 0s, 15s, 30s, 45s, etc.
+  # This ensures no two security group associations happen simultaneously
+  create_duration = "${each.value.global_index * 15}s"
 
   # Use triggers to pass through the association data and create proper dependencies
   triggers = {
     security_group_id = each.value.security_group_id
     vpc_endpoint_id   = time_sleep.endpoint_settling[each.value.interface].triggers["endpoint_id"]
     interface         = each.value.interface
-    index             = each.value.index
+    global_index      = each.value.global_index
   }
 
   depends_on = [
@@ -164,7 +175,8 @@ resource "aws_vpc_endpoint_security_group_association" "interface" {
 
   # It is an error to replace the default association with the default security group
   # See https://github.com/hashicorp/terraform-provider-aws/issues/27100
-  replace_default_association = each.value.index == 0 && each.value.security_group_id != data.aws_security_group.default[0].id
+  # Use local_index (index within the VPC endpoint) for this logic
+  replace_default_association = each.value.local_index == 0 && each.value.security_group_id != data.aws_security_group.default[0].id
 
   # Read the values "through" the time_sleep resource to ensure proper dependency and delay
   security_group_id = time_sleep.security_group_delay[each.key].triggers["security_group_id"]
