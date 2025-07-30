@@ -1,8 +1,9 @@
 provider "aws" {
   region = var.region
-  # Help prevent race conditions during parallel operations, i.e. "OperationInProgress" errors
+
+  # Configure retries to handle VPC endpoint race conditions
   retry_mode  = "adaptive"
-  max_retries = 10
+  max_retries = 25
 }
 
 locals {

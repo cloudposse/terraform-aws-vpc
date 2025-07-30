@@ -113,11 +113,50 @@ resource "aws_vpc_endpoint" "interface_endpoint" {
   tags = module.interface_endpoint_label[each.key].tags
 }
 
+# Give each VPC endpoint time to fully initialize before associations start
+resource "time_sleep" "endpoint_settling" {
+  for_each = local.enabled ? var.interface_vpc_endpoints : {}
+
+  # Give AWS time to fully initialize the endpoint
+  create_duration = "30s"
+
+  # Wait for the endpoint to be created
+  triggers = {
+    endpoint_id = aws_vpc_endpoint.interface_endpoint[each.key].id
+  }
+
+  depends_on = [
+    aws_vpc_endpoint.interface_endpoint
+  ]
+}
+
 resource "aws_vpc_endpoint_subnet_association" "interface" {
   for_each = local.enabled ? local.subnet_associations_map : {}
 
-  subnet_id       = each.value.subnet_id
-  vpc_endpoint_id = aws_vpc_endpoint.interface_endpoint[each.value.interface].id
+  subnet_id = each.value.subnet_id
+  # Read the endpoint ID through the settling delay to ensure proper timing
+  vpc_endpoint_id = time_sleep.endpoint_settling[each.value.interface].triggers["endpoint_id"]
+}
+
+# Create individual time delays for each security group association to serialize operations
+resource "time_sleep" "security_group_delay" {
+  for_each = local.enabled ? local.security_group_associations_map : {}
+
+  # Stagger delays based on index: 0s, 10s, 20s, etc.
+  create_duration = "${each.value.index * 10}s"
+
+  # Use triggers to pass through the association data and create proper dependencies
+  triggers = {
+    security_group_id = each.value.security_group_id
+    vpc_endpoint_id   = time_sleep.endpoint_settling[each.value.interface].triggers["endpoint_id"]
+    interface         = each.value.interface
+    index             = each.value.index
+  }
+
+  depends_on = [
+    aws_vpc_endpoint_subnet_association.interface,
+    time_sleep.endpoint_settling
+  ]
 }
 
 resource "aws_vpc_endpoint_security_group_association" "interface" {
@@ -127,13 +166,9 @@ resource "aws_vpc_endpoint_security_group_association" "interface" {
   # See https://github.com/hashicorp/terraform-provider-aws/issues/27100
   replace_default_association = each.value.index == 0 && each.value.security_group_id != data.aws_security_group.default[0].id
 
-  security_group_id = each.value.security_group_id
-  vpc_endpoint_id   = aws_vpc_endpoint.interface_endpoint[each.value.interface].id
-
-  depends_on = [
-    aws_vpc_endpoint_subnet_association.interface,
-    aws_vpc_endpoint.interface_endpoint
-  ]
+  # Read the values "through" the time_sleep resource to ensure proper dependency and delay
+  security_group_id = time_sleep.security_group_delay[each.key].triggers["security_group_id"]
+  vpc_endpoint_id   = time_sleep.security_group_delay[each.key].triggers["vpc_endpoint_id"]
 
   lifecycle {
     create_before_destroy = true
