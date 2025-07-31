@@ -1,9 +1,5 @@
 provider "aws" {
   region = var.region
-
-  # Configure retries to handle VPC endpoint race conditions
-  retry_mode  = "adaptive"
-  max_retries = 25
 }
 
 locals {
