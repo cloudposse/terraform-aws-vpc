@@ -82,7 +82,7 @@ resource "aws_vpc_endpoint" "interface_endpoint" {
   vpc_id              = var.vpc_id
   private_dns_enabled = var.interface_vpc_endpoints[each.key].private_dns_enabled
 
-  security_group_ids = var.interface_vpc_endpoints[each.key].security_group_ids
+  security_group_ids = length(var.interface_vpc_endpoints[each.key].security_group_ids) > 0 ? var.interface_vpc_endpoints[each.key].security_group_ids : null
 
   tags = module.interface_endpoint_label[each.key].tags
 }
