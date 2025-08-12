@@ -29,13 +29,13 @@ locals {
   security_group_associations_list = flatten([
     for k, v in var.interface_vpc_endpoints : [
       for i, s in v.security_group_ids : i == 0 ? [] : [{
-    key               = "${k}[${i}]"
-    index             = i
-    interface         = k
-    security_group_id = s
-  }]
+        key               = "${k}[${i}]"
+        index             = i
+        interface         = k
+        security_group_id = s
+      }]
     ]
-    ])
+  ])
 
   # Map of the above list, keyed by "endpoint[index]" format for easy for_each iteration.
   security_group_associations_map = {
