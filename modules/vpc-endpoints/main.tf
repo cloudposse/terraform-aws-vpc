@@ -99,12 +99,6 @@ resource "aws_vpc_endpoint" "gateway_endpoint" {
   vpc_endpoint_type = data.aws_vpc_endpoint_service.gateway_endpoint_service[each.key].service_type
   vpc_id            = var.vpc_id
 
-  # Attach the first security group *at creation time* so AWS never attaches the default SG.
-  # This avoids the need to "replace_default_association", which can fail on later applies.
-  security_group_ids = length(var.interface_vpc_endpoints[each.key].security_group_ids) > 0 ? [
-    var.interface_vpc_endpoints[each.key].security_group_ids[0]
-  ] : []
-
   tags = module.gateway_endpoint_label[each.key].tags
 }
 
@@ -122,6 +116,12 @@ resource "aws_vpc_endpoint" "interface_endpoint" {
   vpc_endpoint_type   = data.aws_vpc_endpoint_service.interface_endpoint_service[each.key].service_type
   vpc_id              = var.vpc_id
   private_dns_enabled = var.interface_vpc_endpoints[each.key].private_dns_enabled
+
+  # Attach the first security group *at creation time* so AWS never attaches the default SG.
+  # This avoids the need to "replace_default_association", which can fail on later applies.
+  security_group_ids = length(var.interface_vpc_endpoints[each.key].security_group_ids) > 0 ? [
+    var.interface_vpc_endpoints[each.key].security_group_ids[0]
+  ] : []
 
   tags = module.interface_endpoint_label[each.key].tags
 }
