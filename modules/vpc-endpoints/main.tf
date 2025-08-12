@@ -40,7 +40,8 @@ locals {
   # Map of the above list, keyed by "endpoint[index]" format for easy for_each iteration.
   security_group_associations_map = {
     for v in local.security_group_associations_list : v.key => v
-  }}
+  }
+}
 
 # Unfortunately, the AWS provider makes us jump through hoops to deal with the
 # association of an endpoint interface with the default VPC security group.
