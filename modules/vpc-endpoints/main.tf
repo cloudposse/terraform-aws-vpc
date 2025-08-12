@@ -23,18 +23,24 @@ locals {
 
   subnet_associations_map = { for v in local.subnet_associations_list : v.key => v }
 
-  # Because security group ID may not be known at plan time, we cannot use it as a key
-  security_group_associations_list = flatten([for k, v in var.interface_vpc_endpoints : [
-    for i, s in v.security_group_ids : {
-      key               = "${k}[${i}]"
-      index             = i
-      interface         = k
-      security_group_id = s
-    }
-  ]])
+  # Build a list of SG associations for SGs with index > 0 only.
+  # We skip index 0 because that SG is already attached at creation time,
+  # so there's no need to manage it via a separate association resource.
+  security_group_associations_list = flatten([
+    for k, v in var.interface_vpc_endpoints : [
+      for i, s in v.security_group_ids : i == 0 ? [] : [{
+        key               = "${k}[${i}]"
+        index             = i
+        interface         = k
+        security_group_id = s
+      }]
+    ]
+  ])
 
-  security_group_associations_map = { for v in local.security_group_associations_list : v.key => v }
-}
+  # Map of the above list, keyed by "endpoint[index]" format for easy for_each iteration.
+  security_group_associations_map = {
+    for v in local.security_group_associations_list : v.key => v
+  }}
 
 # Unfortunately, the AWS provider makes us jump through hoops to deal with the
 # association of an endpoint interface with the default VPC security group.
@@ -92,6 +98,12 @@ resource "aws_vpc_endpoint" "gateway_endpoint" {
   vpc_endpoint_type = data.aws_vpc_endpoint_service.gateway_endpoint_service[each.key].service_type
   vpc_id            = var.vpc_id
 
+  # Attach the first security group *at creation time* so AWS never attaches the default SG.
+  # This avoids the need to "replace_default_association", which can fail on later applies.
+  security_group_ids = length(var.interface_vpc_endpoints[each.key].security_group_ids) > 0 ? [
+    var.interface_vpc_endpoints[each.key].security_group_ids[0]
+  ] : []
+
   tags = module.gateway_endpoint_label[each.key].tags
 }
 
@@ -122,10 +134,6 @@ resource "aws_vpc_endpoint_subnet_association" "interface" {
 
 resource "aws_vpc_endpoint_security_group_association" "interface" {
   for_each = local.enabled ? local.security_group_associations_map : {}
-
-  # It is an error to replace the default association with the default security group
-  # See https://github.com/hashicorp/terraform-provider-aws/issues/27100
-  replace_default_association = each.value.index == 0 && each.value.security_group_id != data.aws_security_group.default[0].id
 
   security_group_id = each.value.security_group_id
   vpc_endpoint_id   = aws_vpc_endpoint.interface_endpoint[each.value.interface].id
