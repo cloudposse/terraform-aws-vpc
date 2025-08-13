@@ -23,34 +23,6 @@ locals {
 
   subnet_associations_map = { for v in local.subnet_associations_list : v.key => v }
 
-  # Because security group ID may not be known at plan time, we cannot use it as a key
-  security_group_associations_list = flatten([for k, v in var.interface_vpc_endpoints : [
-    for i, s in v.security_group_ids : {
-      key               = "${k}[${i}]"
-      index             = i
-      interface         = k
-      security_group_id = s
-    }
-  ]])
-
-  security_group_associations_map = { for v in local.security_group_associations_list : v.key => v }
-}
-
-# Unfortunately, the AWS provider makes us jump through hoops to deal with the
-# association of an endpoint interface with the default VPC security group.
-# See https://github.com/hashicorp/terraform-provider-aws/issues/27100
-data "aws_security_group" "default" {
-  count = local.enabled ? 1 : 0
-
-  filter {
-    name   = "group-name"
-    values = ["default"]
-  }
-
-  filter {
-    name   = "vpc-id"
-    values = [var.vpc_id]
-  }
 }
 
 data "aws_vpc_endpoint_service" "gateway_endpoint_service" {
@@ -110,6 +82,8 @@ resource "aws_vpc_endpoint" "interface_endpoint" {
   vpc_id              = var.vpc_id
   private_dns_enabled = var.interface_vpc_endpoints[each.key].private_dns_enabled
 
+  security_group_ids = length(var.interface_vpc_endpoints[each.key].security_group_ids) > 0 ? var.interface_vpc_endpoints[each.key].security_group_ids : null
+
   tags = module.interface_endpoint_label[each.key].tags
 }
 
@@ -118,17 +92,4 @@ resource "aws_vpc_endpoint_subnet_association" "interface" {
 
   subnet_id       = each.value.subnet_id
   vpc_endpoint_id = aws_vpc_endpoint.interface_endpoint[each.value.interface].id
-}
-
-resource "aws_vpc_endpoint_security_group_association" "interface" {
-  for_each = local.enabled ? local.security_group_associations_map : {}
-
-  # It is an error to replace the default association with the default security group
-  # See https://github.com/hashicorp/terraform-provider-aws/issues/27100
-  replace_default_association = each.value.index == 0 && each.value.security_group_id != data.aws_security_group.default[0].id
-
-  security_group_id = each.value.security_group_id
-  vpc_endpoint_id   = aws_vpc_endpoint.interface_endpoint[each.value.interface].id
-
-  depends_on = [aws_vpc_endpoint_subnet_association.interface]
 }

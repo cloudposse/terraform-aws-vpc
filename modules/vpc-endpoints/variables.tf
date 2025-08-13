@@ -33,10 +33,10 @@ variable "interface_vpc_endpoints" {
     - `name`: Simple name of the service, like "ec2" or "redshift"
     - `policy`: A policy (as JSON string) to attach to the endpoint that controls access to the service. May be `null` for full access.
     - `private_dns_enabled`: Set `true` to associate a private hosted zone with the specified VPC
-    - `security_group_ids`: The ID of one or more security groups to associate with the network interface. The first
-      security group will replace the default association with the VPC's default security group. If you want
-      to maintain the association with the default security group, either leave `security_group_ids` empty or
-      include the default security group ID in the list.
+    - `security_group_ids`: The ID of one or more security groups to associate with the network interface.
+      If empty list `[]` is provided, the VPC's default security group will be used automatically.
+      If specific security group IDs are provided, they will replace the default security group association.
+      To use both custom and default security groups, include both in the list.
     - `subnet_ids`: List of subnet in which to install the endpoints.
    EOT
   default     = {}
