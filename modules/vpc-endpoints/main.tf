@@ -43,23 +43,6 @@ locals {
   }
 }
 
-# Unfortunately, the AWS provider makes us jump through hoops to deal with the
-# association of an endpoint interface with the default VPC security group.
-# See https://github.com/hashicorp/terraform-provider-aws/issues/27100
-data "aws_security_group" "default" {
-  count = local.enabled ? 1 : 0
-
-  filter {
-    name   = "group-name"
-    values = ["default"]
-  }
-
-  filter {
-    name   = "vpc-id"
-    values = [var.vpc_id]
-  }
-}
-
 data "aws_vpc_endpoint_service" "gateway_endpoint_service" {
   for_each     = local.enabled ? var.gateway_vpc_endpoints : {}
   service      = var.gateway_vpc_endpoints[each.key].name
