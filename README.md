@@ -159,6 +159,8 @@ module "vpc_endpoints" {
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_eigw_label"></a> [eigw\_label](#module\_eigw\_label) | cloudposse/label/null | 0.25.0 |
+| <a name="module_igw_label"></a> [igw\_label](#module\_igw\_label) | cloudposse/label/null | 0.25.0 |
 | <a name="module_label"></a> [label](#module\_label) | cloudposse/label/null | 0.25.0 |
 | <a name="module_this"></a> [this](#module\_this) | cloudposse/label/null | 0.25.0 |
 

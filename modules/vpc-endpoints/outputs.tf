@@ -14,7 +14,6 @@ resource "time_sleep" "creation" {
     aws_vpc_endpoint_route_table_association.gateway,
     aws_vpc_endpoint.interface_endpoint,
     aws_vpc_endpoint_subnet_association.interface,
-    aws_vpc_endpoint_security_group_association.interface,
   ]
 
   create_duration = var.post_creation_refresh_delay
