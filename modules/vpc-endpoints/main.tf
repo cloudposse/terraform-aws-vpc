@@ -23,6 +23,24 @@ locals {
 
   subnet_associations_map = { for v in local.subnet_associations_list : v.key => v }
 
+  # Build a list of SG associations for SGs with index > 0 only.
+  # We skip index 0 because that SG is already attached at creation time,
+  # so there's no need to manage it via a separate association resource.
+  security_group_associations_list = flatten([
+    for k, v in var.interface_vpc_endpoints : [
+      for i, s in v.security_group_ids : i == 0 ? [] : [{
+        key               = "${k}[${i}]"
+        index             = i
+        interface         = k
+        security_group_id = s
+      }]
+    ]
+  ])
+
+  # Map of the above list, keyed by "endpoint[index]" format for easy for_each iteration.
+  security_group_associations_map = {
+    for v in local.security_group_associations_list : v.key => v
+  }
 }
 
 data "aws_vpc_endpoint_service" "gateway_endpoint_service" {
@@ -82,7 +100,11 @@ resource "aws_vpc_endpoint" "interface_endpoint" {
   vpc_id              = var.vpc_id
   private_dns_enabled = var.interface_vpc_endpoints[each.key].private_dns_enabled
 
-  security_group_ids = length(var.interface_vpc_endpoints[each.key].security_group_ids) > 0 ? var.interface_vpc_endpoints[each.key].security_group_ids : null
+  # Attach the first security group *at creation time* so AWS never attaches the default SG.
+  # This avoids the need to "replace_default_association", which can fail on later applies.
+  security_group_ids = length(var.interface_vpc_endpoints[each.key].security_group_ids) > 0 ? [
+    var.interface_vpc_endpoints[each.key].security_group_ids[0]
+  ] : []
 
   tags = module.interface_endpoint_label[each.key].tags
 }
@@ -92,4 +114,13 @@ resource "aws_vpc_endpoint_subnet_association" "interface" {
 
   subnet_id       = each.value.subnet_id
   vpc_endpoint_id = aws_vpc_endpoint.interface_endpoint[each.value.interface].id
+}
+
+resource "aws_vpc_endpoint_security_group_association" "interface" {
+  for_each = local.enabled ? local.security_group_associations_map : {}
+
+  security_group_id = each.value.security_group_id
+  vpc_endpoint_id   = aws_vpc_endpoint.interface_endpoint[each.value.interface].id
+
+  depends_on = [aws_vpc_endpoint_subnet_association.interface]
 }
