@@ -59,7 +59,7 @@ module "gateway_endpoint_label" {
   source  = "cloudposse/label/null"
   version = "0.25.0"
 
-  for_each   = local.enabled ? data.aws_vpc_endpoint_service.gateway_endpoint_service : {}
+  for_each   = local.enabled ? toset(keys(data.aws_vpc_endpoint_service.gateway_endpoint_service)) : toset([])
   attributes = [each.key]
 
   context = module.this.context
@@ -69,14 +69,14 @@ module "interface_endpoint_label" {
   source  = "cloudposse/label/null"
   version = "0.25.0"
 
-  for_each   = local.enabled ? data.aws_vpc_endpoint_service.interface_endpoint_service : {}
+  for_each   = local.enabled ? toset(keys(data.aws_vpc_endpoint_service.interface_endpoint_service)) : toset([])
   attributes = [each.key]
 
   context = module.this.context
 }
 
 resource "aws_vpc_endpoint" "gateway_endpoint" {
-  for_each          = local.enabled ? data.aws_vpc_endpoint_service.gateway_endpoint_service : {}
+  for_each          = local.enabled ? toset(keys(data.aws_vpc_endpoint_service.gateway_endpoint_service)) : toset([])
   service_name      = data.aws_vpc_endpoint_service.gateway_endpoint_service[each.key].service_name
   policy            = var.gateway_vpc_endpoints[each.key].policy
   vpc_endpoint_type = data.aws_vpc_endpoint_service.gateway_endpoint_service[each.key].service_type
@@ -93,7 +93,7 @@ resource "aws_vpc_endpoint_route_table_association" "gateway" {
 }
 
 resource "aws_vpc_endpoint" "interface_endpoint" {
-  for_each            = local.enabled ? data.aws_vpc_endpoint_service.interface_endpoint_service : {}
+  for_each            = local.enabled ? toset(keys(data.aws_vpc_endpoint_service.interface_endpoint_service)) : toset([])
   service_name        = data.aws_vpc_endpoint_service.interface_endpoint_service[each.key].service_name
   policy              = var.interface_vpc_endpoints[each.key].policy
   vpc_endpoint_type   = data.aws_vpc_endpoint_service.interface_endpoint_service[each.key].service_type
