@@ -4,6 +4,7 @@ Submodule for provisioning Gateway and/or Interface VPC Endpoints to the VPC cre
 
 
 
+
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 <!-- markdownlint-disable -->
 ## Requirements
@@ -13,13 +14,6 @@ Submodule for provisioning Gateway and/or Interface VPC Endpoints to the VPC cre
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.9.0 |
 | <a name="requirement_time"></a> [time](#requirement\_time) | >= 0.8.0 |
-
-## Providers
-
-| Name | Version |
-| ---- | ------- |
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.9.0 |
-| <a name="provider_time"></a> [time](#provider\_time) | >= 0.8.0 |
 
 ## Modules
 
@@ -79,5 +73,6 @@ Submodule for provisioning Gateway and/or Interface VPC Endpoints to the VPC cre
 | <a name="output_interface_vpc_endpoints_map"></a> [interface\_vpc\_endpoints\_map](#output\_interface\_vpc\_endpoints\_map) | Map of Interface VPC Endpoints deployed to this VPC, using keys supplied in `var.interface_vpc_endpoints`. |
 <!-- markdownlint-restore -->
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
 
 
