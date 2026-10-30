@@ -3,8 +3,8 @@ provider "aws" {
 }
 
 module "vpc" {
-  source     = "../../"
-  cidr_block = "172.16.0.0/16"
+  source                  = "../../"
+  ipv4_primary_cidr_block = "172.16.0.0/16"
 
   context = module.this.context
 }
@@ -28,7 +28,7 @@ module "vpc_disabled" {
   source  = "../../"
   enabled = false
 
-  cidr_block = "172.16.0.0/16"
+  ipv4_primary_cidr_block = "172.16.0.0/16"
 
   context = module.this.context
 }
