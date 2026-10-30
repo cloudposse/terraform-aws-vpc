@@ -54,9 +54,10 @@ resource "aws_vpc" "default" {
   ipv4_netmask_length = try(var.ipv4_primary_cidr_block_association.ipv4_netmask_length, null)
   # Additional IPv4 CIDRs are handled by aws_vpc_ipv4_cidr_block_association below
 
-  ipv6_cidr_block     = try(var.ipv6_primary_cidr_block_association.ipv6_cidr_block, null)
-  ipv6_ipam_pool_id   = try(var.ipv6_primary_cidr_block_association.ipv6_ipam_pool_id, null)
-  ipv6_netmask_length = try(var.ipv6_primary_cidr_block_association.ipv6_netmask_length, null)
+  ipv6_cidr_block                      = try(var.ipv6_primary_cidr_block_association.ipv6_cidr_block, null)
+  ipv6_cidr_block_network_border_group = var.ipv6_cidr_block_network_border_group
+  ipv6_ipam_pool_id                    = try(var.ipv6_primary_cidr_block_association.ipv6_ipam_pool_id, null)
+  ipv6_netmask_length                  = try(var.ipv6_primary_cidr_block_association.ipv6_netmask_length, null)
   # Additional IPv6 CIDRs are handled by aws_vpc_ipv6_cidr_block_association below
 
   instance_tenancy                     = var.instance_tenancy
